@@ -1,0 +1,61 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: C:/Users/facts/source/ecs/out/CMakeFiles/CMakeScratch/TryCompile-vyswtg
+
+Run Build Command(s):C:/Users/facts/scoop/shims/ninja.exe cmTC_3fd53 && [1/2] Building C object CMakeFiles/cmTC_3fd53.dir/src.c.obj
+FAILED: CMakeFiles/cmTC_3fd53.dir/src.c.obj 
+C:\Users\facts\scoop\apps\llvm\current\bin\clang.exe -DCMAKE_HAVE_LIBC_PTHREAD  -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -MD -MT CMakeFiles/cmTC_3fd53.dir/src.c.obj -MF CMakeFiles\cmTC_3fd53.dir\src.c.obj.d -o CMakeFiles/cmTC_3fd53.dir/src.c.obj -c C:/Users/facts/source/ecs/out/CMakeFiles/CMakeScratch/TryCompile-vyswtg/src.c
+C:/Users/facts/source/ecs/out/CMakeFiles/CMakeScratch/TryCompile-vyswtg/src.c:1:10: fatal error: 'pthread.h' file not found
+#include <pthread.h>
+         ^~~~~~~~~~~
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: C:/Users/facts/source/ecs/out/CMakeFiles/CMakeScratch/TryCompile-w9dkt1
+
+Run Build Command(s):C:/Users/facts/scoop/shims/ninja.exe cmTC_7dc6c && [1/2] Building C object CMakeFiles/cmTC_7dc6c.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_7dc6c.exe
+FAILED: cmTC_7dc6c.exe 
+cmd.exe /C "cd . && C:\Users\facts\scoop\apps\llvm\current\bin\clang.exe -fuse-ld=lld-link -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Xlinker /subsystem:console CMakeFiles/cmTC_7dc6c.dir/CheckFunctionExists.c.obj -o cmTC_7dc6c.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_7dc6c.lib -Xlinker /pdb:cmTC_7dc6c.pdb -Xlinker /version:0.0   -lpthreads.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+lld-link: error: could not open 'pthreads.lib': no such file or directory
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+
+Determining if the function pthread_create exists in the pthread failed with the following output:
+Change Dir: C:/Users/facts/source/ecs/out/CMakeFiles/CMakeScratch/TryCompile-exqgi1
+
+Run Build Command(s):C:/Users/facts/scoop/shims/ninja.exe cmTC_29389 && [1/2] Building C object CMakeFiles/cmTC_29389.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_29389.exe
+FAILED: cmTC_29389.exe 
+cmd.exe /C "cd . && C:\Users\facts\scoop\apps\llvm\current\bin\clang.exe -fuse-ld=lld-link -nostartfiles -nostdlib -DCHECK_FUNCTION_EXISTS=pthread_create -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Xlinker /subsystem:console CMakeFiles/cmTC_29389.dir/CheckFunctionExists.c.obj -o cmTC_29389.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_29389.lib -Xlinker /pdb:cmTC_29389.pdb -Xlinker /version:0.0   -lpthread.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+lld-link: error: could not open 'pthread.lib': no such file or directory
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+
