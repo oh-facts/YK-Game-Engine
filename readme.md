@@ -22,6 +22,11 @@ Introducing the revolutionary (woah slow down) C/C++ build environment template 
 
 
 ## Quickstart
+
+Cone Repository
+```
+git clone https://github.com/oh-facts/cxx-build-environment-template.git --recursive
+```
 Run the ``gen.bat``or ``gen.sh`` file in the ``scripts`` folder to generate the build (generated in an ``out`` folder). You can open the scripts  in a text editor to see what commands are used.
 The comments in the cmake detail out how to extend it, wherever needed. 
 I used ``glfw`` (platform agnostic windowing library) as an example to show 3rd party linking.
