@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #project name
-project(spacelemon)
+project(ae)
 
 #--------third - party ---------#
 
@@ -10,7 +10,7 @@ project(spacelemon)
 add_subdirectory(vendor/glfw)
 
 #include directory path
-include_directories(vendor/glfw/include)
+include_directories(vendor/glad/include)
 
 #------------------------------#
 
@@ -19,7 +19,7 @@ include_directories(vendor/glfw/include)
 
 include_directories(include)
 
-add_executable(${PROJECT_NAME} "src/main.cpp")
+add_executable(${PROJECT_NAME} "src/main.cpp" "src/App.cpp" "src/FileReader.cpp" "vendor/glad/src/glad.c" )
 
 target_link_libraries(${PROJECT_NAME} glfw)
 
@@ -34,5 +34,11 @@ add_custom_target(
         ${CMAKE_BINARY_DIR}/compile_commands.json
         ${CMAKE_CURRENT_LIST_DIR}
     )
+    add_custom_target(
+        copy-resources ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/res
+            ${CMAKE_BINARY_DIR}/res
 
+    )
 #----------------------#
