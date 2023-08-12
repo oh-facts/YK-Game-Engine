@@ -8,7 +8,8 @@
                 "${vcpkgRoot}/x86-windows/include",
                 "${workspaceFolder}/vendor/glfw/include",
                 "${workspaceFolder}/include",
-                "${workspaceFolder}"
+                "${workspaceFolder}",
+                "${workspaceFolder}/vendor/glad/include"
             ],
             "defines": [
                 "_DEBUG",
