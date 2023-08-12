@@ -11,8 +11,8 @@ namespace AE
     struct Window
     {
         GLFWwindow *win_ptr;
-        int width = 800;
-        int height = 600;
+        int width = 960;
+        int height = 540;
 
         Window();
     };

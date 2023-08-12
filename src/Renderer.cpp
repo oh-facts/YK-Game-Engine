@@ -4,10 +4,10 @@
 namespace AE
 {
      unsigned int create_shader(const char *vertexFile, const char *fragmentFile){
-        std::string vertexShaderSourceStr = util::getFileContents("res\\default.vert");
+        std::string vertexShaderSourceStr = util::getFileContents(vertexFile);
         const char *vertexShaderSource = vertexShaderSourceStr.c_str();
 
-        std::string fragmentShaderSourceStr = util::getFileContents("res\\default.frag");
+        std::string fragmentShaderSourceStr = util::getFileContents(fragmentFile);
         const char *fragmentShaderSource = fragmentShaderSourceStr.c_str();
 
         unsigned int vertexShader;
