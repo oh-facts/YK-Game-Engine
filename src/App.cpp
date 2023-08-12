@@ -1,29 +1,17 @@
 #include <App.hpp>
 
-#include <FileReader.hpp>
+#include <Renderer.hpp>
 
 namespace AE
 {
 
   void App::innit()
   {
-
-
   }
   void App::run()
   {
 
-    // Vertex Shader source code
-    std::string vertexShaderSourceStr = util::getFileContents("res\\default.vert");
-    const char *vertexShaderSource = vertexShaderSourceStr.c_str();
-
-    std::string fragmentShaderSourceStr = util::getFileContents("res\\default.frag");
-    const char *fragmentShaderSource = fragmentShaderSourceStr.c_str();
-
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+    unsigned int shaderProgram = create_shader("res/defualt.vert", "res/default.frag");
 
     float vertices[] = {
         0.5f, 0.5f, 0.0f, 1.0f, 0.875f, 0.0f,      // top right
@@ -56,29 +44,13 @@ namespace AE
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
+    // col attrib
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
-
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glUseProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
 
     while (!glfwWindowShouldClose(m_win.win_ptr))
     {
