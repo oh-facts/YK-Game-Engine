@@ -11,7 +11,7 @@ namespace AE
   void App::run()
   {
 
-    unsigned int shaderProgram = create_shader("res/shaders/default.vert", "res/shaders/default.frag");
+    unsigned int shaderProgram = create_shader("res/defualt.vert", "res/default.frag");
 
     float vertices[] = {
         0.5f, 0.5f, 0.0f, 1.0f, 0.875f, 0.0f,      // top right
@@ -49,15 +49,9 @@ namespace AE
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     glBindVertexArray(0);
 
-    // texturing
-    /*
-    int widthImg, heightImg, numColCh;
-    unsigned char* bytes = stbi_load("res/textures/default.jpg",&widthImg,&heightImg,&numColCh,0);
-
-*/
     while (!glfwWindowShouldClose(m_win.win_ptr))
     {
 
