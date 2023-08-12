@@ -1,17 +1,19 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include <Window.hpp>
 
-namespace AE{
-namespace App{
+namespace AE
+{
 
-void innit();
-void run();
-void quit();
+    struct App
+    {
+        void innit();
+        void run();
+        void quit();
 
+        Window m_win;
+    };
 }
-}
-
 
 #endif
-
