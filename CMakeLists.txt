@@ -11,6 +11,7 @@ add_subdirectory(vendor/glfw)
 
 #include directory path
 include_directories(vendor/glad/include)
+include_directories(vendor/stb/include)
 
 #------------------------------#
 
@@ -19,7 +20,8 @@ include_directories(vendor/glad/include)
 
 include_directories(include)
 
-add_executable(${PROJECT_NAME} "src/main.cpp" "src/App.cpp" "src/FileReader.cpp" "src/Window.cpp" "src/Renderer.cpp"  "vendor/glad/src/glad.c" )
+add_executable(${PROJECT_NAME} "src/main.cpp" "src/App.cpp" "src/FileReader.cpp" "src/Window.cpp" "src/Renderer.cpp"  
+                                "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.cpp" )
 
 target_link_libraries(${PROJECT_NAME} glfw)
 
