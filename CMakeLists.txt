@@ -20,8 +20,12 @@ include_directories(vendor/stb/include)
 
 include_directories(include)
 
+<<<<<<< HEAD
 add_executable(${PROJECT_NAME} "src/main.cpp" "src/App.cpp" "src/FileReader.cpp" "src/Window.cpp" "src/Renderer.cpp"  
                                 "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.cpp" )
+=======
+add_executable(${PROJECT_NAME} "src/main.cpp" "src/App.cpp" "src/FileReader.cpp" "vendor/glad/src/glad.c" )
+>>>>>>> parent of fe9ad6a (refactors)
 
 target_link_libraries(${PROJECT_NAME} glfw)
 

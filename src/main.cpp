@@ -4,11 +4,8 @@
 
 int main()
 {
-  AE::App app;
-
-  app.innit();
-  app.run();
-  app.quit();
-  
+  AE::App::innit();
+  AE::App::run();
+  AE::App::quit();
   return 0;
 }
