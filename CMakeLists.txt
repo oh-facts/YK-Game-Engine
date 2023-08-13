@@ -8,6 +8,7 @@ project(ae)
 
 #root directory path
 add_subdirectory(vendor/glfw)
+add_subdirectory(vendor/glm)
 
 #include directory path
 include_directories(vendor/glad/include)
@@ -23,7 +24,7 @@ include_directories(include)
 add_executable(${PROJECT_NAME} "src/main.cpp" "src/App.cpp" "src/FileReader.cpp" "src/Window.cpp" "src/Renderer.cpp"  
                                 "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.cpp" )
 
-target_link_libraries(${PROJECT_NAME} glfw)
+target_link_libraries(${PROJECT_NAME} glfw glm::glm)
 
 #----------------------#
 
