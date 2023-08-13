@@ -1,11 +1,11 @@
-#include <Renderer.h>
-#include <FileReader.h>
+#include <yk_renderer.h>
+#include <yk_file_reader.h>
 #include <stb/stb_image.h>
 
-Sprite create_sprite(const char *imageFile)
+YK_Sprite yk_sprite_create(const char *imageFile)
 {
-    Sprite out;
-    out.shaderProgram = create_shader("res\\shaders\\default.vert", "res\\shaders\\default.frag");
+    YK_Sprite out;
+    out.shaderProgram = yk_shader_create("res\\shaders\\default.vert", "res\\shaders\\default.frag");
     float vertices[] = {
         0.5f, 0.5f, 0.0f, 1.0f, 0.875f, 0.0f, 1.0f, 1.0f,      // top right
         0.5f, -0.5f, 0.0f, 1.0f, 0.564f, 0.784f, 1.0f, 0.0f,   // bottom right
@@ -74,7 +74,7 @@ Sprite create_sprite(const char *imageFile)
     return out;
 }
 
-void render_sprite(Sprite *sprite)
+void yk_render_sprite(YK_Sprite *sprite)
 {
     glUseProgram(sprite->shaderProgram);
     glBindTexture(GL_TEXTURE_2D, sprite->texture);
@@ -85,11 +85,11 @@ void render_sprite(Sprite *sprite)
 
 /* This function is just here. Don't mind him.*/
 
-void renderer_update()
+void yk_renderer_update()
 {
 }
 
-void cleanup_sprite(Sprite *sprite)
+void yk_sprite_cleanup(YK_Sprite *sprite)
 {
     glDeleteVertexArrays(1, &(sprite->vao));
     glDeleteBuffers(1, &(sprite->vbo));
@@ -100,11 +100,11 @@ void cleanup_sprite(Sprite *sprite)
     glDeleteProgram(sprite->shaderProgram);
 }
 
-GLuint create_shader(const char *vertexFile, const char *fragmentFile)
+GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile)
 {
 
-    const char *vertexShaderSource = getFileContents(vertexFile);
-    const char *fragmentShaderSource = getFileContents(fragmentFile);
+    const char *vertexShaderSource = yk_file_reader(vertexFile);
+    const char *fragmentShaderSource = yk_file_reader(fragmentFile);
 
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);

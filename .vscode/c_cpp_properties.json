@@ -3,14 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${vcpkgRoot}/x64-windows/include",
-                "${vcpkgRoot}/x86-windows/include",
-                "${workspaceFolder}/vendor/glfw/include",
-                "${workspaceFolder}/include",
-                "${workspaceFolder}",
                 "${workspaceFolder}/vendor/glad/include",
-                "${workspaceFolder}/vendor/stb/include"
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/vendor/glfw/include"
             ],
             "defines": [
                 "_DEBUG",

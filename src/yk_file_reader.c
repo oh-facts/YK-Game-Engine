@@ -1,6 +1,6 @@
-#include <FileReader.h>
+#include <yk_file_reader.h>
 
-char *getFileContents(const char *filename)
+char *yk_file_reader(const char *filename)
 {
     FILE *file;
     fopen_s(&file,filename, "r");

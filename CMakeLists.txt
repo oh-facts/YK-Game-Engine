@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #project name
-project(ae)
+project(yk)
 
 #--------third - party ---------#
 
@@ -18,9 +18,9 @@ include_directories(vendor/stb/include)
 
 #--------target--------#
 
-include_directories(include)
+include_directories(src)
 
-add_executable(${PROJECT_NAME} "src/main.c" "src/App.c" "src/FileReader.c" "src/Window.c" "src/Renderer.c"  
+add_executable(${PROJECT_NAME} "sandbox/main.c" "src/yk_app.c" "src/yk_file_reader.c" "src/yk_window.c" "src/yk_renderer.c"  
                                 "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.c" )
 
 target_link_libraries(${PROJECT_NAME} glfw)

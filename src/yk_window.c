@@ -1,4 +1,4 @@
-#include <Window.h>
+#include <yk_window.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,7 +7,7 @@
 
 void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
 {
-    Window *win = (Window *)glfwGetWindowUserPointer(window);
+    YK_Window *win = (YK_Window *)glfwGetWindowUserPointer(window);
     if (win)
     {
         win->width = newWidth;
@@ -16,9 +16,9 @@ void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
     }
 }
 
-Window create_window()
+YK_Window yk_window_create()
 {
-    Window out;
+    YK_Window out;
 
     if (!glfwInit())
     {

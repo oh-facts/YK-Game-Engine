@@ -1,18 +1,18 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef YK_WINDOW_H
+#define YK_WINDOW_H
 
 #include <glad/glad.h>
 
 #include <GLFW/glfw3.h>
 
-typedef struct Window
+typedef struct YK_Window
 {
     GLFWwindow *win_ptr;
     int width;
     int height;
    
-} Window;
+} YK_Window;
 
- Window create_window();
+ YK_Window yk_window_create();
 
 #endif
