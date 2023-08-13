@@ -6,7 +6,10 @@ struct YK_Struct{ };
 YK_CONSTANT;
 ```
 
-``src/``  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - engine code
+``src/``  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - engine code
+
  ``include/``  - public api ( if/when I make one)
+ 
 ``sandbox/``  -  testing
+
 ``scripts/``  -  something
