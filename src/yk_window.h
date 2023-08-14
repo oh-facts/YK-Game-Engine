@@ -5,14 +5,18 @@
 
 #include <GLFW/glfw3.h>
 
+#define WIDTH 720
+#define HEIGHT 720
+#define TITLE "yk"
+
 typedef struct YK_Window
 {
     GLFWwindow *win_ptr;
     int width;
     int height;
-   
+
 } YK_Window;
 
- YK_Window yk_window_create();
+YK_Window yk_window_create();
 
 #endif

@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define WIDTH 960
-#define HEIGHT 540
 
 void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
 {
@@ -30,7 +28,7 @@ YK_Window yk_window_create()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    out.win_ptr = glfwCreateWindow(WIDTH, HEIGHT, "ae", NULL, NULL);
+    out.win_ptr = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
 
     if (out.win_ptr == NULL)
     {
