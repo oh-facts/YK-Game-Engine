@@ -4,9 +4,8 @@
 #include <stdint.h>
 
 /*
-common primitive types aliased for readaiblity.
+common primitive types and related constants aliased for readability.
 size is in bytes
-
 */
 
 typedef uint8_t u1;
@@ -30,6 +29,8 @@ typedef int8_t b1;
 typedef int16_t b2;
 typedef int32_t b4;
 typedef int64_t b8;
+#define false 0
+#define true 1
 
 /*
 Excuse me. What is this montrosity?
