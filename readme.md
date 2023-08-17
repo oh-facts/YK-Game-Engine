@@ -28,7 +28,7 @@ binaries will be built in  ``out/``
 3. clang *
   
 
-##  External Libraries 
+##  Third Party APIs
  
 
 -  **[GLFW](https://github.com/glfw/glfw)**: windowing / input handling
