@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 typedef struct YK_App
 {
     YK_Window m_win;

@@ -1,5 +1,5 @@
-#ifndef YK_DATATYPES_H
-#define YK_DATATYPES_H
+#ifndef YK_CORE_TYPES_H
+#define YK_CORE_TYPES_H
 
 #include <stdint.h>
 
