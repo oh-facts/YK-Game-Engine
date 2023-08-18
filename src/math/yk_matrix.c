@@ -30,7 +30,7 @@ YK_Mat4f yk_mat4f_translate(const YK_Mat4f *mat, const YK_Vec3f *vec)
 /*
 vec/mat
 */
-YK_Vec4f yk_math_mul_mat4f_vec4f(const YK_Mat4f *mat, const YK_Vec4f *vec)
+YK_Vec4f yk_math_mat4f_mul_vec4f(const YK_Mat4f *mat, const YK_Vec4f *vec)
 {
     YK_Vec4f out;
     out.x = mat->m00 * vec->x + mat->m01 * vec->y + mat->m02 * vec->z + mat->m03 * vec->w;
