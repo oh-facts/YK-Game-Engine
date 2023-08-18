@@ -50,4 +50,8 @@ vec/vec
 YK_Vec3f yk_math_add_vec3f(const YK_Vec3f *a, const YK_Vec3f *b);
 YK_Vec3f yk_math_sub_vec3f(const YK_Vec3f *a, const YK_Vec3f *b);
 
+f4 yk_math_dot_vec3f(const YK_Vec3f *a, const YK_Vec3f *b);
+YK_Vec3f yk_math_cross_vec3f(const YK_Vec3f *a, const YK_Vec3f *b);
+
+
 #endif
