@@ -55,4 +55,12 @@ f4 yk_math_vec3f_dot(const YK_Vec3f *a, const YK_Vec3f *b);
 YK_Vec3f yk_math_vec3f_cross(const YK_Vec3f *a, const YK_Vec3f *b);
 
 
+/*
+Vector4f
+*/
+
+void yk_vec4f_print(const YK_Vec4f *a);
+void yk_vec4f_print_w(const YK_Vec4f *a);
+
+
 #endif

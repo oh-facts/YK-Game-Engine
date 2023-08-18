@@ -22,9 +22,9 @@ include_directories(src)
 include_directories(src/math)
 
 add_executable(${PROJECT_NAME} "sandbox/main.c" "src/yk_app.c" "src/yk_file_reader.c" "src/yk_window.c" "src/yk_renderer.c" 
-                               "src/math/yk_math_common.c"  "src/math/yk_math.c" "src/math/yk_matrix.c"
-                                "src/math/yk_vector.c"  
-                                "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.c" )
+                               "src/math/yk_math_common.c" "src/math/yk_math_transform.c" "src/math/yk_math.c" 
+                               "src/math/yk_matrix.c" "src/math/yk_vector.c"  
+                               "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.c" )
 
 target_link_libraries(${PROJECT_NAME} glfw)
 

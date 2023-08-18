@@ -17,16 +17,6 @@ YK_Mat4f yk_mat4f_scalar(const f4 diagonal)
 }
 
 
-YK_Mat4f yk_mat4f_translate(const YK_Mat4f *mat, const YK_Vec3f *vec)
-{
-    YK_Mat4f out = *mat;
-    out.m03 += vec->x;
-    out.m13 += vec->y;
-    out.m23 += vec->z;
-    return out;
-}
-
-
 /*
 vec/mat
 */

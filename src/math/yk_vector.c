@@ -170,3 +170,17 @@ YK_Vec3f yk_math_vec3f_cross(const YK_Vec3f *a, const YK_Vec3f *b)
     out.z = a->x * b->y - a->y * b->x;
     return out;
 }
+
+/*
+Vector4f
+*/
+
+void yk_vec4f_print(const YK_Vec4f *a)
+{
+    printf("x: %f y: %f z: %f\n", a->x, a->y, a->z);
+}
+
+void yk_vec4f_print_w(const YK_Vec4f *a)
+{
+    printf("x: %f y: %f z: %f w: %f\n", a->x, a->y, a->z, a->w);
+}

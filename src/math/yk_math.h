@@ -5,6 +5,7 @@
 #include <yk_matrix.h>
 #include <yk_math_common.h>
 #include <yk_math_types.h>
+#include <yk_math_transform.h>
 
 #endif
 
@@ -26,13 +27,4 @@ Note 2:
         but ofc, feel free to test it yourself and if you're right, you can push a commit.
 
         Make sure to put maximum compiler optmizations before submitting a commit.
-*/
-
-/*  yk_math.h
-
-    1. Basic
-    2. Vector operations
-    3. Matrix operations
-    To Do: Unit tests
-           Learn Doxygen
 */
