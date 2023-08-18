@@ -155,3 +155,18 @@ YK_Vec3f yk_math_vec3f_sub(const YK_Vec3f *a, const YK_Vec3f *b)
     out.z = a->z - b->z;
     return out;
 }
+
+f4 yk_math_vec3f_dot(const YK_Vec3f *a, const YK_Vec3f *b)
+{
+    f4 out;
+    out = a->x * b->x + a->y * b->y + a->z * b->z;
+    return out;
+}
+YK_Vec3f yk_math_vec3f_cross(const YK_Vec3f *a, const YK_Vec3f *b)
+{
+    YK_Vec3f out;
+    out.x = a->y * b->z - a->z * b->y;
+    out.y = a->z * b->x - a->x * b->z;
+    out.z = a->x * b->y - a->y * b->x;
+    return out;
+}

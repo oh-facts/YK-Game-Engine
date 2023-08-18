@@ -5,10 +5,21 @@
 int main()
 {
 
-  YK_Vec3f vec = {2, 3, 4};
-  vec = yk_vec3f_normalize(&vec);
-  yk_vec3f_print(&vec);
+  YK_Vec3f vec1 = {2, 3, 4};
+  YK_Vec3f vec2 = {5, -1, 0};
+  YK_Vec3f cross = yk_math_vec3f_cross(&vec1,&vec2);
+  yk_vec3f_print(&cross);
 
+  f4 dot = yk_math_vec3f_dot(&vec1,&vec2);
+  printf("%f",dot);
+
+
+
+  /*
+   YK_Vec3f vec = {2, 3, 4};
+   vec = yk_vec3f_normalize(&vec);
+   yk_vec3f_print(&vec);
+  */
   /*
   YK_Vec4f vec2 = {9.0f, 3.0f, 2.0f, 1.0f};
 
