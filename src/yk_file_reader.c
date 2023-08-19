@@ -1,5 +1,12 @@
 #include <yk_file_reader.h>
 
+/*
+fopen_s() is only defined in windows
+*/
+#ifdef __unix
+#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),  (mode)))==NULL
+#endif
+
 char *yk_file_reader(const char *filename)
 {
     FILE *file;
@@ -7,7 +14,7 @@ char *yk_file_reader(const char *filename)
 
     if (file == NULL)
     {
-        fprintf(stderr, "Error: Unable to open the file\n");
+        fprintf(stderr, "Error: Unable to open the file %s\n",filename);
         return NULL;
     }
 

@@ -12,7 +12,7 @@ YK_Mat4f yk_transform_translate(const YK_Mat4f *mat, const YK_Vec3f *vec)
 
 YK_Mat4f yk_transform_rotate(const YK_Mat4f *mat, const f4 angle, const YK_Vec3f *axis)
 {
-
+    return *mat;
 }
 YK_Mat4f yk_transform_scale(const YK_Mat4f *mat, const YK_Vec3f *scale)
 {

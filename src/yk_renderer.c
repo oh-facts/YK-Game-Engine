@@ -5,7 +5,7 @@
 YK_Sprite yk_sprite_create(const char *imageFile)
 {
     YK_Sprite out;
-    out.shaderProgram = yk_shader_create("res\\shaders\\default.vert", "res\\shaders\\default.frag");
+    out.shaderProgram = yk_shader_create("res/shaders/default.vert", "res/shaders/default.frag");
     float vertices[] = {
         0.5f, 0.5f, 0.0f, 1.0f, 0.875f, 0.0f, 1.0f, 1.0f,      // top right
         0.5f, -0.5f, 0.0f, 1.0f, 0.564f, 0.784f, 1.0f, 0.0f,   // bottom right

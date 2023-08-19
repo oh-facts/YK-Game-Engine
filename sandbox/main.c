@@ -1,14 +1,22 @@
-
 #include <yk_app.h>
 #include <yk_math.h>
 
 /*
   To Do: 1. Rotations
-         2. Testing api
+         2. Unit Testing api
          3. Logger
 */
+
 int main()
 {
+  YK_App app;
+  yk_app_innit(&app);
+  yk_app_run(&app);
+  yk_app_quit(&app);
+
+  return 0;
+}
+
 
   /*
   YK_Vec4f pos = {1,1,1,1};
@@ -22,14 +30,19 @@ int main()
   /*
     YK_Vec3f vec1 = {2, 3, 4};
     YK_Vec3f vec2 = {5, -1, 0};
-    YK_Vec3f cross = yk_math_vec3f_cross(&vec1,&vec2);
+    printf("Vector 1: ");
+    yk_vec3f_print(&vec1);
+    printf("Vector 2: ");
+    yk_vec3f_print(&vec2);
+
+    YK_Vec3f cross = yk_math_vec3f_cross(&vec1, &vec2);
+    printf("Cross product: ");
     yk_vec3f_print(&cross);
 
-    f4 dot = yk_math_vec3f_dot(&vec1,&vec2);
-    printf("%f",dot);
-
+    f4 dot = yk_math_vec3f_dot(&vec1, &vec2);
+    printf("dot product: ");
+    printf("%f", dot);
   */
-
   /*
    YK_Vec3f vec = {2, 3, 4};
    vec = yk_vec3f_normalize(&vec);
@@ -43,13 +56,3 @@ int main()
   vec = yk_math_mat4f_mul_vec4f(&trans, &vec);
   printf("%.f %.f %.f\n", vec.x, vec.y, vec.z);
   */
-
-  /*
-    YK_App app;
-    yk_app_innit(&app);
-    yk_app_run(&app);
-    yk_app_quit(&app);
-  */
-
-  return 0;
-}
