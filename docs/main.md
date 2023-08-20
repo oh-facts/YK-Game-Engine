@@ -1,7 +1,7 @@
 ## STYLE GUIDE
 ```
-yk_do_something();
-yk_something.c
+yk_module_do_something();
+yk_module_something.c
 struct YK_Struct{ };
 YK_CONSTANT;
 ```
@@ -10,6 +10,8 @@ YK_CONSTANT;
 
  ``include/``  - public api ( if/when I make one)
  
-``sandbox/``  -  testing
+``sandbox/``  -  testing/entry
+
+``setup.py/``  - setup
 
 ``scripts/``  -  something

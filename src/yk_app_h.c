@@ -8,6 +8,7 @@
 #else
 #include <termios.h>
 #include <unistd.h>
+#include <fcntl.h>
 #endif
 
 int kbhit_()
@@ -59,7 +60,7 @@ void yk_app_innit(YK_App_h *app)
 }
 void yk_app_run(YK_App_h *app)
 {
-    printf("App is currently running. Enter q to quit.");
+    printf("App is currently running. \nEnter q to quit.\n");
 
     while (app->isRunning && !g_interrupted)
     {

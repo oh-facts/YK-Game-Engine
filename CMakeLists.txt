@@ -4,11 +4,21 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #project name
 project(yk)
 
-option(HEADLESS_MODE "Enable headless mode" OFF)
+set(MODE "normal" CACHE STRING "Set the mode: normal, headless, or docker")
+
+if(MODE STREQUAL "normal")
+    message("Normal mode enabled")
+elseif(MODE STREQUAL "headless")
+    message("Headless mode enabled")
+elseif(MODE STREQUAL "docker")
+    message("Docker mode enabled")
+else()
+    message(FATAL_ERROR "Invalid mode specified: ${MODE}")
+endif()
 
 #--------third - party ---------#
 
-if(NOT HEADLESS_MODE)
+if(MODE STREQUAL "normal")
     #root directory path
     add_subdirectory(vendor/glfw)
 
@@ -26,23 +36,32 @@ include_directories(src)
 include_directories(src/math)
 
 
-set(source_code_basic   "sandbox/main.c" "src/yk_file_reader.c" 
+set(source_code_basic   "src/yk_file_reader.c" 
                         "src/math/yk_math_common.c" "src/math/yk_math_transform.c" "src/math/yk_math.c" 
                         "src/math/yk_matrix.c" "src/math/yk_vector.c" 
                         )
 
-if(HEADLESS_MODE)
-    set(source_code_extra "src/yk_app_h.c")
-else()
-    set(source_code_extra "src/yk_window.c" "src/yk_renderer.c" "src/yk_app.c" "vendor/glad/src/glad.c"
-                        "vendor/stb/src/stb_image.c")
+if(MODE STREQUAL "headless")
+    set(source_code_extra "sandbox/main_h.c" "src/yk_app_h.c")
+elseif(MODE STREQUAL "docker")
+    set(source_code_extra "sandbox/main_docker.c")
+elseif(MODE STREQUAL "normal" )
+    set(source_code_extra "sandbox/main.c" "src/yk_window.c" "src/yk_renderer.c" "src/yk_app.c" "vendor/glad/src/glad.c"
+                          "vendor/stb/src/stb_image.c")
 endif()
+
+
+
 
 
 add_executable(${PROJECT_NAME} ${source_code_basic}  ${source_code_extra})
 
-if(NOT HEADLESS_MODE)
+if(MODE STREQUAL "normal")
     target_link_libraries(${PROJECT_NAME} glfw)
+endif()
+
+if(UNIX)
+    target_link_libraries(${PROJECT_NAME} m)
 endif()
 
 #----------------------#
@@ -50,7 +69,7 @@ endif()
 #------Copy files------#
 
 #To copy files like DLLs and assets. Here, I copy the compile_commands.json from the build dir, to the source dir
-if(NOT UNIX)
+if(MODE STREQUAL "normal")
     add_custom_target(
         copy-compile-commands ALL
         ${CMAKE_COMMAND} -E copy_if_different
@@ -59,7 +78,7 @@ if(NOT UNIX)
         )
 endif()
 
-if(NOT HEADLESS_MODE)
+if(MODE STREQUAL "normal")
     add_custom_target(
         copy-resources ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
