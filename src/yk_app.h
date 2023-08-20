@@ -2,7 +2,7 @@
 #define YK_APP_H
 
 #include <yk_window.h>
-
+#include <yk_math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
