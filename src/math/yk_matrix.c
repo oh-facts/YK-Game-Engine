@@ -5,6 +5,17 @@
 
 #include <stdio.h>
 
+YK_Mat4f yk_mat4f_identity()
+{
+     YK_Mat4f out = {
+        .m00 = 1.0f, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f,
+        .m10 = 0.0f, .m11 = 1.0f, .m12 = 0.0f, .m13 = 0.0f,
+        .m20 = 0.0f, .m21 = 0.0f, .m22 = 1.0f, .m23 = 0.0f,
+        .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = 1.0f
+    };
+
+    return out;
+}
 
 YK_Mat4f yk_mat4f_scalar(const f4 diagonal)
 {

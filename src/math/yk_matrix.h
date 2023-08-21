@@ -3,7 +3,7 @@
 
 #include <yk_math_types.h>
 
-
+YK_Mat4f yk_mat4f_identity();
 YK_Mat4f yk_mat4f_scalar(const f4 diagonal);
 void yk_mat4f_print(const YK_Mat4f *a);
 
