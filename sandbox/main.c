@@ -8,6 +8,30 @@
 
 int main()
 {
+  YK_App app;
+  yk_app_innit(&app);
+  yk_app_run(&app);
+  yk_app_quit(&app);
+  
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   /*
@@ -34,14 +58,6 @@ int main()
     yk_vec4f_print(&pos);
     */
   
-  YK_App app;
-  yk_app_innit(&app);
-  yk_app_run(&app);
-  yk_app_quit(&app);
-  
-  return 0;
-}
-
 /*
 YK_Vec4f pos = {1,1,1,1};
 YK_Mat4f trans = yk_mat4f_scalar(1);
