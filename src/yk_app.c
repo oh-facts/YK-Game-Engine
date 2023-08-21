@@ -18,8 +18,10 @@ void yk_app_run(YK_App *app)
     glClear(GL_COLOR_BUFFER_BIT);
 
     YK_Mat4f trans = yk_mat4f_scalar(1);
-    yk_transform_rotate(&trans, (float)glfwGetTime(), &(YK_Vec3f){0.0f, 0.0f, 1.f});
-    yk_transform_translate(&trans, &(YK_Vec3f){0.5f, -0.5f, 0.5f});
+
+    yk_transform_translate(&trans, &(YK_Vec3f){0.5f, -0.5f, 0.0f});
+    yk_transform_rotate(&trans, (float)glfwGetTime(), &(YK_Vec3f){0.0f, 0.0f, 1.0f});
+    yk_transform_scale(&trans, &(YK_Vec3f){0.5f, 0.5f, 0.0f});
 
     u4 transformLoc = glGetUniformLocation(myFace.shaderProgram, "transform");
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &(trans.m00));
