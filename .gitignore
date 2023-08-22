@@ -1,5 +1,6 @@
 out*
 compile_commands.json
 .vscode*
+.vs*
 config.ini
 .cache
