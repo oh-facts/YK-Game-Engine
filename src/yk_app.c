@@ -21,7 +21,7 @@ void yk_app_run(YK_App *app)
     YK_Mat4f trans = yk_mat4f_identity();
 
     trans = yk_math_transform_translate(&trans, &(YK_Vec3f){0.5f, 0.5f, 0.0f});
-    trans = yk_math_transform_rotate(&trans, (float)glfwGetTime(), &(YK_Vec3f){0.0f, 0.0f, 1.0f});
+    trans = yk_math_transform_rotate(&trans, (float)glfwGetTime(), &(YK_Vec3f){0.0f, 0.0f, 1.f});
     trans = yk_math_transform_scale(&trans, &(YK_Vec3f){0.5f, 0.5f, 0.0f});
 
     u4 transformLoc = glGetUniformLocation(myFace.shaderProgram, "transform");
