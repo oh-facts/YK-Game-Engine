@@ -5,6 +5,9 @@
 
 YK_Mat4f yk_mat4f_identity();
 YK_Mat4f yk_mat4f_scalar(const f4 diagonal);
+
+YK_Mat4f yk_mat4f_ortho(const f4 left, const f4 right, const f4 bottom, const f4 top, const f4 near, const f4 far);
+YK_Mat4f yk_mat4f_perspective(const f4 fov_degrees, const f4 aspect_ratio, const f4 near, const f4 far);
 void yk_mat4f_print(const YK_Mat4f *a);
 
 /*

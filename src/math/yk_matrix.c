@@ -2,33 +2,52 @@
 #define YK_MATRIX_C
 
 #include <yk_matrix.h>
-
+#include <math.h>
 #include <stdio.h>
 
 YK_Mat4f yk_mat4f_identity()
 {
-     YK_Mat4f out = {
-        .m00 = 1.0f, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f,
-        .m10 = 0.0f, .m11 = 1.0f, .m12 = 0.0f, .m13 = 0.0f,
-        .m20 = 0.0f, .m21 = 0.0f, .m22 = 1.0f, .m23 = 0.0f,
-        .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = 1.0f
-    };
+    YK_Mat4f out = {
+        .m00 = 1.0f, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f, .m10 = 0.0f, .m11 = 1.0f, .m12 = 0.0f, .m13 = 0.0f, .m20 = 0.0f, .m21 = 0.0f, .m22 = 1.0f, .m23 = 0.0f, .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = 1.0f};
 
     return out;
 }
 
 YK_Mat4f yk_mat4f_scalar(const f4 diagonal)
 {
-     YK_Mat4f out = {
-        .m00 = diagonal, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f,
-        .m10 = 0.0f, .m11 = diagonal, .m12 = 0.0f, .m13 = 0.0f,
-        .m20 = 0.0f, .m21 = 0.0f, .m22 = diagonal, .m23 = 0.0f,
-        .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = diagonal
-    };
+    YK_Mat4f out = {
+        .m00 = diagonal, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f, .m10 = 0.0f, .m11 = diagonal, .m12 = 0.0f, .m13 = 0.0f, .m20 = 0.0f, .m21 = 0.0f, .m22 = diagonal, .m23 = 0.0f, .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = diagonal};
 
     return out;
 }
 
+YK_Mat4f yk_mat4f_ortho(const f4 left, const f4 right, const f4 bottom, const f4 top, const f4 near, const f4 far)
+{
+    YK_Mat4f mat;
+    mat.m00 = 2.0 / (right - left);
+    mat.m11 = 2.0 / (top - bottom);
+    mat.m22 = -2.0 / (far - near);
+    mat.m03 = -(right + left) / (right - left);
+    mat.m13 = -(top + bottom) / (top - bottom);
+    mat.m23 = -(far + near) / (far - near);
+    mat.m33 = 1.0;
+
+    return mat;
+}
+
+YK_Mat4f yk_mat4f_perspective(const f4 fov_degrees, const f4 aspect_ratio, const f4 near, const f4 far)
+{
+    YK_Mat4f out = yk_mat4f_identity();
+    float f = 1.0 / tan(fov_degrees / 2.0);
+
+    out.m00 = f / aspect_ratio;
+    out.m11 = f;
+    out.m22 = (far + near) / (near - far);
+    out.m23 = -1.0;
+    out.m32 = 2.0 * far * near / (near - far);
+
+    return out;
+}
 
 /*
 vec/mat
@@ -70,15 +89,14 @@ YK_Mat4f yk_math_mat4f_mul_mat4f(const YK_Mat4f *mat1, const YK_Mat4f *mat2)
 
     return result;
 }
-  void yk_mat4f_print(const YK_Mat4f *a) {
+void yk_mat4f_print(const YK_Mat4f *a)
+{
 
     printf("| %8.4f %8.4f %8.4f %8.4f |\n", a->m00, a->m01, a->m02, a->m03);
     printf("| %8.4f %8.4f %8.4f %8.4f |\n", a->m10, a->m11, a->m12, a->m13);
     printf("| %8.4f %8.4f %8.4f %8.4f |\n", a->m20, a->m21, a->m22, a->m23);
     printf("| %8.4f %8.4f %8.4f %8.4f |\n", a->m30, a->m31, a->m32, a->m33);
     printf("\n");
-
 }
-
 
 #endif

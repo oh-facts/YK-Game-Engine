@@ -46,7 +46,8 @@ YK_Window yk_window_create()
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
-
+    
+    glEnable(GL_DEPTH_TEST);  
     glViewport(0, 0, WIDTH, HEIGHT);
     glfwSetFramebufferSizeCallback(out.win_ptr, framebuffer_size_callback);
 

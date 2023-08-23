@@ -20,9 +20,10 @@ YK_Mat4f yk_math_transform_rotate(const YK_Mat4f *mat, const f4 angle, const YK_
     float s = sinf(angle);
     float t = 1.0f - c;
 
-    float x = axis->x;
-    float y = axis->y;
-    float z = axis->z;
+    YK_Vec3f _axis = yk_vec3f_normalize(axis);
+    float x = _axis.x;
+    float y = _axis.y;
+    float z = _axis.z;
 
     YK_Mat4f out = *mat;
 
@@ -70,25 +71,24 @@ YK_Mat4f yk_math_transform_scale(const YK_Mat4f *mat, const YK_Vec3f *scale)
     return out;
     // which method is better?
 }
-
 void yk_maths_transform_translate(YK_Mat4f *mat, const YK_Vec3f *vec)
 {
     __m128 vec_data = _mm_loadu_ps((float *)vec);
-
     __m128 row0 = _mm_loadu_ps(&mat->m00);
     __m128 row1 = _mm_loadu_ps(&mat->m10);
     __m128 row2 = _mm_loadu_ps(&mat->m20);
     __m128 row3 = _mm_loadu_ps(&mat->m30);
 
-    row3 = _mm_add_ps(row3, _mm_mul_ps(row0, _mm_shuffle_ps(vec_data, vec_data, _MM_SHUFFLE(0, 0, 0, 0))));
-    row3 = _mm_add_ps(row3, _mm_mul_ps(row1, _mm_shuffle_ps(vec_data, vec_data, _MM_SHUFFLE(1, 1, 1, 1))));
-    row3 = _mm_add_ps(row3, _mm_mul_ps(row2, _mm_shuffle_ps(vec_data, vec_data, _MM_SHUFFLE(2, 2, 2, 2))));
+    row3 = _mm_add_ps(row3, _mm_mul_ps(row0, vec_data));
+    row3 = _mm_add_ps(row3, _mm_mul_ps(row1, vec_data));
+    row3 = _mm_add_ps(row3, _mm_mul_ps(row2, vec_data));
 
     _mm_storeu_ps(&mat->m30, row3);
 }
 
 void yk_maths_transform_rotate(YK_Mat4f *mat, const f4 angle, const YK_Vec3f *axis)
 {
+
     float c = cosf(angle);
     float s = sinf(angle);
     float t = 1.0f - c;
