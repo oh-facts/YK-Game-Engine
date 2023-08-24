@@ -17,6 +17,6 @@ typedef struct YK_Window
 
 } YK_Window;
 
-YK_Window yk_window_create();
+void yk_window_innit(YK_Window* out);
 
 #endif

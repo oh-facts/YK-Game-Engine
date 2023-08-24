@@ -17,4 +17,6 @@ YK_Vec4f yk_math_mat4f_mul_vec4f(const YK_Mat4f *mat, const YK_Vec4f *vec);
 
 YK_Mat4f yk_math_mat4f_mul_mat4f(const YK_Mat4f *mat1, const YK_Mat4f *mat2);
 
+YK_Mat4f yk_look_at(const YK_Vec3f *eye, const YK_Vec3f *target, const YK_Vec3f *up);
+
 #endif

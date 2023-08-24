@@ -77,79 +77,73 @@ YK_Sprite yk_sprite_create(const char *imageFile)
 YK_Sprite yk_cube_create(const char *imageFile)
 {
     YK_Sprite out;
-    out.shaderProgram = yk_shader_create("res/shaders/default.vert", "res/shaders/default.frag");
-    float vertices[] = {
+    out.shaderProgram = yk_shader_create("res/shaders/cube/default.vert", "res/shaders/cube/default.frag");
+   float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-        // front
-        0.5f, 0.5f, -0.5f, 1.0f, 0.875f, 0.0f, 1.0f, 1.0f,      // top right
-        0.5f, -0.5f, -0.5f, 1.0f, 0.564f, 0.784f, 1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, -0.5f, 1.0f, 0.875f, 0.0f, 0.0f, 0.0f,    // bottom left
-        -0.5f, 0.5f, -0.5f, 0.129f, 0.329f, 0.647f, 0.0f, 1.0f, // top left
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-        // back
-        0.5f, 0.5f, 0.5f, 1.0f, 0.875f, 0.0f, 1.0f, 1.0f,      // top right
-        0.5f, -0.5f, 0.5f, 1.0f, 0.564f, 0.784f, 1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.5f, 1.0f, 0.875f, 0.0f, 0.0f, 0.0f,    // bottom left
-        -0.5f, 0.5f, 0.5f, 0.129f, 0.329f, 0.647f, 0.0f, 1.0f, // top left
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-    };
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-    unsigned int indices[] = {
-        // front
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
 
-        0, 1, 3,
-        1, 2, 3,
-
-        // back
-
-        4, 5, 7,
-        5, 6, 7,
-
-        // left
-
-        3, 2, 7,
-        2, 6, 7,
-
-        // right
-
-        4, 5, 0,
-        5, 1, 0,
-
-        // top
-
-        4, 0, 7,
-        0, 3, 7,
-
-        // bottom
-
-        1, 5, 2,
-        5, 6, 2
-
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
     glGenVertexArrays(1, &out.vao);
     glGenBuffers(1, &out.vbo);
-    glGenBuffers(1, &out.ebo);
+    
 
     glBindVertexArray(out.vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, out.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, out.ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+     
     // pos attrib
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
+/*
     // col attrib
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
+*/
     // texture attrib
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // unbind
     glBindVertexArray(0);
@@ -190,7 +184,8 @@ void yk_render_cube(YK_Sprite *sprite)
     glBindTexture(GL_TEXTURE_2D, sprite->texture);
 
     glBindVertexArray(sprite->vao);
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+     glDrawArrays(GL_TRIANGLES, 0, 36);
+
 }
 
 void yk_cube_cleanup(YK_Sprite *sprite)

@@ -2,13 +2,34 @@
 #define YK_MATRIX_C
 
 #include <yk_matrix.h>
+#include <yk_vector.h>
 #include <math.h>
 #include <stdio.h>
+
+/* Curse you auto formatter */
 
 YK_Mat4f yk_mat4f_identity()
 {
     YK_Mat4f out = {
-        .m00 = 1.0f, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f, .m10 = 0.0f, .m11 = 1.0f, .m12 = 0.0f, .m13 = 0.0f, .m20 = 0.0f, .m21 = 0.0f, .m22 = 1.0f, .m23 = 0.0f, .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = 1.0f};
+
+        .m00 = 1.0f,
+        .m01 = 0.0f,
+        .m02 = 0.0f,
+        .m03 = 0.0f,
+        .m10 = 0.0f,
+        .m11 = 1.0f,
+        .m12 = 0.0f,
+        .m13 = 0.0f,
+        .m20 = 0.0f,
+        .m21 = 0.0f,
+        .m22 = 1.0f,
+        .m23 = 0.0f,
+        .m30 = 0.0f,
+        .m31 = 0.0f,
+        .m32 = 0.0f,
+        .m33 = 1.0f,
+
+    };
 
     return out;
 }
@@ -16,7 +37,10 @@ YK_Mat4f yk_mat4f_identity()
 YK_Mat4f yk_mat4f_scalar(const f4 diagonal)
 {
     YK_Mat4f out = {
-        .m00 = diagonal, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f, .m10 = 0.0f, .m11 = diagonal, .m12 = 0.0f, .m13 = 0.0f, .m20 = 0.0f, .m21 = 0.0f, .m22 = diagonal, .m23 = 0.0f, .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = diagonal};
+
+        .m00 = diagonal, .m01 = 0.0f, .m02 = 0.0f, .m03 = 0.0f, .m10 = 0.0f, .m11 = diagonal, .m12 = 0.0f, .m13 = 0.0f, .m20 = 0.0f, .m21 = 0.0f, .m22 = diagonal, .m23 = 0.0f, .m30 = 0.0f, .m31 = 0.0f, .m32 = 0.0f, .m33 = diagonal
+
+    };
 
     return out;
 }
@@ -89,6 +113,42 @@ YK_Mat4f yk_math_mat4f_mul_mat4f(const YK_Mat4f *mat1, const YK_Mat4f *mat2)
 
     return result;
 }
+YK_Mat4f yk_look_at(const YK_Vec3f *eye, const YK_Vec3f *target, const YK_Vec3f *up)
+{
+    YK_Vec3f zAxis, xAxis, yAxis;
+    {
+        YK_Vec3f _temp1 = yk_math_vec3f_sub(target, eye);
+        zAxis = yk_vec3f_normalize(&_temp1);
+        YK_Vec3f _temp2 = yk_math_vec3f_cross(up, &zAxis);
+        xAxis = yk_vec3f_normalize(&_temp2);
+        yAxis = yk_math_vec3f_cross(&zAxis, &xAxis);
+    }
+
+    YK_Mat4f viewMatrix;
+
+    viewMatrix.m00 = xAxis.x;
+    viewMatrix.m01 = yAxis.x;
+    viewMatrix.m02 = -(zAxis.x);
+    viewMatrix.m03 = 0.0f;
+
+    viewMatrix.m10 = xAxis.y;
+    viewMatrix.m11 = yAxis.y;
+    viewMatrix.m12 = -(zAxis.y);
+    viewMatrix.m13 = 0.0f;
+
+    viewMatrix.m20 = xAxis.z;
+    viewMatrix.m21 = yAxis.z;
+    viewMatrix.m22 = -(zAxis.z);
+    viewMatrix.m23 = 0.0f;
+
+    viewMatrix.m30 = -yk_math_vec3f_dot(&xAxis, eye);
+    viewMatrix.m31 = -yk_math_vec3f_dot(&yAxis, eye);
+    viewMatrix.m32 = yk_math_vec3f_dot(&zAxis, eye);
+    viewMatrix.m33 = 1.0f;
+
+    return viewMatrix;
+}
+
 void yk_mat4f_print(const YK_Mat4f *a)
 {
 
