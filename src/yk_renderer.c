@@ -1,5 +1,5 @@
-#include <yk_renderer.h>
-#include <yk_file_reader.h>
+#include <yk/yk_renderer.h>
+#include <yk/yk_file_reader.h>
 #include <stb/stb_image.h>
 
 YK_Sprite yk_sprite_create(const char *imageFile)

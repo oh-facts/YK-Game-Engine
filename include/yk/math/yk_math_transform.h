@@ -6,9 +6,9 @@ Notable observation: My regular implementation might be so bad, that my SIMD app
 #ifndef YK_MATH_TRANFORM_H
 #define YK_MATH_TRANFORM_H
 
-#include <yk_math_common.h>
-#include <yk_matrix.h>
-#include <yk_vector.h>
+#include <yk/math/yk_math_common.h>
+#include <yk/math/yk_matrix.h>
+#include <yk/math/yk_vector.h>
 
 
 void yk_math_transform_translate(YK_Mat4f *mat, const YK_Vec3f *vec);

@@ -1,7 +1,8 @@
-#include <yk_app.h>
-
-#include <yk_renderer.h>
+#include <yk/yk_app.h>
+#include <yk/yk_renderer.h>
 #include <time.h>
+
+
 
 YK_Vec3f cameraPos = {0.0f, 0.0f, 3.0f};
 YK_Vec3f cameraFront = {0.0f, 0.0f, -1.0f};
@@ -31,24 +32,23 @@ void processInput(GLFWwindow *window)
     YK_Vec3f temp = yk_math_vec3f_cross(&cameraFront, &cameraUp);
     YK_Vec3f temp2 = yk_vec3f_normalize(&temp);
     YK_Vec3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
-    cameraPos = yk_math_vec3f_sub(&cameraPos,&temp3);
+    cameraPos = yk_math_vec3f_sub(&cameraPos, &temp3);
   }
   if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
   {
     YK_Vec3f temp = yk_math_vec3f_cross(&cameraFront, &cameraUp);
     YK_Vec3f temp2 = yk_vec3f_normalize(&temp);
     YK_Vec3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
-    cameraPos = yk_math_vec3f_add(&cameraPos,&temp3);
+    cameraPos = yk_math_vec3f_add(&cameraPos, &temp3);
   }
-
 }
 
-void yk_app_innit(YK_App *app)
+YK_API void yk_app_innit(YK_App *app)
 {
   yk_window_innit(&app->m_win);
 }
 
-void yk_app_run(YK_App *app)
+YK_API void yk_app_run(YK_App *app)
 {
 
   // YK_Sprite myFace = yk_sprite_create("res/textures/default.jpg");
@@ -72,10 +72,9 @@ void yk_app_run(YK_App *app)
 
     yk_maths_transform_translate(&model, &(YK_Vec3f){0.f, 0.f, -2.f});
     yk_math_transform_rotate(&model, glfwGetTime(), &(YK_Vec3f){1.f, 1.f, 0.f});
-    //yk_maths_transform_scale(&model, &(YK_Vec3f){0.5f, 0.5f, 0.5f});
+    // yk_maths_transform_scale(&model, &(YK_Vec3f){0.5f, 0.5f, 0.5f});
 
-   // yk_maths_transform_translate(&view, &(YK_Vec3f){0.0f, 0.f, -5.f});
-
+    // yk_maths_transform_translate(&view, &(YK_Vec3f){0.0f, 0.f, -5.f});
 
     /*
         {
@@ -90,7 +89,7 @@ void yk_app_run(YK_App *app)
     }
 
     projection = yk_mat4f_perspective(45.f * DEG_TO_RAD, ((f4)app->m_win.width/app->m_win.height), 0.1f, 100.f);
-
+    
     u4 modelLoc = glGetUniformLocation(myFace.shaderProgram, "model");
     u4 viewLoc = glGetUniformLocation(myFace.shaderProgram, "view");
     u4 projectionLoc = glGetUniformLocation(myFace.shaderProgram, "projection");
@@ -113,7 +112,7 @@ void yk_app_run(YK_App *app)
   }
   // yk_sprite_cleanup(&myFace);
 }
-void yk_app_quit(YK_App *app)
+YK_API void yk_app_quit(YK_App *app)
 {
   glfwTerminate();
   glfwDestroyWindow(app->m_win.win_ptr);

@@ -1,11 +1,11 @@
 #ifndef YK_MATH_H
 #define YK_MATH_H
 
-#include <yk_vector.h>
-#include <yk_matrix.h>
-#include <yk_math_common.h>
-#include <yk_math_types.h>
-#include <yk_math_transform.h>
+#include <yk/math/yk_vector.h>
+#include <yk/math/yk_matrix.h>
+#include <yk/math/yk_math_common.h>
+#include <yk/math/yk_math_types.h>
+#include <yk/math/yk_math_transform.h>
 
 #endif
 

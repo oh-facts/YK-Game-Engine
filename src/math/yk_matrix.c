@@ -1,8 +1,8 @@
 #ifndef YK_MATRIX_C
 #define YK_MATRIX_C
 
-#include <yk_matrix.h>
-#include <yk_vector.h>
+#include <yk/math/yk_matrix.h>
+#include <yk/math/yk_vector.h>
 #include <math.h>
 #include <stdio.h>
 

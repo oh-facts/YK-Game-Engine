@@ -1,7 +1,7 @@
 #ifndef YK_MATH_TYPES_H
 #define YK_MATH_TYPES_H
 
-#include <yk_core_types.h>
+#include <yk/yk_core_types.h>
 
 
 

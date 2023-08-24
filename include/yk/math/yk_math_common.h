@@ -1,7 +1,7 @@
 #ifndef YK_MATH_COMMON_H
 #define YK_MATH_COMMON_H
 
-#include <yk_math_types.h>
+#include <yk/math/yk_math_types.h>
 #include <math.h>
 #include <stdio.h>
 

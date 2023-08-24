@@ -32,9 +32,7 @@ endif()
 
 #--------target--------#
 
-include_directories(src)
-include_directories(src/math)
-
+include_directories(include)
 
 set(source_code_basic   "src/yk_file_reader.c" 
                         "src/math/yk_math_common.c" "src/math/yk_math_transform.c" "src/math/yk_math.c" 
@@ -46,15 +44,17 @@ if(MODE STREQUAL "headless")
 elseif(MODE STREQUAL "docker")
     set(source_code_extra "sandbox/main_docker.c")
 elseif(MODE STREQUAL "normal" )
-    set(source_code_extra "sandbox/main.c" "src/yk_window.c" "src/yk_renderer.c" "src/yk_app.c" "vendor/glad/src/glad.c"
+    set(source_code_extra "src/yk_window.c" "src/yk_renderer.c" "src/yk_app.c" "vendor/glad/src/glad.c"
                           "vendor/stb/src/stb_image.c")
 endif()
 
+add_library(${PROJECT_NAME} SHARED ${source_code_basic}  ${source_code_extra})
+target_include_directories(${PROJECT_NAME} PUBLIC
+    "vendor/glad/include"
+)
 
 
-
-
-add_executable(${PROJECT_NAME} ${source_code_basic}  ${source_code_extra})
+#target_compile_definitions(yk PRIVATE YK_EXPORTS)
 
 if(MODE STREQUAL "normal")
     target_link_libraries(${PROJECT_NAME} glfw)
@@ -88,3 +88,10 @@ if(MODE STREQUAL "normal")
     )
 endif()
 #----------------------#
+
+
+
+#temp
+
+add_executable(game sandbox/main.c)
+target_link_libraries(game yk)

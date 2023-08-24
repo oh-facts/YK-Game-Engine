@@ -1,4 +1,4 @@
-#include <yk_vector.h>
+#include <yk/math/yk_vector.h>
 
 /*
 Vector2f

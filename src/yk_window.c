@@ -1,6 +1,8 @@
-#include <yk_window.h>
+#include <yk/yk_window.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+
 
 void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
 {

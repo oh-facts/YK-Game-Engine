@@ -1,7 +1,7 @@
 #ifndef YK_VECTOR_H
 #define YK_VECTOR_H
 
-#include <yk_math_common.h>
+#include <yk/math/yk_math_common.h>
 
 /*
 Vector2f
