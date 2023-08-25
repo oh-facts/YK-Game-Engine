@@ -82,7 +82,7 @@ if(MODE STREQUAL "normal")
     add_custom_target(
         copy-resources ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_SOURCE_DIR}/res
+            ${CMAKE_CURRENT_SOURCE_DIR}/res
             ${CMAKE_BINARY_DIR}/res
 
     )
