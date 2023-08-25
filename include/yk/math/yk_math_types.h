@@ -5,6 +5,13 @@
 
 
 
+typedef struct YK_Vec2i
+{
+    i4 x, y;
+
+} YK_Vec2i;
+
+
 typedef struct YK_Vec2f
 {
     f4 x, y;
