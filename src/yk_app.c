@@ -3,13 +3,66 @@
 #include <time.h>
 
 
-
 YK_Vec3f cameraPos = {0.0f, 0.0f, 3.0f};
 YK_Vec3f cameraFront = {0.0f, 0.0f, -1.0f};
 YK_Vec3f cameraUp = {0.0f, 1.0f, 0.0f};
 
 float deltaTime = 0.0f; // Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
+
+b1 firstMouse = true;
+float yaw   = -90.0f;	
+float pitch =  0.0f;
+float lastX =  800.0f / 2.0;
+float lastY =  600.0 / 2.0;
+float fov   =  45.0f;
+
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    float xpos = (float)xposIn;
+    float ypos = (float)yposIn;
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    lastX = xpos;
+    lastY = ypos;
+
+    float sensitivity = 0.1f; // change this value to your liking
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += xoffset;
+    pitch += yoffset;
+
+    // make sure that when pitch is out of bounds, screen doesn't get flipped
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    YK_Vec3f front;
+    front.x = -cos(yaw*DEG_TO_RAD) * cos(pitch*DEG_TO_RAD);
+    front.y = sin(pitch*DEG_TO_RAD);
+    front.z = sin(yaw*DEG_TO_RAD) * cos(pitch*DEG_TO_RAD);
+    cameraFront = yk_vec3f_normalize(&front);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    fov -= (float)yoffset;
+    if (fov < 1.0f)
+        fov = 1.0f;
+    if (fov > 45.0f)
+        fov = 45.0f;
+}
+
 
 void processInput(GLFWwindow *window)
 {
@@ -46,6 +99,9 @@ void processInput(GLFWwindow *window)
 YK_API void yk_app_innit(YK_App *app)
 {
   yk_window_innit(&app->m_win);
+  glfwSetCursorPosCallback(app->m_win.win_ptr, mouse_callback);
+  glfwSetScrollCallback(app->m_win.win_ptr, scroll_callback);
+  glfwSetInputMode(app->m_win.win_ptr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 YK_API void yk_app_run(YK_App *app)
@@ -88,7 +144,7 @@ YK_API void yk_app_run(YK_App *app)
       view = yk_look_at(&cameraPos, &_temp, &cameraUp);
     }
 
-    projection = yk_mat4f_perspective(45.f * DEG_TO_RAD, ((f4)app->m_win.width/app->m_win.height), 0.1f, 100.f);
+    projection = yk_mat4f_perspective(fov* DEG_TO_RAD, ((f4)app->m_win.width/app->m_win.height), 0.1f, 100.f);
     
     u4 modelLoc = glGetUniformLocation(myFace.shaderProgram, "model");
     u4 viewLoc = glGetUniformLocation(myFace.shaderProgram, "view");

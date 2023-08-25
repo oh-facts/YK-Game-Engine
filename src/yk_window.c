@@ -4,6 +4,7 @@
 
 
 
+
 void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
 {
     YK_Window *win = (YK_Window *)glfwGetWindowUserPointer(window);
@@ -14,6 +15,7 @@ void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
         glViewport(0, 0, win->width, win->height);
     }
 }
+
 
 void yk_window_innit(YK_Window* out)
 {
@@ -53,5 +55,6 @@ void yk_window_innit(YK_Window* out)
     glEnable(GL_DEPTH_TEST);  
     glViewport(0, 0, WIDTH, HEIGHT);
     glfwSetFramebufferSizeCallback(out->win_ptr, framebuffer_size_callback);
+    
 
 }
