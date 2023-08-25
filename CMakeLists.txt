@@ -92,6 +92,5 @@ endif()
 
 
 #temp
-
-add_executable(game sandbox/main.c)
-target_link_libraries(game yk)
+add_executable(yk-test sandbox/main.c)
+target_link_libraries(yk-test yk)
