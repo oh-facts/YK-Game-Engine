@@ -77,16 +77,25 @@ if(MODE STREQUAL "normal")
             ${CMAKE_CURRENT_LIST_DIR}
         )
 endif()
-
 if(MODE STREQUAL "normal")
     add_custom_target(
-        copy-resources ALL
+        copy-resources-engine ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_CURRENT_SOURCE_DIR}/res
-            ${CMAKE_BINARY_DIR}/res
-
+            ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
+            ${CMAKE_BINARY_DIR}/yk-res
+    )
+    
+    add_custom_target(
+        copy-resources-example ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
+            ${CMAKE_CURRENT_BINARY_DIR}/yk-res
     )
 endif()
+
+
+
+
 #----------------------#
 
 

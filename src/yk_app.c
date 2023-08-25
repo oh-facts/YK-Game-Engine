@@ -106,9 +106,7 @@ YK_API void yk_app_innit(YK_App *app)
 
 YK_API void yk_app_run(YK_App *app)
 {
-
-  // YK_Sprite myFace = yk_sprite_create("res/textures/default.jpg");
-  YK_Sprite myFace = yk_cube_create("res/textures/default.jpg");
+  YK_Sprite myFace = yk_cube_create("yk-res/textures/default.jpg");
 
   while (!glfwWindowShouldClose(app->m_win.win_ptr))
   {
