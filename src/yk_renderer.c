@@ -84,55 +84,59 @@ YK_Sprite yk_cube_create(const char *imageFile)
 
     out.shaderProgram = yk_shader_create("yk-res/shaders/cube/default.vert", "yk-res/shaders/cube/default.frag");
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,
+    
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,
+     0.5f, -0.5f,  0.5f,  0.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,
+    
+     0.5f,  0.5f, -0.5f,  1.0f,  1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,
+    
+    -0.5f,  0.5f,  0.5f,  1.0f,  1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f,
+    -0.5f, -0.5f,  0.5f,  1.0f,  0.0f,
+    
+     0.5f, -0.5f,  0.5f,  1.0f,  1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f,  1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,
+    
+    -0.5f,  0.5f, -0.5f,  1.0f,  1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,
+     0.5f, -0.5f, -0.5f,  0.0f,  0.0f,
+    -0.5f, -0.5f, -0.5f,  1.0f,  0.0f,
+};
 
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
 
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+float indices[] = {
+     0.f,  1.f,  2.f,   0.f,  2.f,  3.f,
+     4.f,  5.f,  6.f,   4.f,  6.f,  7.f,
+     8.f,  9.f, 10.f,   8.f, 10.f, 11.f,
+    12.f, 13.f, 14.f,  12.f, 14.f, 15.f,
+    16.f, 17.f, 18.f,  16.f, 18.f, 19.f,
+    20.f, 21.f, 22.f,  20.f, 22.f, 23.f
+};
 
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
 
     glGenVertexArrays(1, &out.vao);
     glGenBuffers(1, &out.vbo);
+    glGenBuffers(1,&out.ebo);
 
     glBindVertexArray(out.vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, out.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, out.ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // pos attrib
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
@@ -204,8 +208,7 @@ void yk_render_cube(YK_Renderer *renderer, YK_Sprite *sprite)
     glUseProgram(sprite->shaderProgram);
     glBindTexture(GL_TEXTURE_2D, sprite->texture);
 
-    glBindVertexArray(sprite->vao);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
 
 void yk_cube_cleanup(YK_Sprite *sprite)
@@ -240,7 +243,7 @@ void yk_renderer_run(YK_Renderer *renderer, YK_Window *win)
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
     YK_Camera *cam = renderer->current_cam;
 
     renderer->view_mat = yk_mat4f_identity();
