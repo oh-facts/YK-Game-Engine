@@ -151,12 +151,33 @@ void yk_window_innit(YK_Window *out)
     {
         printf("Raw Input not supported");
     }
-    //glfwSwapInterval(0);
+    // glfwSwapInterval(0);
     _keys_innit();
 }
 
+b1 full_screen_toggle = true;
+
 void yk_window_run(YK_Window *out)
 {
+    if (yk_input_is_key_tapped(YK_KEY_ESCAPE))
+    {
+        glfwSetWindowShouldClose(out->win_ptr, true);
+    }
+
+    if (yk_input_is_key_held(YK_KEY_LEFT_ALT) && yk_input_is_key_tapped(YK_KEY_ENTER))
+    {
+        if (full_screen_toggle)
+        {
+            full_screen_toggle = false;
+            yk_window_resize(out, 1920, 1080);
+        }
+        else
+        {
+            full_screen_toggle = true;
+            yk_window_resize(out, WIDTH, HEIGHT);
+        }
+    }
+
     yk_input_mouse_scroll = 0;
 
     // glfwSetCursorPos(out->win_ptr, out->width / 2, out->height / 2);
