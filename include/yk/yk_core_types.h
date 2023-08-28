@@ -24,7 +24,6 @@ typedef double f8;
 /*
 Meant to be used as booleans
 */
-
 typedef int8_t b1;
 typedef int16_t b2;
 typedef int32_t b4;

@@ -2,11 +2,18 @@
 #define YK_WINDOW_H
 
 #include <glad/glad.h>
-
 #include <GLFW/glfw3.h>
+#include <yk/math/yk_math_types.h>
+#include <yk/yk_core_types.h>
+#include <yk/yk_key_codes.h>
 
 #define WIDTH 720
 #define HEIGHT 720
+
+#define WIN_POSX 0
+#define WIN_POSY 40
+
+
 #define TITLE "yk"
 
 typedef struct YK_Window
@@ -17,6 +24,22 @@ typedef struct YK_Window
 
 } YK_Window;
 
-void yk_window_innit(YK_Window* out);
+void yk_window_innit(YK_Window *out);
+void yk_window_run(YK_Window *out);
+void yk_window_quit(YK_Window *out);
+void yk_window_resize(YK_Window *win, int x, int y);
+
+typedef struct YK_Key_states
+{
+    b1 current[NUM_KEYS];
+    b1 before[NUM_KEYS];
+} YK_Key_states;
+
+extern YK_Key_states yk_key_states;
+extern YK_Vec2f yk_input_mouse_pos;
+extern YK_Vec2f yk_input_mouse_pos_old;
+extern YK_Vec2f yk_input_mouse_pos_mv;
+extern f4 yk_input_mouse_scroll;
+extern i4 yk_last_key;
 
 #endif

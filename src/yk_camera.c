@@ -9,7 +9,7 @@ void yk_camera_innit(YK_Camera *camera)
 {
     camera->pos.x = 0.0f;
     camera->pos.y = 0.0f;
-    camera->pos.z = 3.0f;
+    camera->pos.z = 0.0f;
 
     camera->front.x = 0.0f;
     camera->front.y = 0.0f;
@@ -23,8 +23,9 @@ void yk_camera_innit(YK_Camera *camera)
     camera->first_mouse = true;
     camera->yaw = -90.0f;
     camera->pitch = 0.0f;
-    camera->lastX = WIDTH / 2;
-    camera->lastY = HEIGHT / 2;
+
+    // camera->lastX = WIDTH / 2;
+    // camera->lastY = HEIGHT / 2;
 }
 
 void yk_camera_update(YK_Camera *camera, f4 delta_time)
@@ -37,30 +38,18 @@ void yk_camera_update(YK_Camera *camera, f4 delta_time)
 /*
     Internal helper function used in camera update
 */
+f4 xpos = 0.f;
+f4 ypos = 0.f;
 void _camera_mouse_movement(YK_Camera *camera)
 {
 
-    f4 xpos = yk_input_mouse_position.x;
-    f4 ypos = yk_input_mouse_position.y;
+    xpos = yk_input_get_mouse_movement().x;
+    ypos = yk_input_get_mouse_movement().y;
 
-    if (camera->first_mouse)
-    {
-        camera->lastX = xpos;
-        camera->lastY = ypos;
-        camera->first_mouse = false;
-    }
+    f4 sensitivity = 0.5f;
 
-    f4 xoffset = xpos - camera->lastX;
-    f4 yoffset = camera->lastY - ypos;
-    camera->lastX = xpos;
-    camera->lastY = ypos;
-
-    f4 sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    camera->yaw += xoffset;
-    camera->pitch += yoffset;
+    camera->yaw += xpos * sensitivity;
+    camera->pitch += ypos * sensitivity;
 
     if (camera->pitch > 89.0f)
         camera->pitch = 89.0f;
@@ -80,13 +69,13 @@ void _camera_mouse_movement(YK_Camera *camera)
 */
 void _camera_mouse_scroll(YK_Camera *camera)
 {
-    camera->fov -= yk_input_mouse_scroll;   
+    camera->fov -= yk_input_get_mouse_scroll();
     if (camera->fov < 1.0f)
         camera->fov = 1.0f;
     if (camera->fov > 45.0f)
         camera->fov = 45.0f;
-    
-    printf("%f \n", camera->fov);
+
+    // printf("%f \n", camera->fov);
 }
 
 void _camera_keyboard(YK_Camera *camera, f4 delta_time)
@@ -102,14 +91,14 @@ void _camera_keyboard(YK_Camera *camera, f4 delta_time)
         YK_Vec3f temp = yk_math_vec3f_mul_s(&camera->front, cameraSpeed);
         camera->pos = yk_math_vec3f_sub(&camera->pos, &temp);
     }
-    if (yk_input_is_key_held(YK_KEY_D))
+    if (yk_input_is_key_held(YK_KEY_A))
     {
         YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &camera->up);
         YK_Vec3f temp2 = yk_vec3f_normalize(&temp);
         YK_Vec3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
         camera->pos = yk_math_vec3f_sub(&camera->pos, &temp3);
     }
-    if (yk_input_is_key_held(YK_KEY_A))
+    if (yk_input_is_key_held(YK_KEY_D))
     {
         YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &camera->up);
         YK_Vec3f temp2 = yk_vec3f_normalize(&temp);

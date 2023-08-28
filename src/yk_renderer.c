@@ -77,70 +77,72 @@ YK_Sprite yk_sprite_create(const char *imageFile)
 YK_Sprite yk_cube_create(const char *imageFile)
 {
     YK_Sprite out;
+    out.pos.x = 0.f;
+    out.pos.y = 0.f;
+    out.pos.z = 0.f;
+    out.model_mat = yk_mat4f_identity();
+
     out.shaderProgram = yk_shader_create("yk-res/shaders/cube/default.vert", "yk-res/shaders/cube/default.frag");
-   float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
 
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
 
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-    };
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
 
     glGenVertexArrays(1, &out.vao);
     glGenBuffers(1, &out.vbo);
-    
 
     glBindVertexArray(out.vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, out.vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-     
     // pos attrib
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
-/*
-    // col attrib
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-*/
+    /*
+        // col attrib
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+    */
     // texture attrib
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
@@ -178,22 +180,48 @@ YK_Sprite yk_cube_create(const char *imageFile)
     return out;
 }
 
-void yk_render_cube(YK_Sprite *sprite)
+void yk_cube_set_pos(YK_Sprite *sprite, YK_Vec3f *pos)
 {
+    sprite->model_mat = yk_mat4f_identity();
+    yk_maths_transform_translate(&sprite->model_mat, pos);
+}
+
+void yk_cube_move(YK_Sprite *sprite, YK_Vec3f *pos)
+{
+    yk_maths_transform_translate(&sprite->model_mat, pos);
+}
+
+void yk_render_cube(YK_Renderer *renderer, YK_Sprite *sprite)
+{
+    u4 modelLoc = glGetUniformLocation(sprite->shaderProgram, "model");
+    u4 viewLoc = glGetUniformLocation(sprite->shaderProgram, "view");
+    u4 projectionLoc = glGetUniformLocation(sprite->shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &(sprite->model_mat.m00));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
+
     glUseProgram(sprite->shaderProgram);
     glBindTexture(GL_TEXTURE_2D, sprite->texture);
 
     glBindVertexArray(sprite->vao);
-     glDrawArrays(GL_TRIANGLES, 0, 36);
-
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 void yk_cube_cleanup(YK_Sprite *sprite)
 {
 }
 
-void yk_render_sprite(YK_Sprite *sprite)
+void yk_render_sprite(YK_Renderer *renderer, YK_Sprite *sprite)
 {
+    u4 modelLoc = glGetUniformLocation(sprite->shaderProgram, "model");
+    u4 viewLoc = glGetUniformLocation(sprite->shaderProgram, "view");
+    u4 projectionLoc = glGetUniformLocation(sprite->shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &(sprite->model_mat.m00));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
+
     glUseProgram(sprite->shaderProgram);
     glBindTexture(GL_TEXTURE_2D, sprite->texture);
 
@@ -203,8 +231,26 @@ void yk_render_sprite(YK_Sprite *sprite)
 
 /* This function is just here. Don't mind him.*/
 
-void yk_renderer_update()
+void yk_renderer_innit(YK_Renderer *renderer, YK_Camera *current_cam)
 {
+    renderer->current_cam = current_cam;
+}
+
+void yk_renderer_run(YK_Renderer *renderer, YK_Window *win)
+{
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    YK_Camera *cam = renderer->current_cam;
+
+    renderer->view_mat = yk_mat4f_identity();
+    {
+        YK_Vec3f _temp = yk_math_vec3f_add(&cam->pos, &cam->front);
+        renderer->view_mat = yk_look_at(&cam->pos, &_temp, &cam->up);
+    }
+
+    renderer->proj_mat = yk_mat4f_identity();
+    renderer->proj_mat = yk_mat4f_perspective(cam->fov * DEG_TO_RAD, ((f4)win->width / win->height), 0.1f, 100.f);
 }
 
 void yk_sprite_cleanup(YK_Sprite *sprite)
