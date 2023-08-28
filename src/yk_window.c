@@ -147,7 +147,7 @@ void yk_window_innit(YK_Window *out)
     {
         glfwSetInputMode(out->win_ptr, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
     }
-
+    //glfwSwapInterval(0);
     _keys_innit();
 }
 

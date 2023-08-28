@@ -64,7 +64,6 @@ YK_API void yk_app_run(YK_App *app)
   // yk_maths_transform_scale(&myFace.model_mat, &(YK_Vec3f){0.5f, 0.5f, 0.5f});
 
   // projection = yk_mat4f_ortho(-0.5f, 0.5f, -0.5f, 0.5f, 2.f, 100.f);
-  glfwSwapInterval(0);
   while (!glfwWindowShouldClose(app->m_win.win_ptr))
   {
 
