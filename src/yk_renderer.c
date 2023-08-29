@@ -22,7 +22,10 @@ YK_Render_object yk_render_object_create(YK_Render_object_type type, const char 
         unsigned int indices[] =
             {
                 0, 1, 3,
-                1, 2, 3};
+                1, 2, 3
+            };
+        out.vertex_count = 4;
+        out.index_count = 6;
 
         glGenVertexArrays(1, &out.vao);
         glGenBuffers(1, &out.vbo);
@@ -100,6 +103,9 @@ YK_Render_object yk_render_object_create(YK_Render_object_type type, const char 
             -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
             -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
 
+        out.vertex_count = 36;
+        out.index_count = 0;
+
         glGenVertexArrays(1, &out.vao);
         glGenBuffers(1, &out.vbo);
 
@@ -174,13 +180,13 @@ void yk_render_object(YK_Renderer *renderer, YK_Render_object *obj)
 
     glBindVertexArray(obj->vao);
 
-    if (obj->type == YK_RECT)
+    if (obj->index_count>0)
     {
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, obj->index_count, GL_UNSIGNED_INT, 0);
     }
-    else if (obj->type == YK_CUBE)
+    else
     {
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawArrays(GL_TRIANGLES, 0, obj->vertex_count);
     }
 }
 
@@ -227,7 +233,18 @@ void yk_renderer_run(YK_Renderer *renderer, YK_Window *win)
     }
 
     renderer->proj_mat = yk_mat4f_identity();
-    renderer->proj_mat = yk_mat4f_perspective(cam->fov * DEG_TO_RAD, ((f4)win->width / win->height), 0.1f, 100.f);
+
+    f4 _aspect_ratio = (f4)win->width/win->height;
+    
+    if(cam->type == YK_CAMERA_TYPE_P)
+    {
+        renderer->proj_mat = yk_mat4f_perspective(cam->fov * DEG_TO_RAD, _aspect_ratio, 0.1f, 100.f);
+    }
+    else
+    {
+        renderer->proj_mat = yk_mat4f_ortho(-_aspect_ratio, _aspect_ratio, -1.f, 1.f, 2.f, 100.f);
+    }
+   
 }
 
 GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile)

@@ -18,6 +18,8 @@ typedef struct YK_Render_object
     GLuint vbo;
     GLuint vao;
     GLuint ebo;
+    GLuint index_count;
+    GLuint vertex_count;
     GLuint texture;
     YK_Mat4f model_mat;
     YK_Vec3f pos;

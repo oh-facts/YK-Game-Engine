@@ -5,7 +5,7 @@ void _camera_mouse_movement(YK_Camera *camera);
 void _camera_mouse_scroll(YK_Camera *camera);
 void _camera_keyboard(YK_Camera *camera, f4 delta_time);
 
-void yk_camera_innit(YK_Camera *camera)
+void yk_camera_innit(YK_Camera *camera, YK_Camera_type type)
 {
     camera->pos.x = 0.0f;
     camera->pos.y = 0.0f;
@@ -23,6 +23,8 @@ void yk_camera_innit(YK_Camera *camera)
     camera->first_mouse = true;
     camera->yaw = -90.0f;
     camera->pitch = 0.0f;
+
+    camera->type = type;
 
     // camera->lastX = WIDTH / 2;
     // camera->lastY = HEIGHT / 2;

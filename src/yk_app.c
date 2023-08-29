@@ -15,7 +15,7 @@ YK_API void yk_app_run(YK_App *app)
   f4 last_frame = 0.0f;
 
   YK_Camera cam;
-  yk_camera_innit(&cam);
+  yk_camera_innit(&cam, YK_CAMERA_TYPE_O);
 
   YK_Renderer ren;
   yk_renderer_innit(&ren, &cam);
@@ -26,7 +26,7 @@ YK_API void yk_app_run(YK_App *app)
 
   for (int i = 0; i < 10; i++)
   {
-    babbits[i] = yk_render_object_create(YK_CUBE,"yk-res/textures/default.jpg");
+    babbits[i] = yk_render_object_create(YK_RECT,"yk-res/textures/default.jpg");
 
     float rx = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
     float ry = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
@@ -67,5 +67,3 @@ YK_API void yk_app_quit(YK_App *app)
 {
   yk_window_quit(&app->m_win);
 }
-
-// projection = yk_mat4f_ortho(-0.5f, 0.5f, -0.5f, 0.5f, 2.f, 100.f);

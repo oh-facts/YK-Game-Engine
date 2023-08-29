@@ -5,6 +5,12 @@
 #include <yk/yk_window.h>
 #include <yk/yk_input.h>
 
+typedef enum YK_Camera_type
+{
+    YK_CAMERA_TYPE_P,
+    YK_CAMERA_TYPE_O
+} YK_Camera_type;
+
 typedef struct YK_Camera
 {
     YK_Vec3f pos;
@@ -16,10 +22,12 @@ typedef struct YK_Camera
     f4 pitch;
     f4 lastX;
     f4 lastY;
+    YK_Camera_type type;
 
 } YK_Camera;
 
-void yk_camera_innit(YK_Camera *camera);
+
+void yk_camera_innit(YK_Camera *camera,YK_Camera_type type);
 void yk_camera_update(YK_Camera *camera, f4 delta_time);
 
 
