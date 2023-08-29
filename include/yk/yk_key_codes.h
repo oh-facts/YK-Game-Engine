@@ -1,6 +1,13 @@
 #ifndef YK_KEY_CODES_H
 #define YK_KEY_CODES_H
 
+
+/*
+Default bindings
+
+https://www.glfw.org/docs/latest/group__keys.html
+*/
+
 #define YK_KEY_UNKNOWN -1
 
 #define YK_KEY_SPACE 32
