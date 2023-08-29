@@ -15,19 +15,11 @@ void yk_camera_innit(YK_Camera *camera, YK_Camera_type type)
     camera->front.y = 0.0f;
     camera->front.z = -1.0f;
 
-    camera->up.x = 0.0f;
-    camera->up.y = 1.0f;
-    camera->up.z = 0.0f;
-
     camera->fov = 45.0f;
-    camera->first_mouse = true;
     camera->yaw = -90.0f;
     camera->pitch = 0.0f;
 
     camera->type = type;
-
-    // camera->lastX = WIDTH / 2;
-    // camera->lastY = HEIGHT / 2;
 }
 
 void yk_camera_update(YK_Camera *camera, f4 delta_time)
@@ -95,14 +87,14 @@ void _camera_keyboard(YK_Camera *camera, f4 delta_time)
     }
     if (yk_input_is_key_held(YK_KEY_A))
     {
-        YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &camera->up);
+        YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &YK_WORLD_UP);
         YK_Vec3f temp2 = yk_vec3f_normalize(&temp);
         YK_Vec3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
         camera->pos = yk_math_vec3f_sub(&camera->pos, &temp3);
     }
     if (yk_input_is_key_held(YK_KEY_D))
     {
-        YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &camera->up);
+        YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &YK_WORLD_UP);
         YK_Vec3f temp2 = yk_vec3f_normalize(&temp);
         YK_Vec3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
         camera->pos = yk_math_vec3f_add(&camera->pos, &temp3);

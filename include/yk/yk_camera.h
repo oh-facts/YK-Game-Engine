@@ -5,6 +5,8 @@
 #include <yk/yk_window.h>
 #include <yk/yk_input.h>
 
+#define YK_WORLD_UP (YK_Vec3f){0.f,0.1f,0.f}
+
 typedef enum YK_Camera_type
 {
     YK_CAMERA_TYPE_P,
@@ -15,13 +17,9 @@ typedef struct YK_Camera
 {
     YK_Vec3f pos;
     YK_Vec3f front;
-    YK_Vec3f up;
     f4 fov;
-    b1 first_mouse;
     f4 yaw;
     f4 pitch;
-    f4 lastX;
-    f4 lastY;
     YK_Camera_type type;
 
 } YK_Camera;
