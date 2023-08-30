@@ -1,16 +1,6 @@
 #ifndef YK_ECS_H
 #define YK_ECS_H
 
-/*
-  To Do
-    1. Make Vectors
-    2. Make ecs
-    3. make physics
-    4. make api
-    5. clean up engine
-    6. make mario-hiemer
-*/
-
 int total_entities = 0;
 
 int yk_ecs_create_entity()

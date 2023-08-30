@@ -1,0 +1,16 @@
+/*
+  v0.1.0
+  To Do
+    1. Make Vectors
+    2. Make ecs
+    3. Make scene
+    4. make physics
+    5. make api
+    6. clean up engine
+    7. make mario-hiemer
+
+  v0.1.1
+  To Do
+    1. 3d stuff     
+    
+*/
