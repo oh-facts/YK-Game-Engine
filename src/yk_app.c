@@ -1,7 +1,33 @@
 #include <yk/yk_app.h>
-#include <yk/yk_renderer.h>
+
+#include <yk/yk_renderer2d.h>
+#include <yk/yk_camera2d.h>
+
 #include <time.h>
-#include <yk/yk_camera.h>
+
+void debug_input(YK_Camera2d *cam, float delta)
+{
+  float speed = 5.f * delta;
+  if (yk_input_is_key_held(YK_KEY_W))
+  {
+    yk_camera2d_move_up(cam, speed);
+  }
+
+  if (yk_input_is_key_held(YK_KEY_A))
+  {
+    yk_camera2d_move_left(cam, speed);
+  }
+
+  if (yk_input_is_key_held(YK_KEY_S))
+  {
+    yk_camera2d_move_down(cam, speed);
+  }
+
+  if (yk_input_is_key_held(YK_KEY_D))
+  {
+    yk_camera2d_move_right(cam, speed);
+  }
+}
 
 YK_API void yk_app_innit(YK_App *app)
 {
@@ -13,32 +39,27 @@ YK_API void yk_app_run(YK_App *app)
 
   f4 delta_time = 0.0f;
   f4 last_frame = 0.0f;
+  /**/
+  YK_Camera2d cam2d;
+  yk_camera2d_innit(&cam2d);
 
-  YK_Camera cam;
-  yk_camera_innit(&cam, YK_CAMERA_TYPE_O);
+  YK_Renderer2d ren2d;
+  yk_renderer2d_innit(&ren2d, &cam2d, &app->m_win);
 
-  YK_Renderer ren;
-  yk_renderer_innit(&ren, &cam);
-
-  YK_Render_object babbits[10];
+  YK_Sprite babbits[20];
 
   srand(time(NULL));
 
   for (int i = 0; i < 10; i++)
   {
-    babbits[i] = yk_render_object_create(YK_RECT,"yk-res/textures/default.jpg");
+    babbits[i] = yk_sprite_create("yk-res/textures/default.jpg");
 
     float rx = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
     float ry = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
     float rz = ((float)rand() / RAND_MAX) * -10.0f;
-    yk_render_object_set_pos(&babbits[i], &(YK_Vec3f){rx, ry, rz});
+    yk_sprite_set_pos(&babbits[i], &(YK_Vec3f){rx, ry, -1.f});
   }
 
-  // yk_maths_transform_translate(&myFace.model_mat, &(YK_Vec3f){0.f, 0.f, -3.f});
-  // yk_math_transform_rotate(&myFace.model_mat, glfwGetTime(), &(YK_Vec3f){1.f, 1.f, 0.f});
-  // yk_maths_transform_scale(&myFace.model_mat, &(YK_Vec3f){0.5f, 0.5f, 0.5f});
-
-  // projection = yk_mat4f_ortho(-0.5f, 0.5f, -0.5f, 0.5f, 2.f, 100.f);
   while (!glfwWindowShouldClose(app->m_win.win_ptr))
   {
 
@@ -46,23 +67,25 @@ YK_API void yk_app_run(YK_App *app)
     delta_time = current_frame - last_frame;
     last_frame = current_frame;
 
-    yk_camera_update(&cam, delta_time);
+    yk_camera2d_update(&cam2d, delta_time);
+    debug_input(&cam2d,delta_time);
 
-    yk_renderer_run(&ren, &app->m_win);
+    yk_renderer2d_run(&ren2d, &app->m_win);
 
     for (int i = 0; i < 10; i++)
     {
-      yk_render_object(&ren,&babbits[i]);
+      yk_renderer2d_render_sprite(&ren2d, &babbits[i]);
+      printf("%f \n",babbits[i].pos.z);
     }
 
     yk_window_run(&app->m_win);
   }
   for (int i = 0; i < 10; i++)
   {
-    yk_render_object_destroy(&babbits[i]);
+    yk_sprite_destroy(&babbits[i]);
   }
-
 }
+
 YK_API void yk_app_quit(YK_App *app)
 {
   yk_window_quit(&app->m_win);

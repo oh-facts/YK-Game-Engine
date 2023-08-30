@@ -34,6 +34,7 @@ Vector3f
 f4 yk_vec3f_length(const YK_Vec3f *a);
 YK_Vec3f yk_vec3f_normalize(const YK_Vec3f *a);
 void yk_vec3f_print(const YK_Vec3f *a);
+void yk_vec3f_mem_set(YK_Vec3f *a, f4 val);
 
 /*
 vec/scalar

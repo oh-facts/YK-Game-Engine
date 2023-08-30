@@ -1,5 +1,4 @@
 #include <yk/yk_renderer.h>
-#include <yk/yk_file_reader.h>
 #include <stb/stb_image.h>
 
 YK_Render_object yk_render_object_create(YK_Render_object_type type, const char *imageFile)
@@ -229,48 +228,21 @@ void yk_renderer_run(YK_Renderer *renderer, YK_Window *win)
     renderer->view_mat = yk_mat4f_identity();
     {
         YK_Vec3f _temp = yk_math_vec3f_add(&cam->pos, &cam->front);
-        renderer->view_mat = yk_look_at(&cam->pos, &_temp, &cam->up);
+        renderer->view_mat = yk_look_at(&cam->pos, &_temp, &YK_WORLD_UP);
     }
 
     renderer->proj_mat = yk_mat4f_identity();
 
     f4 _aspect_ratio = (f4)win->width/win->height;
-    
+
     if(cam->type == YK_CAMERA_TYPE_P)
     {
         renderer->proj_mat = yk_mat4f_perspective(cam->fov * DEG_TO_RAD, _aspect_ratio, 0.1f, 100.f);
     }
     else
     {
-        renderer->proj_mat = yk_mat4f_ortho(-_aspect_ratio, _aspect_ratio, -1.f, 1.f, 2.f, 100.f);
+        float _zoom = cam->fov*.01f;
+        renderer->proj_mat = yk_mat4f_ortho(-_aspect_ratio * _zoom, _aspect_ratio*_zoom, -_zoom, _zoom, 2.f, 100.f);
     }
    
-}
-
-GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile)
-{
-
-    const char *vertexShaderSource = yk_file_reader(vertexFile);
-    const char *fragmentShaderSource = yk_file_reader(fragmentFile);
-
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    GLuint shader_program = glCreateProgram();
-
-    glAttachShader(shader_program, vertexShader);
-    glAttachShader(shader_program, fragmentShader);
-    glLinkProgram(shader_program);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return shader_program;
 }

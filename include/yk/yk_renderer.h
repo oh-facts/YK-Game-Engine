@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <yk/yk_camera.h>
 #include <yk/math/yk_math.h>
+#include <yk/yk_shader.h>
 
 typedef enum YK_Render_object_type
 {
@@ -41,7 +42,7 @@ typedef struct YK_Renderer
     YK_Mat4f proj_mat;
 } YK_Renderer;
 
-GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile);
+
 
 YK_Render_object yk_render_object_create(YK_Render_object_type type, const char *imageFile);
 void yk_render_object(YK_Renderer *renderer, YK_Render_object *obj);

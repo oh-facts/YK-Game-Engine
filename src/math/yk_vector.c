@@ -93,9 +93,17 @@ YK_Vec3f yk_vec3f_normalize(const YK_Vec3f *a)
     out = yk_math_vec3f_div_s(a, yk_vec3f_length(a));
     return out;
 }
+
 void yk_vec3f_print(const YK_Vec3f *a)
 {
     printf("x: %f y: %f z: %f\n", a->x, a->y, a->z);
+}
+
+void yk_vec3f_mem_set(YK_Vec3f *a, f4 val)
+{
+    a->x = val;
+    a->y = val;
+    a->z = val;
 }
 
 /*

@@ -32,15 +32,14 @@ void yk_camera_update(YK_Camera *camera, f4 delta_time)
 /*
     Internal helper function used in camera update
 */
-f4 xpos = 0.f;
-f4 ypos = 0.f;
+
 void _camera_mouse_movement(YK_Camera *camera)
 {
 
-    xpos = yk_input_get_mouse_movement().x;
-    ypos = yk_input_get_mouse_movement().y;
+    f4 xpos = yk_input_get_mouse_movement().x;
+    f4 ypos = yk_input_get_mouse_movement().y;
 
-    f4 sensitivity = 0.5f;
+    f4 sensitivity = 0.1f;
 
     camera->yaw += xpos * sensitivity;
     camera->pitch += ypos * sensitivity;

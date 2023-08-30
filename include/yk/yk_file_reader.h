@@ -6,7 +6,7 @@
 
 
 
-char *yk_file_reader(const char *filename);
+char *yk_file_reader(const char *filepath);
 
 
 

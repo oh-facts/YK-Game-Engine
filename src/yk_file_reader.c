@@ -4,17 +4,17 @@
 fopen_s() is only defined in windows
 */
 #ifdef __unix
-#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),  (mode)))==NULL
+#define fopen_s(pFile, filepath, mode) ((*(pFile)) = fopen((filepath), (mode))) == NULL
 #endif
 
-char *yk_file_reader(const char *filename)
+char *yk_file_reader(const char *filepath)
 {
     FILE *file;
-    fopen_s(&file,filename, "r");
+    fopen_s(&file, filepath, "r");
 
     if (file == NULL)
     {
-        fprintf(stderr, "Error: Unable to open the file %s\n",filename);
+        fprintf(stderr, "Error: Unable to open the file %s\n", filepath);
         return NULL;
     }
 

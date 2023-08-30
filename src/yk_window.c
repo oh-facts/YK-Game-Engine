@@ -61,9 +61,6 @@ void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
 
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
 {
-    yk_input_mouse_pos_old.x = yk_input_mouse_pos.x;
-    yk_input_mouse_pos_old.y = yk_input_mouse_pos.y;
-
     yk_input_mouse_pos.x = (float)xposIn;
     yk_input_mouse_pos.y = (float)yposIn;
 }
