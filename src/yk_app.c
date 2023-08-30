@@ -68,14 +68,14 @@ YK_API void yk_app_run(YK_App *app)
     last_frame = current_frame;
 
     yk_camera2d_update(&cam2d, delta_time);
-    debug_input(&cam2d,delta_time);
+    debug_input(&cam2d, delta_time);
 
     yk_renderer2d_run(&ren2d, &app->m_win);
 
     for (int i = 0; i < 10; i++)
     {
       yk_renderer2d_render_sprite(&ren2d, &babbits[i]);
-      printf("%f \n",babbits[i].pos.z);
+      // printf("%f \n",babbits[i].pos.x);
     }
 
     yk_window_run(&app->m_win);
