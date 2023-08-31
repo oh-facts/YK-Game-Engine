@@ -1,6 +1,8 @@
 #ifndef YK_ECS_H
 #define YK_ECS_H
 
+#include <yk/data_structures/yk_vector.h>
+
 int total_entities = 0;
 
 int yk_ecs_create_entity()
