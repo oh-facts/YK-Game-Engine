@@ -68,3 +68,30 @@ void yk_yektor_destroy(YK_Yektor *vector)
     free(vector->data);
     free(vector);
 }
+
+void yk_yektor_print(YK_Yektor *vector)
+{
+    if (vector == NULL)
+    {
+        printf("Yektor is NULL\n");
+        return;
+    }
+
+    printf("Yektor Size: %zu\n", vector->size);
+    printf("Yektor Capacity: %zu\n", vector->capacity);
+    printf("Yektor Element Size: %zu\n", vector->element_size);
+
+    printf("Yektor Contents:\n");
+
+    if (vector->data == NULL)
+    {
+        printf("Yektor is empty\n");
+        return;
+    }
+
+    for (size_t i = 0; i < vector->size; i++)
+    {
+        void *element = yk_yektor_at(vector, i);
+        printf("[%zu]: %p\n", i, element);
+    }
+}

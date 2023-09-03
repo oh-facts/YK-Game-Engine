@@ -32,6 +32,7 @@ void debug_input(YK_Camera2d *cam, float delta)
 YK_API void yk_app_innit(YK_App *app)
 {
   yk_window_innit(&app->m_win);
+  yk_scene_innit(&app->m_scene);
 }
 
 YK_API void yk_app_run(YK_App *app)
@@ -46,20 +47,23 @@ YK_API void yk_app_run(YK_App *app)
   YK_Renderer2d ren2d;
   yk_renderer2d_innit(&ren2d, &cam2d, &app->m_win);
 
-  YK_Sprite babbits[20];
+  // int ent1 = yk_ecs_create_entity();
 
-  srand(time(NULL));
+  /*
+   YK_Sprite babbits[20];
 
-  for (int i = 0; i < 10; i++)
-  {
-    babbits[i] = yk_sprite_create("yk-res/textures/default.jpg");
+    srand(time(NULL));
 
-    float rx = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
-    float ry = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
-    float rz = ((float)rand() / RAND_MAX) * -10.0f;
-    yk_sprite_set_pos(&babbits[i], &(YK_Vec3f){rx, ry, -1.f});
-  }
+    for (int i = 0; i < 10; i++)
+    {
+      babbits[i] = yk_sprite_create("yk-res/textures/default.jpg");
 
+      float rx = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
+      float ry = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
+      float rz = ((float)rand() / RAND_MAX) * -10.0f;
+      yk_sprite_set_pos(&babbits[i], &(YK_Vec3f){rx, ry, -1.f});
+    }
+  */
   while (!glfwWindowShouldClose(app->m_win.win_ptr))
   {
 
@@ -72,18 +76,23 @@ YK_API void yk_app_run(YK_App *app)
 
     yk_renderer2d_run(&ren2d, &app->m_win);
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < app->m_scene.num_entities; i++)
     {
-      yk_renderer2d_render_sprite(&ren2d, &babbits[i]);
+
+     // yk_renderer2d_render_sprite(&ren2d, );
       // printf("%f \n",babbits[i].pos.x);
     }
 
     yk_window_run(&app->m_win);
   }
-  for (int i = 0; i < 10; i++)
-  {
-    yk_sprite_destroy(&babbits[i]);
-  }
+
+  /*
+    for (int i = 0; i < 10; i++)
+    {
+      yk_sprite_destroy(&babbits[i]);
+    }
+
+    */
 }
 
 YK_API void yk_app_quit(YK_App *app)

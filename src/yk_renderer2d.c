@@ -137,6 +137,7 @@ void yk_sprite_destroy(YK_Sprite *sprite)
 
 void yk_sprite_set_pos(YK_Sprite *sprite, YK_Vec3f *pos)
 {
+    sprite->pos = *pos;
     sprite->model_mat = yk_mat4f_identity();
     yk_maths_transform_translate(&sprite->model_mat, pos);
 }

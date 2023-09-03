@@ -33,10 +33,11 @@ endif()
 #--------target--------#
 
 include_directories(include)
+include_directories(include/yk/data_structures)
 
 set(source_code_basic   "src/yk_file_reader.c" 
                         "src/math/yk_math_common.c" "src/math/yk_math_transform.c" "src/math/yk_math.c" 
-                        "src/math/yk_matrix.c" "src/math/yk_vector.c" 
+                        "src/math/yk_matrix.c" "src/math/yk_vector.c" "src/data_structures/yk_yektor.c" "src/ecs/yk_ecs.c"
                         )
 
 if(MODE STREQUAL "headless")

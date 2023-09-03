@@ -1,37 +1,14 @@
 #ifndef YK_ECS_H
 #define YK_ECS_H
 
-#include <yk/data_structures/yk_vector.h>
+#include <yk/data_structures/yk_yektor.h>
 
-int total_entities = 0;
+extern int total_entities;
 
-int yk_ecs_create_entity()
-{
-    return total_entities++;
-}
+__declspec(dllexport) int yk_ecs_create_entity();
 
-typedef struct YK_Position_component
-{
-    float x,y;
-}YK_Position_component;
+__declspec(dllexport) void yk_ecs_gravity_system();
 
-YK_Position_component pos_comps[10];
-
-void yk_ecs_add_position_component(int id)
-{
-    YK_Position_component comp;
-    comp.x = 0;
-    comp.y = 0;
-    pos_comps[id] = comp;
-}
-
-void yk_ecs_gravity_system()
-{
-    for(int i = 0 ; i < 10; i ++)
-    {
-        pos_comps[i].y--;
-    }
-}
 
 
 #endif
