@@ -65,15 +65,15 @@ void yk_renderer2d_destroy_rect(YK_Rect *rect)
 
 */
 
-YK_Sprite yk_sprite_create(const char *texture_path)
+void yk_sprite_innit(YK_Sprite *out, const char *texture_path)
 {
-    YK_Sprite out;
-    out.model_mat = yk_mat4f_identity();
-    out.pos.x = 0;
-    out.pos.y = 0;
-    out.pos.z = 0;
 
-    out.shaderProgram = yk_shader_create("yk-res/shaders/rect/default.vert", "yk-res/shaders/rect/default.frag");
+    out->model_mat = yk_mat4f_identity();
+    out->pos.x = 0;
+    out->pos.y = 0;
+    out->pos.z = 0;
+
+    out->shaderProgram = yk_shader_create("yk-res/shaders/rect/default.vert", "yk-res/shaders/rect/default.frag");
 
     f4 vertices[] =
         {
@@ -90,11 +90,11 @@ YK_Sprite yk_sprite_create(const char *texture_path)
             1, 2, 3};
 
     GLuint vbo, ebo;
-    glGenVertexArrays(1, &out.vertex_arrays);
+    glGenVertexArrays(1, &out->vertex_arrays);
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ebo);
 
-    glBindVertexArray(out.vertex_arrays);
+    glBindVertexArray(out->vertex_arrays);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -120,13 +120,13 @@ YK_Sprite yk_sprite_create(const char *texture_path)
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
 
-    out.texture = yk_texture_create(texture_path);
+    out->texture = yk_texture_create(texture_path);
 
-    GLuint tex0Uni = glGetUniformLocation(out.shaderProgram, "tex0");
-    glUseProgram(out.shaderProgram);
+    GLuint tex0Uni = glGetUniformLocation(out->shaderProgram, "tex0");
+    glUseProgram(out->shaderProgram);
     glUniform1i(tex0Uni, 0);
 
-    return out;
+ 
 }
 
 void yk_sprite_destroy(YK_Sprite *sprite)

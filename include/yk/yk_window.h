@@ -28,7 +28,7 @@ typedef struct YK_Window
 
 void yk_window_innit(YK_Window *out);
 void yk_window_run(YK_Window *out);
-void yk_window_quit(YK_Window *out);
+void yk_window_destroy(YK_Window *out);
 void yk_window_resize(YK_Window *win, int x, int y);
 b1 yk_window_is_running(YK_Window *win);
 

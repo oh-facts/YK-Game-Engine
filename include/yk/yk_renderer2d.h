@@ -56,7 +56,7 @@ typedef struct YK_Renderer2d
 // YK_Rect yk_renderer2d_create_rect();
 // void yk_renderer2d_destroy_rect(YK_Rect *rect);
 
-YK_Sprite yk_sprite_create(const char *texture_path);
+void yk_sprite_innit(YK_Sprite *out, const char *texture_path);
 void yk_sprite_destroy(YK_Sprite *sprite);
 void yk_sprite_set_pos(YK_Sprite *sprite, YK_Vec3f *pos);
 

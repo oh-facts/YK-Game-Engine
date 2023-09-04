@@ -193,7 +193,7 @@ void yk_window_run(YK_Window *out)
 
     // printf("%f\n",yk_input_mouse_position.x);
 }
-void yk_window_quit(YK_Window *out)
+void yk_window_destroy(YK_Window *out)
 {
     glfwDestroyWindow(out->win_ptr);
     glfwTerminate();
