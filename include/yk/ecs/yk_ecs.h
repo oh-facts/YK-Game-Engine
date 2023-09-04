@@ -5,9 +5,7 @@
 
 extern int total_entities;
 
-__declspec(dllexport) int yk_ecs_create_entity();
-
-__declspec(dllexport) void yk_ecs_gravity_system();
+int yk_ecs_create_entity();
 
 
 

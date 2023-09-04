@@ -50,7 +50,7 @@ elseif(MODE STREQUAL "normal" )
          "src/yk_camera2d.c" "src/yk_renderer2d.c" "src/yk_texture.c"  )
 endif()
 
-add_library(${PROJECT_NAME} SHARED ${source_code_basic}  ${source_code_extra})
+add_library(${PROJECT_NAME} ${source_code_basic}  ${source_code_extra})
 target_include_directories(${PROJECT_NAME} PUBLIC
     "vendor/glad/include"
 )

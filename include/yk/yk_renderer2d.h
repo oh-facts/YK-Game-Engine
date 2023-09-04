@@ -7,6 +7,7 @@
 #include <yk/yk_shader.h>
 #include <yk/yk_texture.h>
 
+
 // for a 2d renderer, only an ortho camera makes sense. if you want to do 3d stuff pr funky 2d stuff like
 // perspective, then use a 3d camera/renderer.
 

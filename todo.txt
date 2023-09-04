@@ -2,8 +2,9 @@
   v0.1.0
   To Do
     1. Make Vectors 9/3 done
-    2. Make ecs
-    3. Make scene
+    1,5. Rework app 9/3 done (removed app)
+    2. Make ecs 9/3 done
+    2.5 Make ecs better.
     4. make physics
     5. make api
     6. clean up engine

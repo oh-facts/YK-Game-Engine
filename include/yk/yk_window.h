@@ -7,6 +7,8 @@
 #include <yk/yk_core_types.h>
 #include <yk/yk_key_codes.h>
 
+
+
 #define WIDTH 720
 #define HEIGHT 720
 
@@ -28,6 +30,7 @@ void yk_window_innit(YK_Window *out);
 void yk_window_run(YK_Window *out);
 void yk_window_quit(YK_Window *out);
 void yk_window_resize(YK_Window *win, int x, int y);
+b1 yk_window_is_running(YK_Window *win);
 
 typedef struct YK_Key_states
 {

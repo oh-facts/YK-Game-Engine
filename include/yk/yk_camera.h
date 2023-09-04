@@ -4,6 +4,7 @@
 #include <yk/math/yk_math.h>
 #include <yk/yk_window.h>
 #include <yk/yk_input.h>
+#include <yk/yk_defines.h>
 
 #define YK_WORLD_UP (YK_Vec3f){0.f,0.1f,0.f}
 

@@ -203,3 +203,8 @@ void yk_window_resize(YK_Window *win, int x, int y)
 {
     glfwSetWindowSize(win->win_ptr, x, y);
 }
+
+b1 yk_window_is_running(YK_Window *win)
+{
+    return !glfwWindowShouldClose(win->win_ptr);
+}
