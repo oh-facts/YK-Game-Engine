@@ -71,7 +71,7 @@ void yk_ecs_jump(f4 delta)
   {
     if (yk_input_is_key_tapped(YK_KEY_SPACE))
     {
-      (*(YK_Vec3f *)yk_yektor_at(&pos_comps, i)).y += delta * 100.f;
+      (*(YK_Vec3f *)yk_yektor_at(&pos_comps, i)).y +=  1.f;
     }
   }
 }
