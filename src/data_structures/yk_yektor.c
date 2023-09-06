@@ -42,10 +42,13 @@ void *yk_yektor_at(YK_Yektor *vector, size_t index)
     }
     else
     {
-        perror("Index out of bounds");
-        exit(EXIT_FAILURE);
+       return NULL;
+       // perror("Index out of bounds");
+       // exit(EXIT_FAILURE);
     }
 }
+
+//works but come back here.
 
 void yk_yektor_pop(YK_Yektor *vector)
 {

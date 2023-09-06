@@ -41,8 +41,14 @@ void debug_input(YK_Camera2d *cam, float delta)
 
 YK_Yektor pos_comps;
 YK_Yektor sprite_comps;
+YK_Yektor jump_comps;
 
 u4 *entity_list;
+
+typedef struct YK_Jump_component
+{
+  int jump;
+} YK_Jump_component;
 
 void yk_ecs_gravity_system(f4 delta)
 {
@@ -69,9 +75,12 @@ void yk_ecs_jump(f4 delta)
 {
   for (int i = 0; i < pos_comps.size; i++)
   {
-    if (yk_input_is_key_tapped(YK_KEY_SPACE))
+    if (yk_yektor_at(&jump_comps, i))
     {
-      (*(YK_Vec3f *)yk_yektor_at(&pos_comps, i)).y += 1.f;
+      if (yk_input_is_key_tapped(YK_KEY_SPACE))
+      {
+        (*(YK_Vec3f *)yk_yektor_at(&pos_comps, i)).y += 1.f;
+      }
     }
   }
 }
@@ -92,6 +101,8 @@ int main()
   int babbits[num_babbit];
   yk_yektor_innit(&pos_comps, num_babbit, sizeof(YK_Vec3f));
   yk_yektor_innit(&sprite_comps, num_babbit, sizeof(YK_Sprite));
+  yk_yektor_innit(&jump_comps, num_babbit, sizeof(YK_Jump_component));
+  
 
   for (int i = 0; i < num_babbit; i++)
   {
@@ -116,6 +127,13 @@ int main()
     yk_sprite_innit(&_sprite, "yk-res/textures/default.jpg");
     yk_sprite_set_pos(&_sprite, &(YK_Vec3f){0.f, 0.f, -1.f});
     yk_yektor_push(&sprite_comps, &_sprite);
+
+    if (i % 2 == 0)
+    {
+      YK_Jump_component _jump;
+      _jump.jump = 2;
+      yk_yektor_push(&jump_comps, &_jump);
+    }
   }
 
   f4 delta_time = 0.f;
@@ -141,7 +159,6 @@ int main()
     yk_ecs_jump(delta_time);
 
     yk_window_run(&win);
-    
   }
 
   yk_yektor_destroy(&pos_comps);
