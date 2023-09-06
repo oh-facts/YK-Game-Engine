@@ -3,6 +3,12 @@
 
 #define num_babbit 10
 
+typedef struct sparse_set
+{
+  YK_Yektor *sp;
+  i4 size;
+} sparse_set;
+
 void debug_input(YK_Camera2d *cam, float delta)
 {
   float speed = 5.f * delta;
@@ -59,6 +65,17 @@ void yk_ecs_sprite_render_system(YK_Renderer2d *ren)
   }
 }
 
+void yk_ecs_jump(f4 delta)
+{
+  for (int i = 0; i < pos_comps->size; i++)
+  {
+    if (yk_input_is_key_tapped(YK_KEY_SPACE))
+    {
+      (*(YK_Vec3f *)yk_yektor_at(pos_comps, i)).y += delta * 100.f;
+    }
+  }
+}
+
 int main()
 {
 
@@ -88,7 +105,6 @@ int main()
 
     yk_yektor_push(pos_comps, &_vec3f);
 
-
     /*
     What the fuck is this
 
@@ -101,24 +117,10 @@ int main()
     yk_yektor_push(sprite_comps, &_sprite);
   }
 
-
   f4 delta_time = 0.f;
   f4 last_frame = 0.f;
 
-
   srand(time(NULL));
-
-  /*
-    for (int i = 0; i < 10; i++)
-    {
-      babbits[i] = yk_sprite_create("yk-res/textures/default.jpg");
-      float rx = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
-      float ry = ((float)rand() / RAND_MAX) * 5.f - 2.5f;
-      float rz = ((float)rand() / RAND_MAX) * -10.0f;
-      yk_sprite_set_pos(&babbits[i], &(YK_Vec3f){rx, ry, -1.f});
-    }
-  */
-
 
   while (yk_window_is_running(&win))
   {
@@ -135,6 +137,7 @@ int main()
     yk_ecs_sprite_render_system(&ren2d);
 
     yk_ecs_gravity_system(delta_time);
+    yk_ecs_jump(delta_time);
 
     yk_window_run(&win);
   }
