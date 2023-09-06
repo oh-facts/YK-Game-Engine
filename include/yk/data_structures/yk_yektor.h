@@ -13,7 +13,7 @@ typedef struct YK_Yektor
     size_t capacity;
 } YK_Yektor;
 
-YK_Yektor *yk_yektor_innit(size_t size, size_t element_size);
+void yk_yektor_innit(YK_Yektor *vector, size_t size, size_t element_size);
 
 void yk_yektor_push(YK_Yektor *vector, void *element);
 
