@@ -13,7 +13,7 @@
 #define HEIGHT 720
 
 #define WIN_POSX 0
-#define WIN_POSY 40
+#define WIN_POSY 30
 
 
 #define TITLE "yk"
@@ -30,6 +30,9 @@ void yk_window_innit(YK_Window *out);
 void yk_window_run(YK_Window *out);
 void yk_window_destroy(YK_Window *out);
 void yk_window_resize(YK_Window *win, int x, int y);
+void yk_window_set_vsync(YK_Window *win, b1 flag);
+void yk_window_set_pos(YK_Window *win, int x, int y);
+
 b1 yk_window_is_running(YK_Window *win);
 
 typedef struct YK_Key_states

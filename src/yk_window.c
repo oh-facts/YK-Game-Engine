@@ -148,7 +148,6 @@ void yk_window_innit(YK_Window *out)
     {
         printf("Raw Input not supported");
     }
-    // glfwSwapInterval(0);
     _keys_innit();
 }
 
@@ -207,4 +206,15 @@ void yk_window_resize(YK_Window *win, int x, int y)
 b1 yk_window_is_running(YK_Window *win)
 {
     return !glfwWindowShouldClose(win->win_ptr);
+}
+
+void yk_window_set_vsync(YK_Window *win, b1 flag)
+{
+    glfwMakeContextCurrent(win->win_ptr);
+    glfwSwapInterval(flag);
+}
+
+void yk_window_set_pos(YK_Window *win, int x, int y)
+{
+    glfwSetWindowPos(win->win_ptr, x, y);
 }

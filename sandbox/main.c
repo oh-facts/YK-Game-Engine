@@ -71,7 +71,7 @@ void yk_ecs_jump(f4 delta)
   {
     if (yk_input_is_key_tapped(YK_KEY_SPACE))
     {
-      (*(YK_Vec3f *)yk_yektor_at(&pos_comps, i)).y +=  1.f;
+      (*(YK_Vec3f *)yk_yektor_at(&pos_comps, i)).y += 1.f;
     }
   }
 }
@@ -81,6 +81,7 @@ int main()
 
   YK_Window win;
   yk_window_innit(&win);
+  yk_window_set_vsync(&win, false);
 
   YK_Camera2d cam2d;
   yk_camera2d_innit(&cam2d);
@@ -140,6 +141,7 @@ int main()
     yk_ecs_jump(delta_time);
 
     yk_window_run(&win);
+    
   }
 
   yk_yektor_destroy(&pos_comps);
