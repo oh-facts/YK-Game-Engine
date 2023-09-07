@@ -1,8 +1,19 @@
 #include <yk/data_structures/yk_yektor.h>
 
+void yk_yektor_resize(YK_Yektor *vector)
+{
+    vector->capacity *= 2;
+    vector->data = realloc(vector->data, vector->capacity * vector->element_size);
+    if (vector->data == NULL)
+    {
+        perror("YK_Yektor resizing failed");
+        exit(EXIT_FAILURE);
+    }
+}
+
 void yk_yektor_innit(YK_Yektor *vector, size_t size, size_t element_size)
 {
-  
+
     vector->data = malloc(size * element_size);
     if (vector->data == NULL)
     {
@@ -18,15 +29,9 @@ void yk_yektor_innit(YK_Yektor *vector, size_t size, size_t element_size)
 
 void yk_yektor_push(YK_Yektor *vector, void *element)
 {
-    if (vector->size == vector->capacity)
+    if (vector->size >= vector->capacity)
     {
-        vector->capacity *= 2;
-        vector->data = realloc(vector->data, vector->capacity * vector->element_size);
-        if (vector->data == NULL)
-        {
-            perror("YK_Yektor resizing failed");
-            exit(EXIT_FAILURE);
-        }
+        yk_yektor_resize(vector);
     }
 
     void *dest = (char *)vector->data + (vector->size * vector->element_size);
@@ -34,21 +39,57 @@ void yk_yektor_push(YK_Yektor *vector, void *element)
     vector->size++;
 }
 
-void *yk_yektor_at(YK_Yektor *vector, size_t index)
+void yk_yektor_insert(YK_Yektor *vector, void *element, size_t index)
 {
+    if (index > vector->size)
+    {
+        size_t new_size = index + 1;
+        if (new_size > vector->capacity)
+        {
+            yk_yektor_resize(vector);
+        }
+        vector->size = new_size;
+    }
+
+    void *dest = (char *)vector->data + ((index + 1) * vector->element_size);
+    void *src = (char *)vector->data + (index * vector->element_size);
+    size_t bytes_to_move = (vector->size - index) * vector->element_size;
+    memmove(dest, src, bytes_to_move);
+
+    dest = (char *)vector->data + (index * vector->element_size);
+    memcpy(dest, element, vector->element_size);
+}
+
+void yk_yektor_set(YK_Yektor *vector, void *element, size_t index)
+{
+    if (index >= vector->capacity)
+    {
+        yk_yektor_resize(vector);
+    }
+
+    void *dest = (char *)vector->data + (index * vector->element_size);
+    memcpy(dest, element, vector->element_size);
+
+    if (index >= vector->size)
+    {
+        vector->size = index + 1;
+    }
+}
+
+void *yk_yektor_get(YK_Yektor *vector, size_t index)
+{
+
     if (index < vector->size)
     {
         return (char *)vector->data + (index * vector->element_size);
     }
     else
     {
-       return NULL;
-       // perror("Index out of bounds");
-       // exit(EXIT_FAILURE);
+        return NULL;
     }
 }
 
-//works but come back here.
+// works but come back here.
 
 void yk_yektor_pop(YK_Yektor *vector)
 {
@@ -85,7 +126,7 @@ void yk_yektor_print(YK_Yektor *vector)
 
     for (size_t i = 0; i < vector->size; i++)
     {
-        void *element = yk_yektor_at(vector, i);
+        void *element = yk_yektor_get(vector, i);
         printf("[%zu]: %p\n", i, element);
     }
 }

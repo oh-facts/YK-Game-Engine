@@ -17,7 +17,11 @@ void yk_yektor_innit(YK_Yektor *vector, size_t size, size_t element_size);
 
 void yk_yektor_push(YK_Yektor *vector, void *element);
 
-void *yk_yektor_at(YK_Yektor *vector, size_t index);
+void yk_yektor_insert(YK_Yektor *vector, void *element, size_t index);
+
+void yk_yektor_set(YK_Yektor *vector, void *element, size_t index);
+
+void *yk_yektor_get(YK_Yektor *vector, size_t index);
 
 void yk_yektor_pop(YK_Yektor *vector);
 
