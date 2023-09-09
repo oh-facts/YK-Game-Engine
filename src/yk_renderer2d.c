@@ -168,6 +168,10 @@ void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win)
 
 void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite)
 {
+    glUseProgram(sprite->shaderProgram);
+    glBindTexture(GL_TEXTURE_2D, sprite->texture.id);
+    glBindVertexArray(sprite->vertex_arrays);
+
     u4 modelLoc = glGetUniformLocation(sprite->shaderProgram, "model");
     u4 viewLoc = glGetUniformLocation(sprite->shaderProgram, "view");
     u4 projectionLoc = glGetUniformLocation(sprite->shaderProgram, "projection");
@@ -176,11 +180,7 @@ void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite)
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
 
-    glUseProgram(sprite->shaderProgram);
-    glBindTexture(GL_TEXTURE_2D, sprite->texture.id);
-
-    glBindVertexArray(sprite->vertex_arrays);
-
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     
+    glBindVertexArray(0);
 }

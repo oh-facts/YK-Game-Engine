@@ -1,7 +1,7 @@
 #include <yk/yk_app.h>
 #include <time.h>
 
-#define num_babbit 10
+#define num_babbit 3
 
 #define POSITION_COMPONENT (1 << 0)
 #define SPRITE_COMPONENT (1 << 1)
@@ -56,30 +56,37 @@ b1 has_component(int id, int type)
 void yk_ecs_sprite_render_system(YK_Renderer2d *ren)
 {
 
-  for (int i = 0; i < sprite_comps.size; i++)
+  for (int i = 0; i < num_babbit; i++)
   {
     // printf("%d %hhd %hhd \n", i, has_component(i, POSITION_COMPONENT), has_component(i, SPRITE_COMPONENT));
     if (has_component(i, POSITION_COMPONENT) && has_component(i, SPRITE_COMPONENT))
     {
-      YK_Sprite *_sprite = (YK_Sprite *)yk_yektor_get(&sprite_comps, i);
-      YK_Vec3f *_pos = (YK_Vec3f *)yk_yektor_get(&pos_comps, i);
+      YK_Sprite *_sprite = yk_yektor_get(&sprite_comps, i);
+      YK_Vec3f *_pos = yk_yektor_get(&pos_comps, i);
 
-      // printf("%f \n", _pos->z);
+      printf(" %d %f %d \n", i, _pos->x, _sprite->texture.width);
 
       // some reason, sprite data is lost. check how yektor stores shit.
-      // texture data is lost only. So weird.
+      // texture data is lost only. So weird. Fixed that. I was initializing
+      // my vectors incorrectly so there was no space for texture data
+      // so everything but that was stored. New problem, for some reason, my
+      // first texture is renderered on my second sprite, my second texture on my third
+      // sprite and my third texture on my first sprite. Since I have only been ever
+      // rendering the same thing I haven't noticed before maybe. Also, apparently,
+      // I don't need to cast my void pointer to requried types. who knew.
 
       yk_sprite_set_pos(_sprite, _pos);
       yk_renderer2d_render_sprite(ren, _sprite);
     }
   }
+  printf("\n");
 }
 
 void yk_ecs_player_system(int player, f4 delta)
 {
   if (has_component(player, POSITION_COMPONENT) && has_component(player, PLAYER_COMPONENT))
   {
-    YK_Vec3f *_pos = (YK_Vec3f *)yk_yektor_get(&pos_comps, player);
+    YK_Vec3f *_pos = yk_yektor_get(&pos_comps, player);
 
     float speed = 5.f * delta;
     if (yk_input_is_key_held(YK_KEY_W))
@@ -138,25 +145,58 @@ int main()
   f4 delta_time = 0.f;
   f4 last_frame = 0.f;
 
+  int gooba = yk_ecs_create_entity();
+  {
+    {
+      YK_Sprite _sprite;
+      yk_sprite_innit(&_sprite, "yk-res/textures/default.jpg");
+      yk_yektor_push(&sprite_comps, &_sprite);
+    }
+
+    {
+      YK_Vec3f _pos = {-1.f, 0.f, -1.f};
+      yk_yektor_push(&pos_comps, &_pos);
+    }
+
+    comp_mask[gooba] = POSITION_COMPONENT | SPRITE_COMPONENT;
+  }
+
   int player = yk_ecs_create_entity();
-
   {
-    YK_Sprite ps;
-    yk_sprite_innit(&ps, "yk-res/textures/yk.png");
-    yk_yektor_push(&sprite_comps, &ps);
+    {
+      YK_Sprite _sprite;
+      yk_sprite_innit(&_sprite, "yk-res/textures/yk.png");
+      yk_yektor_push(&sprite_comps, &_sprite);
+    }
+
+    {
+      YK_Vec3f _pos = {0.f, 0.f, -1.f};
+      yk_yektor_push(&pos_comps, &_pos);
+    }
+
+    {
+      py.cam = &cam2d;
+    }
+    comp_mask[player] = POSITION_COMPONENT | SPRITE_COMPONENT | PLAYER_COMPONENT;
   }
 
+  int gooba2 = yk_ecs_create_entity();
   {
-    YK_Vec3f pos = {1.f, 0.f, -1.f};
-    yk_yektor_push(&pos_comps, &pos);
+    {
+      YK_Sprite _sprite;
+      yk_sprite_innit(&_sprite, "yk-res/textures/cullen.png");
+      yk_yektor_push(&sprite_comps, &_sprite);
+    }
+
+    {
+      YK_Vec3f _pos = {1.f, 0.f, -1.f};
+      yk_yektor_push(&pos_comps, &_pos);
+    }
+
+    comp_mask[gooba2] = POSITION_COMPONENT | SPRITE_COMPONENT;
   }
 
-  {
-    py.cam = &cam2d;
-    yk_yektor_push(&pos_comps, &py);
-  }
-
-  comp_mask[player] = POSITION_COMPONENT | SPRITE_COMPONENT | PLAYER_COMPONENT;
+  // get cullen to help tomorrow. add him as a sprite to help see pattern?
 
   while (yk_window_is_running(&win))
   {
@@ -169,9 +209,16 @@ int main()
 
     yk_renderer2d_run(&ren2d, &win);
 
-    yk_ecs_sprite_render_system(&ren2d);
-
     yk_ecs_player_system(player, delta_time);
+
+    for (int i = 0; i < 3; i++)
+    {
+      YK_Sprite *_sp = yk_yektor_get(&sprite_comps, i);
+      yk_sprite_set_pos(_sp, yk_yektor_get(&pos_comps, i));
+      yk_renderer2d_render_sprite(&ren2d, _sp);
+    }
+
+    // yk_ecs_sprite_render_system(&ren2d);
 
     yk_window_run(&win);
   }
