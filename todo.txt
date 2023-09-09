@@ -4,7 +4,7 @@
     1. Make Vectors 9/3 done
     1,5. Rework app 9/3 done (removed app)
     2. Make ecs 9/3 done
-    2.5 Make ecs better.
+    2.5 Make ecs better. 9/7 done
     4. make physics
     5. make api
     6. clean up engine
@@ -12,6 +12,7 @@
 
   v0.1.1
   To Do
-    1. 3d stuff     
+    1. vulkan
+    2. make ecs sparse set instead of bitmask
     
 */

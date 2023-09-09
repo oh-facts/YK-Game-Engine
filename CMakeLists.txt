@@ -38,7 +38,7 @@ include_directories(include/yk/data_structures)
 set(source_code_basic   "src/yk_file_reader.c" 
                         "src/math/yk_math_common.c" "src/math/yk_math_transform.c" "src/math/yk_math.c" 
                         "src/math/yk_matrix.c" "src/math/yk_vector.c" "src/data_structures/yk_yektor.c" "src/ecs/yk_ecs.c"
-                        )
+                        "src/physics/yk_physics.c")
 
 if(MODE STREQUAL "headless")
     set(source_code_extra "sandbox/main_h.c" "src/yk_app_h.c")
