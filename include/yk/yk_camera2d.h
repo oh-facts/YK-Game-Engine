@@ -32,6 +32,8 @@ void yk_camera2d_update(YK_Camera2d *camera, f4 delta_time);
 YK_Mat4f yk_camera2d_get_projection_matrix(YK_Camera2d *camera, f4 aspect_ratio);
 YK_Mat4f yk_camera2d_get_view_matrix(YK_Camera2d *camera);
 
+void yk_camera2d_set_pos2d(YK_Camera2d *camera, YK_Vec3f *pos);
+
 void yk_camera2d_move_up(YK_Camera2d *camera, f4 distance);
 void yk_camera2d_move_left(YK_Camera2d *camera, f4 distance);
 void yk_camera2d_move_right(YK_Camera2d *camera, f4 distance);
