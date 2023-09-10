@@ -7,9 +7,12 @@
 #include <yk/yk_shader.h>
 #include <yk/yk_texture.h>
 
+// For mario game, I will use this renderer. After learning vulkan, I will rewrite this 
+// and make it chad ish. But before that I will complete reading a couple C books I have
+// been reading. I want to complete mario hiemer 9/10
 
 // for a 2d renderer, only an ortho camera makes sense. if you want to do 3d stuff pr funky 2d stuff like
-// perspective, then use a 3d camera/renderer.
+// perspective, then use a 3d camera/renderer. 8/30?
 
 /*
 typedef struct YK_Rect
@@ -38,6 +41,18 @@ typedef struct YK_Sprite
 
     YK_Texture texture;
 } YK_Sprite;
+
+/*
+Yes, I get it. But I need to understand the goals of the renderer better to want to make it more generic.
+*/
+
+typedef struct YK_Line
+{
+    GLuint shaderProgram;
+    YK_Vec3f pos;
+    YK_Mat4f model_mat;
+    YK_Vec4f col;
+} YK_Line;
 
 typedef struct YK_Renderer2d
 {
@@ -68,6 +83,6 @@ void yk_sprite_set_texture(const char *texture_path);
 void yk_renderer2d_innit(YK_Renderer2d *renderer, YK_Camera2d *current_cam, YK_Window *win);
 void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win);
 
-void yk_renderer2d_render(YK_Renderer2d *renderer, f4 vao[]);
+
 
 #endif

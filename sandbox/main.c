@@ -6,6 +6,7 @@
 #define POSITION_COMPONENT (1 << 0)
 #define SPRITE_COMPONENT (1 << 1)
 #define PLAYER_COMPONENT (1 << 2)
+#define COLLIDER_COMPONENT (1 << 3)
 
 typedef struct YK_Player
 {
@@ -44,6 +45,7 @@ void debug_input(YK_Camera2d *cam, float delta)
 
 YK_Yektor pos_comps;
 YK_Yektor sprite_comps;
+YK_Yektor aabb_comps;
 YK_Player py;
 
 u1 comp_mask[num_babbit];
@@ -64,7 +66,7 @@ void yk_ecs_sprite_render_system(YK_Renderer2d *ren)
       YK_Sprite *_sprite = yk_yektor_get(&sprite_comps, i);
       YK_Vec3f *_pos = yk_yektor_get(&pos_comps, i);
 
-      printf(" %d %f %d \n", i, _pos->x, _sprite->texture.width);
+      // printf(" %d %f %d \n", i, _pos->x, _sprite->texture.width);
 
       // some reason, sprite data is lost. check how yektor stores shit.
       // texture data is lost only. So weird. Fixed that. I was initializing
@@ -79,7 +81,7 @@ void yk_ecs_sprite_render_system(YK_Renderer2d *ren)
       yk_renderer2d_render_sprite(ren, _sprite);
     }
   }
-  printf("\n");
+  // printf("\n");
 }
 
 void yk_ecs_player_system(int player, f4 delta)
@@ -107,6 +109,46 @@ void yk_ecs_player_system(int player, f4 delta)
     if (yk_input_is_key_held(YK_KEY_D))
     {
       _pos->x += speed;
+    }
+  }
+}
+
+void yk_ecs_physics_system(YK_Renderer2d *ren, YK_Sprite *debug_draw)
+{
+  for (int i = 0; i < 2; i++)
+  {
+    if (has_component(i, POSITION_COMPONENT) && has_component(i, COLLIDER_COMPONENT))
+    {
+      YK_Vec3f *_pos = yk_yektor_get(&pos_comps, i);
+      YK_Aabb *_aabb = yk_yektor_get(&aabb_comps, i);
+
+      _aabb->pos.x = _pos->x;
+      _aabb->pos.y = _pos->y;
+
+      YK_Sprite _a = *debug_draw;
+      yk_sprite_set_pos(&_a, _pos);
+
+      yk_renderer2d_render_sprite(ren, &_a);
+    }
+  }
+}
+
+void yk_ecs_collide_system(f4 delta)
+{
+  for (int i = 0; i < 1; i++)
+  {
+    if (has_component(i, POSITION_COMPONENT) && has_component(i, COLLIDER_COMPONENT))
+    {
+      YK_Vec3f *_pos = yk_yektor_get(&pos_comps, i);
+      YK_Aabb *_aabb = yk_yektor_get(&aabb_comps, i);
+      YK_Aabb *_aabb2 = yk_yektor_get(&aabb_comps, i + 1);
+
+      if (yk_physics_colliding(_aabb, _aabb2))
+      {
+        YK_Vec3f a = yk_physics_get_collision_dir(_aabb);
+        a = yk_math_vec3f_mul_s(&a, delta * 5.f);
+        *_pos = yk_math_vec3f_add(_pos, &a);
+      }
     }
   }
 }
@@ -141,43 +183,51 @@ int main()
 
   yk_yektor_innit(&pos_comps, 10, sizeof(YK_Vec3f));
   yk_yektor_innit(&sprite_comps, 10, sizeof(YK_Sprite));
+  yk_yektor_innit(&aabb_comps, 10, sizeof(YK_Aabb));
 
   f4 delta_time = 0.f;
   f4 last_frame = 0.f;
 
   int gooba = yk_ecs_create_entity();
   {
-    {
-      YK_Sprite _sprite;
-      yk_sprite_innit(&_sprite, "yk-res/textures/default.jpg");
-      yk_yektor_push(&sprite_comps, &_sprite);
-    }
 
-    {
-      YK_Vec3f _pos = {-1.f, 0.f, -1.f};
-      yk_yektor_push(&pos_comps, &_pos);
-    }
+    YK_Sprite _sprite;
+    yk_sprite_innit(&_sprite, "yk-res/textures/default.jpg");
+    yk_yektor_push(&sprite_comps, &_sprite);
 
-    comp_mask[gooba] = POSITION_COMPONENT | SPRITE_COMPONENT;
+    YK_Vec3f _pos = {-1.f, 0.f, -1.f};
+    yk_yektor_push(&pos_comps, &_pos);
+
+    YK_Aabb _aabb;
+    _aabb.pos.x = _pos.x;
+    _aabb.pos.y = _pos.y;
+    _aabb.size.x = 1.f;
+    _aabb.size.y = 1.f;
+    yk_yektor_push(&aabb_comps, &_aabb);
+
+    comp_mask[gooba] = POSITION_COMPONENT | SPRITE_COMPONENT | COLLIDER_COMPONENT;
   }
 
   int player = yk_ecs_create_entity();
   {
-    {
-      YK_Sprite _sprite;
-      yk_sprite_innit(&_sprite, "yk-res/textures/yk.png");
-      yk_yektor_push(&sprite_comps, &_sprite);
-    }
 
-    {
-      YK_Vec3f _pos = {0.f, 0.f, -1.f};
-      yk_yektor_push(&pos_comps, &_pos);
-    }
+    YK_Sprite _sprite;
+    yk_sprite_innit(&_sprite, "yk-res/textures/yk.png");
+    yk_yektor_push(&sprite_comps, &_sprite);
 
-    {
-      py.cam = &cam2d;
-    }
-    comp_mask[player] = POSITION_COMPONENT | SPRITE_COMPONENT | PLAYER_COMPONENT;
+    YK_Vec3f _pos = {0.f, 0.f, -1.f};
+    yk_yektor_push(&pos_comps, &_pos);
+
+    py.cam = &cam2d;
+
+    YK_Aabb _aabb;
+    _aabb.pos.x = _pos.x;
+    _aabb.pos.y = _pos.y;
+    _aabb.size.x = 1.f;
+    _aabb.size.y = 1.f;
+    yk_yektor_push(&aabb_comps, &_aabb);
+
+    comp_mask[player] = POSITION_COMPONENT | SPRITE_COMPONENT | PLAYER_COMPONENT | COLLIDER_COMPONENT;
   }
 
   int gooba2 = yk_ecs_create_entity();
@@ -196,6 +246,9 @@ int main()
     comp_mask[gooba2] = POSITION_COMPONENT | SPRITE_COMPONENT;
   }
 
+  YK_Sprite _debug_draw;
+  yk_sprite_innit(&_debug_draw, "yk-res/textures/outline.png");
+
   // get cullen to help tomorrow. add him as a sprite to help see pattern?
 
   while (yk_window_is_running(&win))
@@ -211,18 +264,15 @@ int main()
 
     yk_ecs_player_system(player, delta_time);
 
-    for (int i = 0; i < 3; i++)
-    {
-      YK_Sprite *_sp = yk_yektor_get(&sprite_comps, i);
-      yk_sprite_set_pos(_sp, yk_yektor_get(&pos_comps, i));
-      yk_renderer2d_render_sprite(&ren2d, _sp);
-    }
+    yk_ecs_physics_system(&ren2d, &_debug_draw);
+    yk_ecs_collide_system(delta_time);
 
-    // yk_ecs_sprite_render_system(&ren2d);
+    yk_ecs_sprite_render_system(&ren2d);
 
     yk_window_run(&win);
   }
 
+  yk_sprite_destroy(&_debug_draw);
   yk_yektor_destroy(&pos_comps);
   yk_yektor_destroy(&sprite_comps);
   yk_window_destroy(&win);

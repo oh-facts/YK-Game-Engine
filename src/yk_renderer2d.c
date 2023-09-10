@@ -96,10 +96,10 @@ void yk_sprite_innit(YK_Sprite *out, const char *texture_path)
 
     glBindVertexArray(out->vertex_arrays);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
 
     // pos attrib
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
@@ -125,8 +125,6 @@ void yk_sprite_innit(YK_Sprite *out, const char *texture_path)
     GLuint tex0Uni = glGetUniformLocation(out->shaderProgram, "tex0");
     glUseProgram(out->shaderProgram);
     glUniform1i(tex0Uni, 0);
-
- 
 }
 
 void yk_sprite_destroy(YK_Sprite *sprite)
@@ -162,7 +160,7 @@ void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win)
 
     f4 _aspect_ratio = (f4)win->width / win->height;
 
-    //make some kind of callback so you only need to recalculate when updating zoom/aspect ratio
+    // make some kind of callback so you only need to recalculate when updating zoom/aspect ratio
     renderer->proj_mat = yk_camera2d_get_projection_matrix(renderer->current_cam, _aspect_ratio);
 }
 
@@ -181,6 +179,7 @@ void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite)
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    
+
     glBindVertexArray(0);
 }
+

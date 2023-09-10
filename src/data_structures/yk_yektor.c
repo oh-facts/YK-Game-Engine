@@ -85,7 +85,8 @@ void *yk_yektor_get(YK_Yektor *vector, size_t index)
     }
     else
     {
-        printf("error");
+        //pitiful
+        printf("error \n");
         return NULL;
     }
 }
