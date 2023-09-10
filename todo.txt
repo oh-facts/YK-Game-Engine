@@ -1,18 +1,22 @@
 /*
   v0.1.0
   To Do
-    1. Make Vectors 9/3 done
-    1,5. Rework app 9/3 done (removed app)
-    2. Make ecs 9/3 done
-    2.5 Make ecs better. 9/7 done
-    4. make physics
-    5. make api
-    6. clean up engine
-    7. make mario-hiemer
+    1. Make Vectors       9/3 done
+    2. Rework app         9/3 done (removed app)
+    3. Make ecs           9/3 done
+    4.5 Make ecs better.  9/7 done
+    5. make physics       9/10 done
+    6. make mario-hiemer
 
   v0.1.1
   To Do
     1. vulkan
-    2. make ecs sparse set instead of bitmask
+    2. make the best renderer ever
+    3. make ecs sparse set instead of bitmask
+
+  Backlog
+  v0.1.0
+    1. make api
+    2. clean up engine
     
 */
