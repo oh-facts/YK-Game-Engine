@@ -8,13 +8,21 @@
     5. make physics       9/10 done
 
   v0.1.0 Demo
-    make mario-hiemer
+    game-jam
 
   v0.1.1
   To Do
     1. vulkan
     2. make the best renderer ever
     3. make ecs sparse set instead of bitmask
+
+  v0.1.1 Demo
+    4. game-jam
+
+  v0.1.2
+  To Do
+    1. ray-casting pipeline
+    2. Sandbox
 
   Backlog
   v0.1.0
