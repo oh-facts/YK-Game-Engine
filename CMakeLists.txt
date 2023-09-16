@@ -74,7 +74,7 @@ endif()
 #To copy files like DLLs and assets. Here, I copy the compile_commands.json from the build dir, to the source dir
 if(MODE STREQUAL "normal")
     add_custom_target(
-        copy-compile-commands ALL
+        yk_copy-compile-commands ALL
         ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_BINARY_DIR}/compile_commands.json
             ${CMAKE_CURRENT_LIST_DIR}
@@ -82,14 +82,14 @@ if(MODE STREQUAL "normal")
 endif()
 if(MODE STREQUAL "normal")
     add_custom_target(
-        copy-resources-engine ALL
+        yk_copy-resources ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
             ${CMAKE_BINARY_DIR}/yk-res
     )
     
     add_custom_target(
-        copy-resources-example ALL
+        yk_copy-resources-example ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
             ${CMAKE_CURRENT_BINARY_DIR}/yk-res
