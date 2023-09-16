@@ -189,6 +189,7 @@ int main()
   f4 delta_time = 0.f;
   f4 last_frame = 0.f;
 
+  yk_renderer2d_set_bg(0.2f, 0.3f, 0.3f, 1.f);
   int gooba = yk_ecs_create_entity();
   {
 

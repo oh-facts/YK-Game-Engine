@@ -83,6 +83,6 @@ void yk_sprite_set_texture(const char *texture_path);
 void yk_renderer2d_innit(YK_Renderer2d *renderer, YK_Camera2d *current_cam, YK_Window *win);
 void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win);
 
-
+void yk_renderer2d_set_bg(f4 r, f4 g, f4 b, f4 a);
 
 #endif

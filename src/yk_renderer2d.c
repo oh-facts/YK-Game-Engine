@@ -153,7 +153,7 @@ void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window
 
 void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win)
 {
-    glClearColor(0.5f, 0.3f, 0.3f, 1.0f);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     renderer->view_mat = yk_camera2d_get_view_matrix(renderer->current_cam);
@@ -183,3 +183,7 @@ void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite)
     glBindVertexArray(0);
 }
 
+void yk_renderer2d_set_bg(f4 r, f4 g, f4 b, f4 a)
+{
+    glClearColor(r, g, b, a);
+}
