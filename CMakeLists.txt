@@ -53,6 +53,7 @@ endif()
 add_library(${PROJECT_NAME} ${source_code_basic}  ${source_code_extra})
 target_include_directories(${PROJECT_NAME} PUBLIC
     "vendor/glad/include"
+    "vendor/stb/include"
 )
 
 
