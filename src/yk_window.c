@@ -138,7 +138,6 @@ void yk_window_innit(YK_Window *out)
     glfwSetScrollCallback(out->win_ptr, scroll_callback);
     glfwSetKeyCallback(out->win_ptr, key_callback);
 
-    glfwSetInputMode(out->win_ptr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if (glfwRawMouseMotionSupported())
     {
@@ -217,4 +216,14 @@ void yk_window_set_vsync(YK_Window *win, b1 flag)
 void yk_window_set_pos(YK_Window *win, int x, int y)
 {
     glfwSetWindowPos(win->win_ptr, x, y);
+}
+
+void yk_window_disable_cursor(YK_Window *win, b1 flag)
+{
+    if(flag)
+    {
+        glfwSetInputMode(win->win_ptr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        return;
+    }
+    glfwSetInputMode(win->win_ptr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }

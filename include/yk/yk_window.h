@@ -33,6 +33,12 @@ void yk_window_resize(YK_Window *win, int x, int y);
 void yk_window_set_vsync(YK_Window *win, b1 flag);
 void yk_window_set_pos(YK_Window *win, int x, int y);
 
+/*
+true to disable
+false to enable
+*/
+void yk_window_disable_cursor(YK_Window *win, b1 flag);
+
 b1 yk_window_is_running(YK_Window *win);
 
 typedef struct YK_Key_states
