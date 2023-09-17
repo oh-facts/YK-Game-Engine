@@ -145,9 +145,8 @@ void yk_ecs_collide_system(f4 delta)
 
       if (yk_physics_colliding(_aabb, _aabb2))
       {
-        YK_Vec3f a = yk_physics_get_collision_dir(_aabb);
-        a = yk_math_vec3f_mul_s(&a, delta * 5.f);
-        *_pos = yk_math_vec3f_add(_pos, &a);
+        YK_Vec3f a = yk_physics_get_overlap_distance(_aabb,_aabb2);
+        *_pos = yk_math_vec3f_sub(_pos, &a);
       }
     }
   }
