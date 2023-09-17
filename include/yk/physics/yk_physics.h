@@ -25,4 +25,6 @@ YK_Vec3f yk_physics_get_collision_dir(const YK_Aabb* aabb);
 
 void yk_physics_resolve_collision(YK_Aabb *a, const YK_Aabb *b);
 
+YK_Vec3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b);
+
 #endif

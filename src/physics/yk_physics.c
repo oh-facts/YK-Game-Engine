@@ -147,3 +147,60 @@ void yk_physics_resolve_collision(YK_Aabb *a, const YK_Aabb *b)
         }
     }
 }
+
+YK_Vec3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b)
+{
+    YK_Vec3f translation = {0.0f, 0.0f, 0.0f};
+
+    f4 halfWidthA = a->size.x / 2.0f;
+    f4 halfHeightA = a->size.y / 2.0f;
+    f4 halfWidthB = b->size.x / 2.0f;
+    f4 halfHeightB = b->size.y / 2.0f;
+
+    f4 centerXA = a->pos.x;
+    f4 centerYA = a->pos.y;
+    f4 centerXB = b->pos.x;
+    f4 centerYB = b->pos.y;
+
+    f4 deltaX = centerXB - centerXA;
+    f4 deltaY = centerYB - centerYA;
+
+    f4 overlapX = halfWidthA + halfWidthB - fabsf(deltaX);
+    f4 overlapY = halfHeightA + halfHeightB - fabsf(deltaY);
+
+    if (overlapX > 0 && overlapY > 0)
+    {
+        if (overlapX < overlapY)
+        {
+            if (deltaX > 0)
+            {
+                translation.x = overlapX;
+                a->coll_dir = COLLISION_LEFT;
+            }
+            else
+            {
+                translation.x = -overlapX;
+                a->coll_dir = COLLISION_RIGHT;
+            }
+        }
+        else
+        {
+            if (deltaY > 0)
+            {
+                translation.y = overlapY;
+                a->coll_dir = COLLISION_TOP;
+            }
+            else
+            {
+                translation.y = -overlapY;
+                a->coll_dir = COLLISION_BOTTOM;
+            }
+        }
+    }
+    else
+    {
+        a->coll_dir = COLLISION_NONE;
+    }
+
+    return translation;
+}
