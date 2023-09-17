@@ -72,8 +72,6 @@ void yk_sprite_innit(YK_Sprite *out, const char *texture_path)
     yk_vec3f_mem_set(&out->transform.scale, 1);
     yk_vec3f_mem_set(&out->transform.rot, 0);
 
-    printf("%f \n", out->transform.scale.x);
-
     out->shaderProgram = yk_shader_create("yk-res/shaders/rect/default.vert", "yk-res/shaders/rect/default.frag");
 
     f4 vertices[] =
