@@ -79,3 +79,71 @@ YK_Vec3f yk_physics_get_collision_dir(const YK_Aabb *aabb)
 
     return out_coll_dir;
 }
+
+void yk_physics_resolve_collision(YK_Aabb *a, const YK_Aabb *b)
+{
+    f4 halfWidthA = a->size.x / 2.0f;
+    f4 halfHeightA = a->size.y / 2.0f;
+    f4 halfWidthB = b->size.x / 2.0f;
+    f4 halfHeightB = b->size.y / 2.0f;
+
+    f4 centerXA = a->pos.x;
+    f4 centerYA = a->pos.y;
+    f4 centerXB = b->pos.x;
+    f4 centerYB = b->pos.y;
+
+    f4 deltaX = centerXB - centerXA;
+    f4 deltaY = centerYB - centerYA;
+
+    f4 overlapX = halfWidthA + halfWidthB - fabsf(deltaX);
+    f4 overlapY = halfHeightA + halfHeightB - fabsf(deltaY);
+
+    if (overlapX > 0 && overlapY > 0)
+    {
+        if (overlapX < overlapY)
+        {
+            if (deltaX > 0)
+            {
+                a->pos.x += overlapX;
+            }
+            else
+            {
+                a->pos.x -= overlapX;
+            }
+        }
+        else
+        {
+            if (deltaY > 0)
+            {
+                a->pos.y += overlapY;
+            }
+            else
+            {
+                a->pos.y -= overlapY;
+            }
+        }
+    }
+
+    if (overlapX < overlapY)
+    {
+        if (deltaX > 0)
+        {
+            a->coll_dir = COLLISION_LEFT;
+        }
+        else
+        {
+            a->coll_dir = COLLISION_RIGHT;
+        }
+    }
+    else
+    {
+        if (deltaY > 0)
+        {
+            a->coll_dir = COLLISION_TOP;
+        }
+        else
+        {
+            a->coll_dir = COLLISION_BOTTOM;
+        }
+    }
+}
