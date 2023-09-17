@@ -39,6 +39,11 @@ typedef struct YK_Mat4f
        m30, m31, m32, m33;
 } YK_Mat4f;
 
+typedef struct YK_Transform{
+    YK_Vec3f pos;
+    YK_Vec3f rot;
+    YK_Vec3f scale;
+} YK_Transform;
 
 
 #endif

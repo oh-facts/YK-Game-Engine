@@ -77,7 +77,7 @@ void yk_ecs_sprite_render_system(YK_Renderer2d *ren)
       // rendering the same thing I haven't noticed before maybe. Also, apparently,
       // I don't need to cast my void pointer to requried types. who knew.
 
-      yk_sprite_set_pos(_sprite, _pos);
+      _sprite->transform.pos = *_pos;
       yk_renderer2d_render_sprite(ren, _sprite);
     }
   }
@@ -126,7 +126,7 @@ void yk_ecs_physics_system(YK_Renderer2d *ren, YK_Sprite *debug_draw)
       _aabb->pos.y = _pos->y;
 
       YK_Sprite _a = *debug_draw;
-      yk_sprite_set_pos(&_a, _pos);
+      _a.transform.pos = *_pos;
 
       yk_renderer2d_render_sprite(ren, &_a);
     }

@@ -36,8 +36,8 @@ typedef struct YK_Sprite
     GLuint shaderProgram;
     GLuint vertex_arrays;
 
-    YK_Mat4f model_mat;
-    YK_Vec3f pos;
+
+    YK_Transform transform;
 
     YK_Texture texture;
 } YK_Sprite;
@@ -73,7 +73,7 @@ typedef struct YK_Renderer2d
 
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path);
 void yk_sprite_destroy(YK_Sprite *sprite);
-void yk_sprite_set_pos(YK_Sprite *sprite, YK_Vec3f *pos);
+YK_Mat4f yk_sprite_get_model_mat(YK_Sprite *sprite);
 
 // void yk_renderer2d_
 void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite);
