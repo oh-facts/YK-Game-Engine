@@ -1,5 +1,62 @@
 #include <yk/physics/yk_physics.h>
 
+YK_Yektor yk_rigidbodies;
+
+void yk_rigidbody_innit(YK_Rigidbody *out)
+{
+    out->acceleration.x = 0;
+    out->acceleration.y = 0;
+
+    out->velocity.x = 0;
+    out->velocity.y = 0;
+
+    out->mass = 0;
+    out->pos.x = 0;
+    out->pos.y = 0;
+}
+
+void yk_rigidbody_add(YK_Rigidbody *out)
+{
+    yk_yektor_push(&yk_rigidbodies, out);
+}
+
+void yk_physics_innit()
+{
+    yk_yektor_innit(&yk_rigidbodies, 1, sizeof(YK_Rigidbody));
+}
+
+// I really really don't know if its better like this or to copy values.
+void yk_rigidbody_add_(YK_Vec2f *pos, f4 mass)
+{
+    yk_yektor_push(&yk_rigidbodies, &(YK_Rigidbody){*pos, {0,0} , {0,0} , mass});
+}
+
+void yk_physics_update(f4 delta)
+{
+    for (i4 i = 0; i < yk_rigidbodies.size; i++)
+    {
+        YK_Rigidbody *current = yk_yektor_get(&yk_rigidbodies, i);
+
+        YK_Vec2f _temp_a = yk_math_vec2f_mul_s(&current->acceleration, delta);
+        current->acceleration = yk_math_vec2f_add(&current->velocity, &_temp_a);
+
+        YK_Vec2f _temp_v = yk_math_vec2f_mul_s(&current->velocity, delta);
+        current->pos = yk_math_vec2f_add(&current->pos, &_temp_v);
+
+        //printf("%f \n",current->pos.x);
+    }
+}
+
+YK_Vec2f yk_rigidbody_get_pos(i4 id)
+{
+    return ((YK_Rigidbody*)yk_yektor_get(&yk_rigidbodies,id))->pos;
+}
+
+void yk_rigidbody_set_vel(i4 id, YK_Vec2f *vel)
+{
+    ((YK_Rigidbody*)yk_yektor_get(&yk_rigidbodies,id))->velocity = *vel;
+}
+
 b1 yk_physics_colliding(YK_Aabb *a, const YK_Aabb *b)
 {
     f4 halfWidthA = a->size.x / 2.0f;

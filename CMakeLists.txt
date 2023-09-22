@@ -104,5 +104,5 @@ endif()
 
 
 #temp
-add_executable(yk-test sandbox/main.c)
+add_executable(yk-test sandbox/main_physics.c)
 target_link_libraries(yk-test yk)
