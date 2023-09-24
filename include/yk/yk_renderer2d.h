@@ -50,6 +50,7 @@ typedef struct YK_Rect
 
 extern YK_Yektor yk_rects;
 extern YK_Texture white_square;
+extern i4 draw_calls;
 
 /*
 Yes, I get it. But I need to understand the goals of the renderer better to want to make it more generic.

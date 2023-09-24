@@ -1,15 +1,17 @@
 #include <yk/yk_app.h>
 
-struct player
+#define NUM 100
+
+struct entity
 {
-    YK_Vec2f rb_pos;
-    YK_Sprite sp;
+    YK_Transform transform;
+    YK_Rect sp;
 };
 
-typedef struct player player;
+typedef struct entity entity;
 
 #define SPEED 4
-void update_player(player *py)
+void update_player(entity *py)
 {
     YK_Vec2f mv = {0, 0};
 
@@ -35,8 +37,9 @@ void update_player(player *py)
 
     yk_rigidbody_set_vel(0, &mv);
     YK_Vec2f pos = yk_rigidbody_get_pos(0);
-    py->sp.transform.pos.x = pos.x;
-    py->sp.transform.pos.y = pos.y;
+    py->transform.pos.x = pos.x;
+    py->transform.pos.y = pos.y;
+    // printf("%f\n",py->transform.pos.x);
 }
 
 int main()
@@ -59,11 +62,13 @@ int main()
 
     yk_physics_innit();
 
-    player py = {.rb_pos = {0,0}};
-    yk_rigidbody_add_(&py.rb_pos, 1.f);
-    yk_sprite_innit(&py.sp, "yk-res/textures/yk.png");
+    entity py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}};
 
-    
+    yk_rigidbody_add_(&(YK_Vec2f){py.transform.pos.x, py.transform.pos.y}, 1.f);
+
+    yk_rect_innit(&py.sp);
+
+  
 
     while (yk_window_is_running(&win))
     {
@@ -78,8 +83,9 @@ int main()
         yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_sprite(&ren2d, &py.sp);
+        yk_renderer2d_render_rect(&ren2d, &py.sp, &py.transform, &(YK_Vec4f){0.5f, 0.5f, 0.5f, 1.f});
 
+        printf("draw calls: %d \n", draw_calls);
 
         yk_window_run(&win);
     }

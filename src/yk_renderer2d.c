@@ -4,6 +4,8 @@ YK_Yektor yk_rects;
 
 YK_Texture white_square;
 
+i4 draw_calls;
+
 /*
 YK_Rect yk_renderer2d_create_rect()
 {
@@ -72,35 +74,18 @@ void yk_rect_innit(YK_Rect *out)
 {
     out->shader_program = yk_shader_create("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
 
-    f4 vertices[] =
-        {
-            // Position           // Texture Coords
-            0.5f,
-            0.5f,
-            0.0f,
-            1.0f,
-            1.0f,
-            0.5f,
-            -0.5f,
-            0.0f,
-            1.0f,
-            0.0f,
-            -0.5f,
-            -0.5f,
-            0.0f,
-            0.0f,
-            0.0f,
-            -0.5f,
-            0.5f,
-            0.0f,
-            0.0f,
-            1.0f,
-        };
+   f4 vertices[] = {
+    // Position           // Texture Coords
+    0.5f,  0.5f,  0.0f,  1.0f,  1.0f,
+    0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+   -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,
+   -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+    };
 
-    u4 indices[] =
-        {
-            0, 1, 3,
-            1, 2, 3};
+    u4 indices[] = {
+    0, 1, 3,
+    1, 2, 3
+    };
 
     GLuint vbo, ebo;
     glGenVertexArrays(1, &out->vertex_arrays);
@@ -166,12 +151,14 @@ void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transf
     glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    draw_calls++;
 
     glBindVertexArray(0);
 }
 
 void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Texture *texture)
 {
+
 }
 
 void yk_rect_destroy(YK_Rect *out)
@@ -279,6 +266,8 @@ void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    draw_calls = 0;
 }
 
 void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win)
@@ -292,6 +281,8 @@ void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win)
 
     // make some kind of callback so you only need to recalculate when updating zoom/aspect ratio
     renderer->proj_mat = yk_camera2d_get_projection_matrix(renderer->current_cam, _aspect_ratio);
+
+    draw_calls = 0;
 }
 
 void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite)

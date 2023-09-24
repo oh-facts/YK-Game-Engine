@@ -1,14 +1,17 @@
 #include <yk/yk_app.h>
 
-struct player
+#define NUM 1000
+
+struct square
 {
     YK_Transform transform;
+    YK_Rect rect;
 };
 
-typedef struct player player;
+typedef struct square square;
 
 #define SPEED 4
-void update_player(player *py, f4 delta)
+void update_player(square *py, f4 delta)
 {
     YK_Vec2f mv = {0, 0};
 
@@ -44,7 +47,7 @@ int main()
 
     YK_Camera2d cam2d;
     yk_camera2d_innit(&cam2d);
-    cam2d.zoom = 1.f;
+    cam2d.zoom = 2.f;
 
     YK_Renderer2d ren2d;
     yk_renderer2d_innit(&ren2d, &cam2d, &win);
@@ -56,10 +59,24 @@ int main()
 
     yk_physics_innit();
 
-    player py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}};
+    square py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}};
 
-    YK_Rect rect;
-    yk_rect_innit(&rect);
+    yk_rect_innit(&py.rect);
+
+    yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
+
+    square squares[NUM];
+    for (int i = 0; i < NUM; i++)
+    {
+        f4 r1_x = ((float)rand() / RAND_MAX) * 20.0f - 10.f;
+        f4 r1_y = ((float)rand() / RAND_MAX) * 10.0f - 5.f;
+        f4 r2 = ((float)rand() / RAND_MAX) * 90.0f;
+        f4 r3 = ((float)rand() / RAND_MAX) * 0.5f;
+        YK_Transform trans = {{r1_x, r1_y, -2.f}, {0, 0, r2}, {r3, r3, 0}};
+
+        squares[i].transform = trans;
+        yk_rect_innit(&squares[i].rect);
+    }
 
     while (yk_window_is_running(&win))
     {
@@ -74,14 +91,30 @@ int main()
         yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_rect(&ren2d, &rect, &py.transform, &(YK_Vec4f){0.f, 0.85f, 1.f,1.f});
+        yk_renderer2d_render_rect(&ren2d, &py.rect, &py.transform, &(YK_Vec4f){0.f, 0.85f, 1.f, 1.f});
+
+        for (int i = 0; i < NUM; i++)
+        {
+            f4 timeValue = glfwGetTime() + i * 0.1f;
+            f4 r = sin(timeValue) / 2.0f + 0.5f;
+            f4 g = sin(timeValue + 2.0f) / 2.0f + 0.5f;
+            f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
+
+            squares[i].transform.rot.z = timeValue;
+            yk_renderer2d_render_rect(&ren2d, &squares[i].rect, &squares[i].transform, &(YK_Vec4f){r, g, b, 1.f});
+        }
 
         // printf("%f \n",py.transform.pos.x);
 
         yk_window_run(&win);
     }
 
-    yk_rect_destroy(&rect);
+    yk_rect_destroy(&py.rect);
+
+    for (int i = 0; i < NUM; i++)
+    {
+        yk_rect_destroy(&squares[i].rect);
+    }
 
     return 0;
 }

@@ -9,16 +9,30 @@ typedef struct YK_Vec2i
 
 } YK_Vec2i;
 
-typedef struct YK_Vec2f
+typedef union YK_Vec2f
 {
-    f4 x, y;
+    struct
+    {
+        f4 x, y;
+    };
+    struct
+    {
+        f4 u,v;
+    };
 
 } YK_Vec2f;
 
 typedef struct YK_Vec3f
 {
-    f4 x, y, z;
-
+    struct
+    {
+        f4 x, y, z;
+    };
+    struct
+    {
+        f4 r, g, b;
+    };
+    
 } YK_Vec3f;
 
 typedef union YK_Vec4f
