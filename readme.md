@@ -23,6 +23,8 @@ hi
 ```
 
 git clone https://github.com/oh-facts/YK-Game-Engine.git --recursive
+cd YK-Game-Engine
+py setup.py
 
 ```
 
