@@ -16,6 +16,6 @@ void main()
 {
     gl_Position = projection * view * model * vec4(aPos, 1.0);
 
-	//ourColor = aCol;
+	ourColor = aCol;
     texCoord = vec2(aTex.x,aTex.y);
 }

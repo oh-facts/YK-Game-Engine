@@ -6,8 +6,9 @@
 #include <yk/math/yk_math.h>
 #include <yk/yk_shader.h>
 #include <yk/yk_texture.h>
+#include <yk/data_structures/yk_yektor.h>
 
-// For mario game, I will use this renderer. After learning vulkan, I will rewrite this 
+// For mario game, I will use this renderer. After learning vulkan, I will rewrite this
 // and make it chad ish. But before that I will complete reading a couple C books I have
 // been reading. I want to complete mario hiemer 9/10
 
@@ -36,11 +37,19 @@ typedef struct YK_Sprite
     GLuint shaderProgram;
     GLuint vertex_arrays;
 
-
     YK_Transform transform;
 
     YK_Texture texture;
 } YK_Sprite;
+
+typedef struct YK_Rect
+{
+    GLuint shader_program;
+    GLuint vertex_arrays;
+} YK_Rect;
+
+extern YK_Yektor yk_rects;
+extern YK_Texture white_square;
 
 /*
 Yes, I get it. But I need to understand the goals of the renderer better to want to make it more generic.
@@ -66,10 +75,15 @@ typedef struct YK_Renderer2d
     YK_Mat4f view_mat;
 
     YK_Mat4f proj_mat;
+
 } YK_Renderer2d;
 
 // YK_Rect yk_renderer2d_create_rect();
 // void yk_renderer2d_destroy_rect(YK_Rect *rect);
+
+void yk_rect_innit(YK_Rect *out);
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform);
+void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Texture *texture);
 
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path);
 void yk_sprite_destroy(YK_Sprite *sprite);
