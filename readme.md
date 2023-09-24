@@ -41,7 +41,8 @@ binaries will be built in ``out/``
 
 ## Screenshots
 
-![niceloop0001-0378](https://github.com/oh-facts/YK-Game-Engine/assets/125090383/48e649f3-635b-4bbd-ad3f-7aebfa9d1475)
+
+https://github.com/oh-facts/YK-Game-Engine/assets/125090383/d3bc8263-2f77-41c3-b22c-bc4f0c82d618
 
 ![image](https://github.com/oh-facts/YK-Game-Engine/assets/125090383/e9e4411e-b3c7-4506-92df-da516292914e)
 
