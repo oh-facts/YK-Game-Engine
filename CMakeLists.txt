@@ -104,8 +104,8 @@ endif()
 
 
 #temp
-add_executable(yk-test sandbox/main.c)
+#add_executable(yk-test sandbox/main.c)
 #add_executable(yk-test sandbox/main_physics.c)
-#add_executable(yk-test sandbox/main_render2d.c)
+add_executable(yk-test sandbox/main_render2d.c)
 
 target_link_libraries(yk-test yk)

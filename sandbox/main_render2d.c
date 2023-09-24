@@ -56,11 +56,10 @@ int main()
 
     yk_physics_innit();
 
-    player py = {.transform={{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}} ;
-    
+    player py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}};
+
     YK_Rect rect;
     yk_rect_innit(&rect);
-
 
     while (yk_window_is_running(&win))
     {
@@ -71,16 +70,18 @@ int main()
 
         // debug_input(&cam2d, delta_time);
 
-        update_player(&py,delta_time);
+        update_player(&py, delta_time);
         yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_rect(&ren2d,&rect,&py.transform);
+        yk_renderer2d_render_rect(&ren2d, &rect, &py.transform, &(YK_Vec4f){0.f, 0.85f, 1.f,1.f});
 
-        //printf("%f \n",py.transform.pos.x);
+        // printf("%f \n",py.transform.pos.x);
 
         yk_window_run(&win);
     }
+
+    yk_rect_destroy(&rect);
 
     return 0;
 }

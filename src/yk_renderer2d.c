@@ -70,15 +70,31 @@ void yk_renderer2d_destroy_rect(YK_Rect *rect)
 */
 void yk_rect_innit(YK_Rect *out)
 {
-    out->shader_program = yk_shader_create("yk-res/shaders/rect/default.vert", "yk-res/shaders/rect/default.frag");
+    out->shader_program = yk_shader_create("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
 
     f4 vertices[] =
         {
-            // Position           // Texture Coords      // Color
-            0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.875f, 1.0f, 0.0f,      // top right
-            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.564f, 0.784f, 1.0f,   // bottom right
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.875f, 0.0f, 0.0f,    // bottom left
-            -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.129f, 0.329f, 0.647f, // top left
+            // Position           // Texture Coords
+            0.5f,
+            0.5f,
+            0.0f,
+            1.0f,
+            1.0f,
+            0.5f,
+            -0.5f,
+            0.0f,
+            1.0f,
+            0.0f,
+            -0.5f,
+            -0.5f,
+            0.0f,
+            0.0f,
+            0.0f,
+            -0.5f,
+            0.5f,
+            0.0f,
+            0.0f,
+            1.0f,
         };
 
     u4 indices[] =
@@ -99,16 +115,12 @@ void yk_rect_innit(YK_Rect *out)
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
 
     // pos attrib
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
     // texture attrib
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
-    // col attrib
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(5 * sizeof(float)));
-    glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -122,7 +134,7 @@ void yk_rect_innit(YK_Rect *out)
     glUniform1i(tex0Uni, 0);
 }
 
-void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform)
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Vec4f *col)
 {
     glUseProgram(rect->shader_program);
     glBindVertexArray(rect->vertex_arrays);
@@ -131,6 +143,7 @@ void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transf
     u4 modelLoc = glGetUniformLocation(rect->shader_program, "model");
     u4 viewLoc = glGetUniformLocation(rect->shader_program, "view");
     u4 projectionLoc = glGetUniformLocation(rect->shader_program, "projection");
+    u4 colorLoc = glGetUniformLocation(rect->shader_program, "color");
 
     {
         YK_Mat4f out;
@@ -150,6 +163,7 @@ void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transf
 
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
+    glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -158,6 +172,12 @@ void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transf
 
 void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Texture *texture)
 {
+}
+
+void yk_rect_destroy(YK_Rect *out)
+{
+    glDeleteVertexArrays(1, &(out->vertex_arrays));
+    glDeleteProgram(out->shader_program);
 }
 
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path)
@@ -256,6 +276,9 @@ void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window
     ren->view_mat = yk_camera2d_get_view_matrix(current_cam);
 
     white_square = yk_texture_create("yk-res/textures/white_square.png");
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win)
