@@ -22,6 +22,8 @@ typedef struct YK_Color YK_Color;
 #define YK_COLOR_PURPLE    ((struct YK_Color){0.5f, 0.0f, 0.5f, 1.0f})
 #define YK_COLOR_TEAL      ((struct YK_Color){0.0f, 0.5f, 0.5f, 1.0f})
 #define YK_COLOR_GRAY      ((struct YK_Color){0.5f, 0.5f, 0.5f, 1.0f})
+#define YK_COLOR_WHITE      ((struct YK_Color){1.0f, 1.0f, 1.0f, 1.0f})
+#define YK_COLOR_TRANSPARENT      ((struct YK_Color){0.0f, 0.0f, 0.0f, 0.0f})
 
 /*
 enum YK_COLOR_TYPE
