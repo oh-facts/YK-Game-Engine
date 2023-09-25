@@ -28,7 +28,7 @@ void yk_physics_innit()
 // I really really don't know if its better like this or to copy values.
 void yk_rigidbody_add_(YK_Vec2f *pos, f4 mass)
 {
-    yk_yektor_push(&yk_rigidbodies, &(YK_Rigidbody){*pos, {0,0} , {0,0} , mass});
+    yk_yektor_push(&yk_rigidbodies, &(YK_Rigidbody){*pos, {0, 0}, {0, 0}, mass});
 }
 
 void yk_physics_update(f4 delta)
@@ -40,21 +40,23 @@ void yk_physics_update(f4 delta)
         YK_Vec2f _temp_a = yk_math_vec2f_mul_s(&current->acceleration, delta);
         current->acceleration = yk_math_vec2f_add(&current->velocity, &_temp_a);
 
+        current->acceleration = yk_math_vec2f_sub(&_temp_a, &current->friction);
+
         YK_Vec2f _temp_v = yk_math_vec2f_mul_s(&current->velocity, delta);
         current->pos = yk_math_vec2f_add(&current->pos, &_temp_v);
 
-        //printf("%f \n",current->pos.x);
+        // printf("%f \n",current->pos.x);
     }
 }
 
 YK_Vec2f yk_rigidbody_get_pos(i4 id)
 {
-    return ((YK_Rigidbody*)yk_yektor_get(&yk_rigidbodies,id))->pos;
+    return ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->pos;
 }
 
 void yk_rigidbody_set_vel(i4 id, YK_Vec2f *vel)
 {
-    ((YK_Rigidbody*)yk_yektor_get(&yk_rigidbodies,id))->velocity = *vel;
+    ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->velocity = *vel;
 }
 
 b1 yk_physics_colliding(YK_Aabb *a, const YK_Aabb *b)
@@ -260,4 +262,10 @@ YK_Vec3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b)
     }
 
     return translation;
+}
+
+void yk_rigidbody_add_force(i4 id, YK_Vec2f *force)
+{
+    YK_Vec2f *_acc = &((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->acceleration;
+    *_acc = yk_math_vec2f_add(_acc, force);
 }

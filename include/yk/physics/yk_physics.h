@@ -27,6 +27,7 @@ typedef struct YK_Rigidbody
     YK_Vec2f pos;
     YK_Vec2f velocity;
     YK_Vec2f acceleration;
+    YK_Vec2f friction;
     f4 mass;
 } YK_Rigidbody;
 
@@ -36,6 +37,7 @@ void yk_rigidbody_innit(YK_Rigidbody *out);
 void yk_rigidbody_add_(YK_Vec2f *pos, f4 mass);
 YK_Vec2f yk_rigidbody_get_pos(i4 id);
 void yk_rigidbody_set_vel(i4 id, YK_Vec2f *vel);
+void yk_rigidbody_add_force(i4 id, YK_Vec2f *force);
 
 void yk_physics_innit();
 
