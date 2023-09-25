@@ -47,7 +47,7 @@ elseif(MODE STREQUAL "docker")
 elseif(MODE STREQUAL "normal" )
     set(source_code_extra "src/yk_window.c" "src/rendering/yk_renderer.c" "src/yk_app.c" "src/rendering/yk_camera.c"
         "src/yk_input.c"    "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.c" "src/rendering/yk_shader.c"
-         "src/rendering/yk_camera2d.c" "src/rendering/yk_renderer2d.c" "src/rendering/yk_texture.c"  )
+         "src/rendering/yk_camera2d.c" "src/rendering/yk_renderer2d.c" "src/rendering/yk_texture.c" "src/rendering/yk_color.c" )
 endif()
 
 add_library(${PROJECT_NAME} ${source_code_basic}  ${source_code_extra})

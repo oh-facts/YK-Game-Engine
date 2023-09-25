@@ -7,6 +7,7 @@
 #include <yk/rendering/yk_shader.h>
 #include <yk/rendering/yk_texture.h>
 #include <yk/data_structures/yk_yektor.h>
+#include <yk/rendering/yk_color.h>
 
 // For mario game, I will use this renderer. After learning vulkan, I will rewrite this
 // and make it chad ish. But before that I will complete reading a couple C books I have
@@ -83,8 +84,8 @@ typedef struct YK_Renderer2d
 // void yk_renderer2d_destroy_rect(YK_Rect *rect);
 
 void yk_rect_innit(YK_Rect *out);
-void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Vec4f* col);
-void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Vec4f* col, YK_Texture *texture);
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Color* col);
+void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Color* col, YK_Texture *texture);
 void yk_rect_destroy(YK_Rect *out);
 
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path);

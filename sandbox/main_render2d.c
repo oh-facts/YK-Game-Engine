@@ -93,7 +93,7 @@ int main()
         yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_rect_sprite(&ren2d, &py.rect, &py.transform, &(YK_Vec4f){1.f, 1.f, 1.f, 1.f},&test);
+        yk_renderer2d_render_rect_sprite(&ren2d, &py.rect, &py.transform, &YK_COLOR_BLUE, &test);
 
         for (int i = 0; i < NUM; i++)
         {
@@ -103,10 +103,10 @@ int main()
             f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
 
             squares[i].transform.rot.z = timeValue;
-            yk_renderer2d_render_rect(&ren2d, &squares[i].rect, &squares[i].transform, &(YK_Vec4f){r, g, b, 1.f});
+            yk_renderer2d_render_rect(&ren2d, &squares[i].rect, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
         }
 
-        //printf("Draw Calls: %d\n",draw_calls);
+        // printf("Draw Calls: %d\n",draw_calls);
 
         yk_window_run(&win);
     }
