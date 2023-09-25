@@ -52,6 +52,8 @@ typedef struct YK_Rect
 extern YK_Yektor yk_rects;
 extern YK_Texture white_square;
 extern i4 draw_calls;
+extern YK_Rect yk_rect_default;
+
 
 /*
 Yes, I get it. But I need to understand the goals of the renderer better to want to make it more generic.
@@ -84,8 +86,8 @@ typedef struct YK_Renderer2d
 // void yk_renderer2d_destroy_rect(YK_Rect *rect);
 
 void yk_rect_innit(YK_Rect *out);
-void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Color* col);
-void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Color* col, YK_Texture *texture);
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform *transform, YK_Color* col);
+void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform *transform, YK_Color* col, YK_Texture *texture);
 void yk_rect_destroy(YK_Rect *out);
 
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path);
@@ -99,6 +101,7 @@ void yk_sprite_set_texture(const char *texture_path);
 
 void yk_renderer2d_innit(YK_Renderer2d *renderer, YK_Camera2d *current_cam, YK_Window *win);
 void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win);
+void yk_renderer2d_cleanup();
 
 void yk_renderer2d_set_bg(f4 r, f4 g, f4 b, f4 a);
 

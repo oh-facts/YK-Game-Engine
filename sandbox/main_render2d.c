@@ -1,11 +1,10 @@
 #include <yk/yk_app.h>
 
-#define NUM 500
+#define NUM 1000
 
 struct square
 {
     YK_Transform transform;
-    YK_Rect rect;
 };
 
 typedef struct square square;
@@ -61,8 +60,6 @@ int main()
 
     square py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}};
 
-    yk_rect_innit(&py.rect);
-
     yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
 
     square squares[NUM];
@@ -75,7 +72,6 @@ int main()
         YK_Transform trans = {{r1_x, r1_y, -2.f}, {0, 0, r2}, {r3, r3, 0}};
 
         squares[i].transform = trans;
-        yk_rect_innit(&squares[i].rect);
     }
 
     YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
@@ -93,7 +89,7 @@ int main()
         yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_rect_sprite(&ren2d, &py.rect, &py.transform, &YK_COLOR_BLUE, &test);
+        yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_BLUE, &test);
 
         for (int i = 0; i < NUM; i++)
         {
@@ -103,7 +99,7 @@ int main()
             f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
 
             squares[i].transform.rot.z = timeValue;
-            yk_renderer2d_render_rect(&ren2d, &squares[i].rect, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
+            yk_renderer2d_render_rect(&ren2d, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
         }
 
         // printf("Draw Calls: %d\n",draw_calls);
@@ -111,12 +107,8 @@ int main()
         yk_window_run(&win);
     }
 
-    yk_rect_destroy(&py.rect);
-
-    for (int i = 0; i < NUM; i++)
-    {
-        yk_rect_destroy(&squares[i].rect);
-    }
+    yk_renderer2d_cleanup();
+    yk_window_destroy(&win);    
 
     return 0;
 }

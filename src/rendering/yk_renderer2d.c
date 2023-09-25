@@ -4,6 +4,8 @@ YK_Yektor yk_rects;
 
 YK_Texture white_square;
 
+YK_Rect yk_rect_default;
+
 i4 draw_calls;
 
 /*
@@ -120,21 +122,21 @@ void yk_rect_innit(YK_Rect *out)
     glUniform1i(tex0Uni, 0);
 }
 
-void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Color *col)
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer,YK_Transform *transform, YK_Color *col)
 {
-    yk_renderer2d_render_rect_sprite(renderer, rect, transform, col, &white_square);
+    yk_renderer2d_render_rect_sprite(renderer, transform, col, &white_square);
 }
 
-void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Color *col, YK_Texture *texture)
+void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform *transform, YK_Color *col, YK_Texture *texture)
 {
-    glUseProgram(rect->shader_program);
-    glBindVertexArray(rect->vertex_arrays);
+    glUseProgram(yk_rect_default.shader_program);
+    glBindVertexArray(yk_rect_default.vertex_arrays);
     glBindTexture(GL_TEXTURE_2D, texture->id);
 
-    u4 modelLoc = glGetUniformLocation(rect->shader_program, "model");
-    u4 viewLoc = glGetUniformLocation(rect->shader_program, "view");
-    u4 projectionLoc = glGetUniformLocation(rect->shader_program, "projection");
-    u4 colorLoc = glGetUniformLocation(rect->shader_program, "color");
+    u4 modelLoc = glGetUniformLocation(yk_rect_default.shader_program, "model");
+    u4 viewLoc = glGetUniformLocation(yk_rect_default.shader_program, "view");
+    u4 projectionLoc = glGetUniformLocation(yk_rect_default.shader_program, "projection");
+    u4 colorLoc = glGetUniformLocation(yk_rect_default.shader_program, "color");
 
     {
         YK_Mat4f out;
@@ -265,6 +267,8 @@ void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window
 
     white_square = yk_texture_create("yk-res/textures/white_square.png");
 
+    yk_rect_innit(&yk_rect_default);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -313,4 +317,9 @@ void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite)
 void yk_renderer2d_set_bg(f4 r, f4 g, f4 b, f4 a)
 {
     glClearColor(r, g, b, a);
+}
+
+void yk_renderer2d_cleanup()
+{
+    yk_rect_destroy(&yk_rect_default);
 }

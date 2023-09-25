@@ -4,6 +4,6 @@
 #include <glad/glad.h>
 #include <yk/yk_file_reader.h>
 
-GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile);
+GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile);  
 
 #endif
