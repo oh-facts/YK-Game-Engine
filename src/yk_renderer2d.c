@@ -74,18 +74,33 @@ void yk_rect_innit(YK_Rect *out)
 {
     out->shader_program = yk_shader_create("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
 
-   f4 vertices[] = {
-    // Position           // Texture Coords
-    0.5f,  0.5f,  0.0f,  1.0f,  1.0f,
-    0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-   -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,
-   -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+    f4 vertices[] = {
+        // Position           // Texture Coords
+        0.5f,
+        0.5f,
+        0.0f,
+        1.0f,
+        1.0f,
+        0.5f,
+        -0.5f,
+        0.0f,
+        1.0f,
+        0.0f,
+        -0.5f,
+        -0.5f,
+        0.0f,
+        0.0f,
+        0.0f,
+        -0.5f,
+        0.5f,
+        0.0f,
+        0.0f,
+        1.0f,
     };
 
     u4 indices[] = {
-    0, 1, 3,
-    1, 2, 3
-    };
+        0, 1, 3,
+        1, 2, 3};
 
     GLuint vbo, ebo;
     glGenVertexArrays(1, &out->vertex_arrays);
@@ -121,9 +136,14 @@ void yk_rect_innit(YK_Rect *out)
 
 void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Vec4f *col)
 {
+    yk_renderer2d_render_rect_sprite(renderer, rect, transform, col, &white_square);
+}
+
+void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Vec4f *col, YK_Texture *texture)
+{
     glUseProgram(rect->shader_program);
     glBindVertexArray(rect->vertex_arrays);
-    glBindTexture(GL_TEXTURE_2D, white_square.id);
+    glBindTexture(GL_TEXTURE_2D, texture->id);
 
     u4 modelLoc = glGetUniformLocation(rect->shader_program, "model");
     u4 viewLoc = glGetUniformLocation(rect->shader_program, "view");
@@ -154,11 +174,6 @@ void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transf
     draw_calls++;
 
     glBindVertexArray(0);
-}
-
-void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Texture *texture)
-{
-
 }
 
 void yk_rect_destroy(YK_Rect *out)

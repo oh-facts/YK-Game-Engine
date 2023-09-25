@@ -1,6 +1,6 @@
 #include <yk/yk_app.h>
 
-#define NUM 1000
+#define NUM 500
 
 struct square
 {
@@ -78,6 +78,8 @@ int main()
         yk_rect_innit(&squares[i].rect);
     }
 
+    YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
+
     while (yk_window_is_running(&win))
     {
 
@@ -91,7 +93,7 @@ int main()
         yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_rect(&ren2d, &py.rect, &py.transform, &(YK_Vec4f){0.f, 0.85f, 1.f, 1.f});
+        yk_renderer2d_render_rect_sprite(&ren2d, &py.rect, &py.transform, &(YK_Vec4f){1.f, 1.f, 1.f, 1.f},&test);
 
         for (int i = 0; i < NUM; i++)
         {
@@ -104,7 +106,7 @@ int main()
             yk_renderer2d_render_rect(&ren2d, &squares[i].rect, &squares[i].transform, &(YK_Vec4f){r, g, b, 1.f});
         }
 
-        // printf("%f \n",py.transform.pos.x);
+        //printf("Draw Calls: %d\n",draw_calls);
 
         yk_window_run(&win);
     }

@@ -84,7 +84,7 @@ typedef struct YK_Renderer2d
 
 void yk_rect_innit(YK_Rect *out);
 void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Vec4f* col);
-void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Texture *texture);
+void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Rect *rect, YK_Transform *transform, YK_Vec4f* col, YK_Texture *texture);
 void yk_rect_destroy(YK_Rect *out);
 
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path);
