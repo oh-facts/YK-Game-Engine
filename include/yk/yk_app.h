@@ -10,8 +10,8 @@
 #include <yk/data_structures/yk_yektor.h>
 #include <yk/yk_scene.h>
 #include <yk/physics/yk_physics.h>
-#include <yk/yk_renderer2d.h>
-#include <yk/yk_camera2d.h>
+#include <yk/rendering/yk_renderer2d.h>
+#include <yk/rendering/yk_camera2d.h>
 
 typedef struct YK_App
 {

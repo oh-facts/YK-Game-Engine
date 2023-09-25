@@ -1,4 +1,4 @@
-#include <yk/yk_renderer2d.h>
+#include <yk/rendering/yk_renderer2d.h>
 
 YK_Yektor yk_rects;
 

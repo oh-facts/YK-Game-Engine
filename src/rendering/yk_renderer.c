@@ -1,4 +1,4 @@
-#include <yk/yk_renderer.h>
+#include <yk/rendering/yk_renderer.h>
 #include <stb/stb_image.h>
 
 YK_Render_object yk_render_object_create(YK_Render_object_type type, const char *imageFile)

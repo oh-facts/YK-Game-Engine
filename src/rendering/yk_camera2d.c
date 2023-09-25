@@ -1,4 +1,4 @@
-#include <yk/yk_camera2d.h>
+#include <yk/rendering/yk_camera2d.h>
 
 void yk_camera2d_innit(YK_Camera2d *camera)
 {

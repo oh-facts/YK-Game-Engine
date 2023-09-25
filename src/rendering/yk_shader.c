@@ -1,4 +1,4 @@
-#include <yk/yk_shader.h>
+#include <yk/rendering/yk_shader.h>
 
 
 GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile)

@@ -2,9 +2,9 @@
 #define YK_RENDERER_H
 
 #include <glad/glad.h>
-#include <yk/yk_camera.h>
+#include <yk/rendering/yk_camera.h>
 #include <yk/math/yk_math.h>
-#include <yk/yk_shader.h>
+#include <yk/rendering/yk_shader.h>
 
 typedef enum YK_Render_object_type
 {

@@ -1,4 +1,4 @@
-#include <yk/yk_texture.h>
+#include <yk/rendering/yk_texture.h>
 
 YK_Texture yk_texture_create(const char *path)
 {

@@ -1,4 +1,4 @@
-#include <yk/yk_camera.h>
+#include <yk/rendering/yk_camera.h>
 #include <yk/yk_input.h>
 
 void _camera_mouse_movement(YK_Camera *camera);

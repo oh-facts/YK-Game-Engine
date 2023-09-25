@@ -2,10 +2,10 @@
 #define YK_RENDERER2D_H
 
 #include <glad/glad.h>
-#include <yk/yk_camera2d.h>
+#include <yk/rendering/yk_camera2d.h>
 #include <yk/math/yk_math.h>
-#include <yk/yk_shader.h>
-#include <yk/yk_texture.h>
+#include <yk/rendering/yk_shader.h>
+#include <yk/rendering/yk_texture.h>
 #include <yk/data_structures/yk_yektor.h>
 
 // For mario game, I will use this renderer. After learning vulkan, I will rewrite this
