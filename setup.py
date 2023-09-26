@@ -1,11 +1,17 @@
 import subprocess
 import os
 import configparser
+import sys
 
 SCRIPTS_FOLDER = "scripts\internal"
 CONFIG_FILE = "config.ini"
 
-def main():
+def main(arg1):
+    print(arg1)
+    if(arg1 == "2"):
+        execute_script(get_last_script());
+        return
+    # oh god oh fuck I need to rewrite this slop.
     print("\nWelcome! I'll help compile the engine for you.")
 
     setup_option = choose_option("\nChoose an option:", ["First time setup", "Reload last script"])
@@ -83,4 +89,4 @@ def write_config(config):
         config.write(configfile)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
