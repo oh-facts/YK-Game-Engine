@@ -10,8 +10,8 @@ struct entity
 
 typedef struct entity entity;
 
-#define SPEED 4
-#define JUMP_FORCE ((YK_Vec2f){0.f, 5000.f})
+#define SPEED 5
+#define JUMP_FORCE ((YK_Vec2f){0.f, 800.f})
 void update_player(entity *py)
 {
     YK_Vec2f mv = {0, 0};
@@ -38,8 +38,7 @@ void update_player(entity *py)
     if (yk_input_is_key_tapped(YK_KEY_SPACE))
     {
         yk_rigidbody_add_force(0, &JUMP_FORCE);
-        YK_Vec2f acc = ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies,0))->acceleration;
-        yk_vec2f_print(&acc);
+        YK_Vec2f acc = ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, 0))->acceleration;
     }
 
     yk_rigidbody_set_vel(0, &mv);
@@ -75,6 +74,8 @@ int main()
 
     yk_rect_innit(&py.sp);
 
+    //  yk_window_set_vsync(&win, true);
+
     while (yk_window_is_running(&win))
     {
 
@@ -82,15 +83,17 @@ int main()
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-        // debug_input(&cam2d, delta_time);
 
         update_player(&py);
+
         yk_physics_update(delta_time);
+
+        // debug_input(&cam2d, delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
         yk_renderer2d_render_rect(&ren2d, &py.transform, &YK_COLOR_WHITE);
 
-        //printf("draw calls: %d \n", draw_calls);
+        // printf("draw calls: %d \n", draw_calls);
 
         yk_window_run(&win);
     }

@@ -31,21 +31,30 @@ void yk_rigidbody_add_(YK_Vec2f *pos, f4 mass)
     yk_yektor_push(&yk_rigidbodies, &(YK_Rigidbody){*pos, {0, 0}, {0, 0}, mass});
 }
 
+f4 accumulator = 0.f;
+#define fixed_delta 0.001f
+
 void yk_physics_update(f4 delta)
 {
-    for (i4 i = 0; i < yk_rigidbodies.size; i++)
+    accumulator += delta;
+
+    while (accumulator > fixed_delta)
     {
-        YK_Rigidbody *current = yk_yektor_get(&yk_rigidbodies, i);
 
-        YK_Vec2f _temp_a = yk_math_vec2f_mul_s(&current->acceleration, delta);
-        current->acceleration = yk_math_vec2f_add(&current->velocity, &_temp_a);
+        for (i4 i = 0; i < yk_rigidbodies.size; i++)
+        {
+            YK_Rigidbody *current = yk_yektor_get(&yk_rigidbodies, i);
 
-        current->acceleration = yk_math_vec2f_sub(&_temp_a, &current->friction);
+            YK_Vec2f _at = yk_math_vec2f_mul_s(&current->acceleration, fixed_delta);
 
-        YK_Vec2f _temp_v = yk_math_vec2f_mul_s(&current->velocity, delta);
-        current->pos = yk_math_vec2f_add(&current->pos, &_temp_v);
+            current->velocity = yk_math_vec2f_add(&current->velocity, &_at);
 
-        // printf("%f \n",current->pos.x);
+            YK_Vec2f _temp_v = yk_math_vec2f_mul_s(&current->velocity, fixed_delta);
+            current->pos = yk_math_vec2f_add(&current->pos, &_temp_v);
+
+            // printf("%f \n",current->pos.x);
+        }
+        accumulator -= fixed_delta;
     }
 }
 
@@ -57,6 +66,12 @@ YK_Vec2f yk_rigidbody_get_pos(i4 id)
 void yk_rigidbody_set_vel(i4 id, YK_Vec2f *vel)
 {
     ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->velocity = *vel;
+}
+
+void yk_rigidbody_add_force(i4 id, YK_Vec2f *force)
+{
+    YK_Vec2f *_acc = &((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->acceleration;
+    *_acc = yk_math_vec2f_add(_acc, force);
 }
 
 b1 yk_physics_colliding(YK_Aabb *a, const YK_Aabb *b)
@@ -262,10 +277,4 @@ YK_Vec3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b)
     }
 
     return translation;
-}
-
-void yk_rigidbody_add_force(i4 id, YK_Vec2f *force)
-{
-    YK_Vec2f *_acc = &((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->acceleration;
-    *_acc = yk_math_vec2f_add(_acc, force);
 }

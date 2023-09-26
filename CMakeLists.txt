@@ -83,14 +83,14 @@ endif()
 if(MODE STREQUAL "normal")
     add_custom_target(
         yk_copy-resources ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
             ${CMAKE_BINARY_DIR}/yk-res
     )
     
     add_custom_target(
         yk_copy-resources-example ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
             ${CMAKE_CURRENT_BINARY_DIR}/yk-res
     )

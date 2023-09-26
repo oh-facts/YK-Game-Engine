@@ -89,7 +89,7 @@ int main()
         yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_BLUE, &test);
+        yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
 
         for (int i = 0; i < NUM; i++)
         {

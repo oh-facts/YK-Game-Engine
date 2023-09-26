@@ -28,5 +28,12 @@
   v0.1.0
     1. make api
     2. clean up engine
-    
+
+
+
+  Renderer2d
+    1. Rect tiling
+  Physics2d
+    1. friction, acceleration : completed acceleration and time step.
+     
 */
