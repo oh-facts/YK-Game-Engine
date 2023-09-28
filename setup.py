@@ -101,7 +101,7 @@ def innit(os_type):
         subprocess.call(["scripts\\internal\\innit.bat"])
         print("f \n")
     elif os_type == "Linux":
-        subprocess.call(["scripts/internal/innit.bat"])
+        subprocess.call(["scripts/internal/innit.sh"])
 
 def get_script_name(os_type):
     cum_name = "temp_script"
