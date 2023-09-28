@@ -1,76 +1,148 @@
-import subprocess
-import os
-import configparser
 import sys
+import os
+import subprocess
+import configparser
 
-SCRIPTS_FOLDER = "scripts\internal"
+# v2 of magic make. next time I rewrite this, it will actually work
+
 CONFIG_FILE = "config.ini"
 
-def main(arg1):
-    print(arg1)
-    if(arg1 == "2"):
-        execute_script(get_last_script());
-        return
-    # oh god oh fuck I need to rewrite this slop.
-    print("\nWelcome! I'll help compile the engine for you.")
+def build_script():
+    print("Hi.\n")
+    prompt_os = "Pick OS\n"
+    prompt_os += "If you press something that is not in the options, I will simply crash this script. Please don't test my patience.\n"
 
-    setup_option = choose_option("\nChoose an option:", ["First time setup", "Reload last script"])
+    type_os = choose_option(prompt_os, ["Windows", "Linux"])
 
-    if setup_option == 1:
-        platform = choose_option("\nChoose a platform:", ["Windows", "Docker (headless)"])
-        if platform == 1:
-            build_type = choose_option("\nChoose build type:", ["Debug", "Release", "Debug - Headless", "Release - Headless"])
-            script_options = ["dgen.bat", "gen.bat", "dgen_h.bat", "gen_h.bat"]
-            if build_type in range(1, len(script_options) + 1):
-                execute_script(os.path.join(SCRIPTS_FOLDER, script_options[build_type - 1]))
-            else:
-                print("Invalid build type. Exiting.\n")
-        elif platform == 2:
-            execute_script(os.path.join(SCRIPTS_FOLDER,"docker_image.bat"))
-        else:
-            print("Invalid platform choice. Exiting.\n")
-    elif setup_option == 2:
-        last_script = get_last_script()
-        if last_script:
-            execute_script(last_script)
-        else:
-            print("No last script found. Exiting.\n")
-    else:
-        print("Invalid option. Exiting.\n")
+    prompt_build = "Pick Build type"
+    type_build = choose_option(prompt_build, ["Debug", "Release"])
+
+    prompt_compiler = "Pick Compiler"
+    type_compiler = choose_option(prompt_compiler, ["clang", "gcc"])
+
+    prompt_build_system = "Pick cmake generator"
+    type_build_system = choose_option(prompt_build_system, ["ninja", "makefile"])
+
+    innit(type_os)
+
+    cum = "cmake -B " + build_path_command(type_build) + " " + build_compiler_type(type_compiler)
+    cum += " -DMODE=normal -G " + build_generator(type_build_system, type_os)  + "\n"
+    cum += "cd " + build_path_command(type_build) + "\n"
+    cum += build_generator_command(type_build_system)
+
+    cum_name = get_script_name(type_os)
+    save_script_to_config(cum_name, cum)
+
+    print(cum)
 
 def choose_option(prompt, options):
-    print(prompt)
-    for i, option in enumerate(options, start=1):
-        print(f"{i}. {option}")
     while True:
+        print(prompt)
+        for idx, opt in enumerate(options, start=1):
+            print(f"{idx}. {opt}")
+        choice = input("Enter the number of your choice: ")
         try:
-            choice = int(input("\nEnter the number of your choice: \n"))
+            choice = int(choice)
             if 1 <= choice <= len(options):
-                return choice
+                return options[choice - 1]
             else:
-                print("\nInvalid choice. Please enter a valid number.\n")
+                print("Invalid choice. Please select a valid option.")
         except ValueError:
-            print("\nInvalid input. Please enter a number.\n")
+            print("Invalid input. Please enter a valid number.")
 
-def execute_script(script_path):
-    try:
-        subprocess.run([script_path], shell=True, check=True)
-        print("\nScript execution successful!\n")
-        update_last_script(script_path)
-    except subprocess.CalledProcessError:
-        print(f"\nError executing {script_path} script.\n")
+def build_type_command(build_type):
+    prefix = "-DCMAKE_BUILD_TYPE="
 
-def update_last_script(script_path):
+    dick = {}
+    dick["Debug"] = "Debug"
+    dick["Release"] = "Release"
+
+    return prefix + dick[build_type]
+
+def build_path_command(build_type):
+    prefix = "out/"
+    dick = {}
+    dick["Debug"] = "debug"
+    dick["Release"] = "release"
+
+    return prefix +  dick[build_type]
+
+def build_compiler_type(build_type):
+    dick = {}
+    dick["clang"] = "-DUSE_CLANG"
+    dick["gcc"] = "-DUSE_GCC"
+    dick["msvc"] = "-DUSE_MSVC"
+
+    return dick[build_type] + "=ON"
+
+def build_generator(build_type, os_type):
+    dick = {}
+    dick["ninja"] = "\"Ninja\""
+
+    if os_type == "Windows":
+        dick["makefile"] = "\"MinGW Makefiles\""
+    elif os_type == "Linux":
+        dick["makefile"] = "\"Unix Makefiles\""
+    else:
+        print("Invalid OS selection.")
+        exit()
+
+    return dick[build_type]
+
+def build_generator_command(build_type):
+    dick = {}
+    dick["ninja"] = "ninja"
+    dick["makefile"] = "make"
+
+    return dick[build_type]
+
+def innit(os_type):
+    if os_type == "Windows":
+        subprocess.call(["scripts\\internal\\innit.bat"])
+        print("f \n")
+    elif os_type == "Linux":
+        subprocess.call(["scripts/internal/innit.bat"])
+
+def get_script_name(os_type):
+    cum_name = "temp_script"
+    if(os_type == "Windows"):
+        cum_name += ".bat"
+    elif(os_type == "Linux"):
+        cum_name += ".sh"
+    return cum_name
+
+def save_script_to_config(script_name, script_data):
     config = read_config()
-    config.set('General', 'last_script', script_path)
+    config.set('General', 'last_script_name', script_name)
+    config.set('General', 'last_script_data', script_data)
     write_config(config)
 
-def get_last_script():
+def load_script_from_config():
     config = read_config()
-    if config.has_option('General', 'last_script'):
-        return config.get('General', 'last_script')
+    script_name = config.get('General', 'last_script_name', fallback=None)
+    script_data = config.get('General', 'last_script_data', fallback=None)
+    return script_name, script_data
+
+def execute_script(script_name, script_data):
+    if script_name and script_data:
+        with open(script_name, 'w') as f:
+            f.write(script_data)
+
+        if os.name == 'posix' and script_name.endswith('.sh'):
+            subprocess.call(["bash", script_name])  # Execute as a shell script on Unix-based systems
+        else:
+            subprocess.call([script_name])  # Execute on Windows and other systems
+
+        os.remove(script_name)
+
+def run_last_script():
+    script_name, script_data = load_script_from_config()
+    if script_name and script_data:
+        print("Executing the last script:\n")
+        print(script_data)
+        execute_script(script_name, script_data)
     else:
-        return None
+        print("No last script found in the config.ini file.")
 
 def read_config():
     config = configparser.ConfigParser()
@@ -83,10 +155,15 @@ def read_config():
     
     return config
 
-
 def write_config(config):
     with open(CONFIG_FILE, 'w') as configfile:
         config.write(configfile)
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    if(len(sys.argv) == 2):
+        if(sys.argv[1] == "r"):
+            run_last_script()
+            exit()
+
+    build_script()
+    execute_script(*load_script_from_config())

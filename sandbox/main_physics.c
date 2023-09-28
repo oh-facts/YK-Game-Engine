@@ -1,11 +1,12 @@
 #include <yk/yk_app.h>
 
-#define NUM 100
-
+// store data owner by others a pointer you twat (4:54am 9/27)
+// What was I trying to say? (4:11pm 9/27)
 struct entity
 {
+    i4 id;
     YK_Transform transform;
-    YK_Rect sp;
+    YK_Aabb aabb;
 };
 
 typedef struct entity entity;
@@ -38,14 +39,21 @@ void update_player(entity *py)
     if (yk_input_is_key_tapped(YK_KEY_SPACE))
     {
         yk_rigidbody_add_force(0, &JUMP_FORCE);
-        YK_Vec2f acc = ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, 0))->acceleration;
+        YK_Vec2f acc = ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, py->id))->acceleration;
     }
 
-    yk_rigidbody_set_vel(0, &mv);
-    YK_Vec2f pos = yk_rigidbody_get_pos(0);
+    yk_rigidbody_set_vel(py->id, &mv);
+    YK_Vec2f pos = yk_rigidbody_get_pos(py->id);
     py->transform.pos.x = pos.x;
     py->transform.pos.y = pos.y;
     // printf("%f\n",py->transform.pos.x);
+}
+
+#define GRAVITY ((YK_Vec2f){0.f, -9.8f})
+
+void gravity(int id)
+{
+    // yk_rigidbody_add_force(id, &GRAVITY);
 }
 
 int main()
@@ -68,11 +76,18 @@ int main()
 
     yk_physics_innit();
 
-    entity py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}};
+    entity py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}, .id = 0};
 
     yk_rigidbody_add_(&(YK_Vec2f){py.transform.pos.x, py.transform.pos.y}, 1.f);
+    py.aabb.pos.x = py.transform.pos.x;
+    py.aabb.pos.y = py.transform.pos.y;
+    py.aabb.size.x = py.transform.scale.x;
+    py.aabb.size.y = py.transform.scale.y;
 
-    yk_rect_innit(&py.sp);
+    entity floor = {.transform = {{0, -2.f, -2.f}, {0, 0, 0}, {5.f, 1.f, 0}}, .id = 1};
+    yk_rigidbody_add_(&(YK_Vec2f){floor.transform.pos.x, floor.transform.pos.y}, 1.f);
+
+    YK_Texture outline = yk_texture_create("yk-res/textures/outline.png");
 
     //  yk_window_set_vsync(&win, true);
 
@@ -83,15 +98,18 @@ int main()
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
-
         update_player(&py);
+        gravity(py.id);
 
         yk_physics_update(delta_time);
 
         // debug_input(&cam2d, delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        yk_renderer2d_render_rect(&ren2d, &py.transform, &YK_COLOR_WHITE);
+
+        // yk_renderer2d_render_rect(&ren2d, &py.transform, &YK_COLOR_WHITE);
+        yk_renderer2d_render_rect(&ren2d, &floor.transform, &YK_COLOR_WHITE);
+        yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &outline);
 
         // printf("draw calls: %d \n", draw_calls);
 

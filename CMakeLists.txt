@@ -4,6 +4,25 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #project name
 project(yk)
 
+option(USE_MSVC "Use msvc" OFF)
+option(USE_GCC "Use GCC " OFF)
+option(USE_CLANG "Use clang (goated)" OFF)
+
+if(USE_MSVC)
+    set(CC "cl")
+    set(CXX "cl")
+   
+elseif(USE_GCC)
+    set(CC "gcc")
+    set(CXX "g++")
+elseif(USE_CLANG)
+    set(CC "clang")
+    set(CXX "clang++")
+    message("clang compiler chosen")
+else()
+    message(FATAL_ERROR "Please select a compiler using options in your CMake command (e.g., -DUSE_MSVC=ON)")
+endif()
+
 set(MODE "normal" CACHE STRING "Set the mode: normal, headless, or docker")
 
 if(MODE STREQUAL "normal")
@@ -83,20 +102,20 @@ endif()
 if(MODE STREQUAL "normal")
     add_custom_target(
         yk_copy-resources ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
             ${CMAKE_BINARY_DIR}/yk-res
     )
-    
-    add_custom_target(
-        yk_copy-resources-example ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
-            ${CMAKE_CURRENT_BINARY_DIR}/yk-res
-    )
+
 endif()
 
-
+    
+add_custom_target(
+    yk_copy-resources-example ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/yk-res
+        ${CMAKE_CURRENT_BINARY_DIR}/yk-res
+)
 
 
 #----------------------#

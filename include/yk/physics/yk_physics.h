@@ -51,4 +51,24 @@ void yk_physics_resolve_collision(YK_Aabb *a, const YK_Aabb *b);
 
 YK_Vec3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b);
 
+
+
+struct YK_AABB
+{
+    YK_Vec2f min;
+    YK_Vec2f max;
+};
+
+typedef struct YK_AABB YK_AABB;
+
+
+b1 yk_physics_aabb_overlap_test(YK_AABB* a, YK_AABB* b);
+
+
+struct YK_Particle
+{
+    YK_Vec3f pos;
+    
+} YK_Particle;
+
 #endif

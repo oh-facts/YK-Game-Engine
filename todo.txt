@@ -33,6 +33,7 @@
 
   Renderer2d
     1. Rect tiling
+    2. rendering priority
   Physics2d
     1. friction, acceleration : completed acceleration and time step.
      

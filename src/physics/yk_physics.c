@@ -25,6 +25,8 @@ void yk_physics_innit()
     yk_yektor_innit(&yk_rigidbodies, 1, sizeof(YK_Rigidbody));
 }
 
+
+
 // I really really don't know if its better like this or to copy values.
 void yk_rigidbody_add_(YK_Vec2f *pos, f4 mass)
 {
@@ -55,6 +57,7 @@ void yk_physics_update(f4 delta)
             // printf("%f \n",current->pos.x);
         }
         accumulator -= fixed_delta;
+
     }
 }
 
@@ -277,4 +280,21 @@ YK_Vec3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b)
     }
 
     return translation;
+}
+
+b1 yk_physics_aabb_overlap_test(YK_AABB* a, YK_AABB* b)
+{
+    f4 d1x = b->min.x - a->max.x;
+    f4 d1y = b->min.y - a->max.y;
+    f4 d2x = a->min.x - b->max.x;
+    f4 d2y = a->min.y - b->max.y;
+
+    if (d1x > 0.0f || d1y > 0.0f)
+        return false;
+
+    if (d2x > 0.0f || d2y > 0.0f)
+        return false;
+
+    return true;
+
 }
