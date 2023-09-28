@@ -11,7 +11,7 @@ hi
 ## Features
 1. 2d/3d rendering
 2. entity-component-system
-3. rigid body physics
+3. rigid body physics (wip)
 4. collision detection and resolution
 5. math module
   
@@ -24,15 +24,15 @@ hi
 
 git clone https://github.com/oh-facts/YK-Game-Engine.git --recursive
 cd YK-Game-Engine
-py setup.py
+python setup.py
 
 ```
 
 #
-**Supported platforms:** Win32, Docker (headless build)
+**Supported platforms:** win32, linux (tested on ubuntu and arch), probably mac (assuming they haven't killed opengl driver support)
   
 
-``setup.py``: compiles the engine based on preferences
+``setup.py``: compiles the engine based on preferences.
 
   
 
@@ -55,25 +55,33 @@ https://github.com/oh-facts/YK-Game-Engine/assets/125090383/d3bc8263-2f77-41c3-b
 
   
 
-1. cmake cli
+1. cmake
 
-2. ninja build system *
+2. ninja or make
 
-3. clang *
-4. VS Build tools *
+3. clang or gcc or mingw or msvc
 
-\* These are optional. setup.py uses them to compile the engine, but you can run your own cmake command and pick your own compiler/build system.
+4. python *
+
+
+\* python is optional. You can run cmake commands yourself to compile for your compiler/architecture of choice. setup.py can do it for you otherwise
+
+## Tutorial
+
+### wip
+
+You can check out sandbox for samples. Although it usually has deprecated code because of how often the api changes.
   
 
 ## Third Party APIs
 
   
 
-- **[GLFW](https://github.com/glfw/glfw)**: windowing / input handling
+- **[GLFW](https://github.com/glfw/glfw)**: window / input handling
 
   
 
-- **[glad](https://github.com/Dav1dde/glad)**: OpenGL functions loader
+- **[glad](https://github.com/Dav1dde/glad)**: OpenGL spec api
 
   
 
