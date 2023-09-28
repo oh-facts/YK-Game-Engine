@@ -23,10 +23,10 @@ typedef struct YK_App
     f4 last_frame;
 } YK_App;
 
-YK_API void yk_app_innit(YK_App *app);
-YK_API void yk_app_run(YK_App *app);
-YK_API void yk_app_quit(YK_App *app);
+void yk_app_innit(YK_App *app);
+void yk_app_run(YK_App *app);
+void yk_app_quit(YK_App *app);
 
-YK_API void yk_app_is_running(YK_App *app);
+void yk_app_is_running(YK_App *app);
 
 #endif

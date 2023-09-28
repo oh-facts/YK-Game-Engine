@@ -2,12 +2,12 @@
 
 /*
 
-YK_API void yk_app_is_running(YK_App *app)
+ void yk_app_is_running(YK_App *app)
 {
   //return !glfwWindowShouldClose(app->m_win.win_ptr);
 }
 
-YK_API void yk_app_innit(YK_App *app)
+ void yk_app_innit(YK_App *app)
 {
   yk_window_innit(&app->m_win);
   yk_scene_innit(&app->m_scene);
@@ -16,7 +16,7 @@ YK_API void yk_app_innit(YK_App *app)
   app->last_frame = 0.0f;
 }
 
-YK_API void yk_app_run(YK_App *app)
+ void yk_app_run(YK_App *app)
 {
 
   // int ent1 = yk_ecs_create_entity();
@@ -51,7 +51,7 @@ YK_API void yk_app_run(YK_App *app)
   */
 
 /*
-YK_API void yk_app_quit(YK_App *app)
+ void yk_app_quit(YK_App *app)
 {
   yk_window_quit(&app->m_win);
 }
