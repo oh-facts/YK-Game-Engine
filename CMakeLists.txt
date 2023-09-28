@@ -4,25 +4,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #project name
 project(yk)
 
-option(USE_MSVC "Use msvc" OFF)
-option(USE_GCC "Use GCC " OFF)
-option(USE_CLANG "Use clang (goated)" OFF)
-
-if(USE_MSVC)
-    set(CC "cl")
-    set(CXX "cl")
-   
-elseif(USE_GCC)
-    set(CC "gcc")
-    set(CXX "g++")
-elseif(USE_CLANG)
-    set(CC "clang")
-    set(CXX "clang++")
-    message("clang compiler chosen")
-else()
-    message(FATAL_ERROR "Please select a compiler using options in your CMake command (e.g., -DUSE_MSVC=ON)")
-endif()
-
 set(MODE "normal" CACHE STRING "Set the mode: normal, headless, or docker")
 
 if(MODE STREQUAL "normal")
@@ -124,7 +105,7 @@ add_custom_target(
 
 #temp
 #add_executable(yk-test sandbox/main.c)
-add_executable(yk-test sandbox/main_physics.c)
-#add_executable(yk-test sandbox/main_render2d.c)
+#add_executable(yk-test sandbox/main_physics.c)
+add_executable(yk-test sandbox/main_render2d.c)
 
 target_link_libraries(yk-test yk)

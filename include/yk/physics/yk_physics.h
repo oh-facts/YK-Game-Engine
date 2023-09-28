@@ -69,6 +69,8 @@ struct YK_Particle
 {
     YK_Vec3f pos;
     
-} YK_Particle;
+};
+
+typedef struct YK_Particle YK_Particle;
 
 #endif

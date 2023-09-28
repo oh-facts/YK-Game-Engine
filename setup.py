@@ -18,14 +18,14 @@ def build_script():
     type_build = choose_option(prompt_build, ["Debug", "Release"])
 
     prompt_compiler = "Pick Compiler"
-    type_compiler = choose_option(prompt_compiler, ["clang", "gcc"])
+    type_compiler = choose_option(prompt_compiler, ["clang", "gcc", "msvc"])
 
     prompt_build_system = "Pick cmake generator"
     type_build_system = choose_option(prompt_build_system, ["ninja", "makefile"])
 
     innit(type_os)
 
-    cum = "cmake -B " + build_path_command(type_build) + " " + build_compiler_type(type_compiler)
+    cum = "cmake " +  build_compiler_type(type_compiler) +  " -B " + build_path_command(type_build)
     cum += " -DMODE=normal -G " + build_generator(type_build_system, type_os)  + "\n"
     cum += "cd " + build_path_command(type_build) + "\n"
     cum += build_generator_command(type_build_system)
@@ -69,11 +69,11 @@ def build_path_command(build_type):
 
 def build_compiler_type(build_type):
     dick = {}
-    dick["clang"] = "-DUSE_CLANG"
-    dick["gcc"] = "-DUSE_GCC"
-    dick["msvc"] = "-DUSE_MSVC"
+    dick["clang"] = "-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++"
+    dick["gcc"] = "-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++"
+    dick["msvc"] = "-DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl"
 
-    return dick[build_type] + "=ON"
+    return dick[build_type]
 
 def build_generator(build_type, os_type):
     dick = {}
