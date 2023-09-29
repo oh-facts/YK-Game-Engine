@@ -32,7 +32,7 @@ python setup.py
 **Supported platforms:** win32, linux (tested on ubuntu and arch), probably mac (assuming they haven't killed opengl driver support)
   
 
-``setup.py``: compiles the engine based on preferences.
+``setup.py``: compiles the engine based on os/compiler
 
   
 
