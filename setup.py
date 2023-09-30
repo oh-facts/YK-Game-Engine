@@ -3,7 +3,7 @@ import os
 import subprocess
 import configparser
 
-# v2 of magic make. next time I rewrite this, it will actually work
+# v2.1 of magic make
 
 CONFIG_FILE = "config.ini"
 
@@ -13,15 +13,9 @@ def build_script():
     prompt_os += "If you press something that is not in the options, I will simply crash this script. Please don't test my patience.\n"
 
     type_os = choose_option(prompt_os, ["Windows", "Linux"])
-
-    prompt_build = "Pick Build type"
-    type_build = choose_option(prompt_build, ["Debug", "Release"])
-
-    prompt_compiler = "Pick Compiler"
-    type_compiler = choose_option(prompt_compiler, ["clang", "gcc", "msvc"])
-
-    prompt_build_system = "Pick cmake generator"
-    type_build_system = choose_option(prompt_build_system, ["ninja", "makefile"])
+    type_build = choose_option("Pick Build type", ["Debug", "Release"])
+    type_compiler = choose_option("Pick Compiler", ["clang", "gcc", "msvc"])
+    type_build_system = choose_option("Pick cmake generator", ["ninja", "makefile"])
 
     innit(type_os)
 
