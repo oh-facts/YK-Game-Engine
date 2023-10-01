@@ -12,8 +12,8 @@
 #define WIDTH 720
 #define HEIGHT 720
 
-#define WIN_POSX 0
-#define WIN_POSY 30
+#define WIN_TOP_LEFT_X 0
+#define WIN_TOP_LEFT_Y 30
 
 
 #define TITLE "yk"

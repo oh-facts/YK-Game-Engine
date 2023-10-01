@@ -109,7 +109,7 @@ void yk_window_innit(YK_Window *out)
     out->win_ptr = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
     out->width = WIDTH;
     out->height = HEIGHT;
-    glfwSetWindowPos(out->win_ptr, WIN_POSX, WIN_POSY);
+    glfwSetWindowPos(out->win_ptr, WIN_TOP_LEFT_X, WIN_TOP_LEFT_Y);
 
     if (out->win_ptr == NULL)
     {
@@ -138,7 +138,6 @@ void yk_window_innit(YK_Window *out)
     glfwSetScrollCallback(out->win_ptr, scroll_callback);
     glfwSetKeyCallback(out->win_ptr, key_callback);
 
-
     if (glfwRawMouseMotionSupported())
     {
         glfwSetInputMode(out->win_ptr, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
@@ -164,6 +163,7 @@ void yk_window_run(YK_Window *out)
         if (full_screen_toggle)
         {
             full_screen_toggle = false;
+            yk_window_set_pos(out, WIN_TOP_LEFT_X, WIN_TOP_LEFT_Y);
             yk_window_resize(out, 1920, 1080);
         }
         else
@@ -220,7 +220,7 @@ void yk_window_set_pos(YK_Window *win, int x, int y)
 
 void yk_window_disable_cursor(YK_Window *win, b1 flag)
 {
-    if(flag)
+    if (flag)
     {
         glfwSetInputMode(win->win_ptr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         return;
