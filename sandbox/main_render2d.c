@@ -1,6 +1,6 @@
 #include <yk/yk_app.h>
 
-#define NUM 10000
+#define NUM 1000
 
 struct square
 {
@@ -68,7 +68,7 @@ int main()
         f4 r1_x = ((float)rand() / RAND_MAX) * 20.0f - 10.f;
         f4 r1_y = ((float)rand() / RAND_MAX) * 10.0f - 5.f;
         f4 r2 = ((float)rand() / RAND_MAX) * 90.0f;
-        f4 r3 = ((float)rand() / RAND_MAX) * 0.5f;
+        f4 r3 = ((float)rand() / RAND_MAX) * 0.5f + 0.2f;
         YK_Transform trans = {{r1_x, r1_y, -2.f}, {0, 0, r2}, {r3, r3, 0}};
 
         squares[i].transform = trans;
@@ -93,12 +93,12 @@ int main()
 
         for (int i = 0; i < NUM; i++)
         {
-            f4 timeValue = glfwGetTime() + i * 0.1f;
+            f4 timeValue = (glfwGetTime() + i * 0.1f) * 5.f;
             f4 r = sin(timeValue) / 2.0f + 0.5f;
             f4 g = sin(timeValue + 2.0f) / 2.0f + 0.5f;
             f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
 
-            squares[i].transform.rot.z = timeValue;
+            squares[i].transform.rot.z = timeValue * 5.f;
             yk_renderer2d_render_rect(&ren2d, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
         }
 
@@ -108,7 +108,7 @@ int main()
     }
 
     yk_renderer2d_cleanup();
-    yk_window_destroy(&win);    
+    yk_window_destroy(&win);
 
     return 0;
 }

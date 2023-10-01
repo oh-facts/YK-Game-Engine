@@ -55,6 +55,10 @@ typedef struct YK_Mat4f
         m30, m31, m32, m33;
 } YK_Mat4f;
 
+
+/*
+Stores pos, rot and scale
+*/
 typedef struct YK_Transform
 {
     YK_Vec3f pos;
