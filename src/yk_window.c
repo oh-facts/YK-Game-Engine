@@ -18,14 +18,14 @@ YK_Key_states yk_key_states;
   Don't make me make getters so you don't accidentally set it to
   something. Don't tell me you have skill issue
 */
-YK_Vec2f yk_input_mouse_pos;
+v2f yk_input_mouse_pos;
 
 /*
 
 */
-YK_Vec2f yk_input_mouse_pos_old;
+v2f yk_input_mouse_pos_old;
 
-YK_Vec2f yk_input_mouse_pos_mv;
+v2f yk_input_mouse_pos_mv;
 
 /*
   Stores mouse scroll. Set internally. Treat as read-only

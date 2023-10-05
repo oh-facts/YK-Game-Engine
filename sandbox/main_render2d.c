@@ -12,7 +12,7 @@ typedef struct square square;
 #define SPEED 4
 void update_player(square *py, f4 delta)
 {
-    YK_Vec2f mv = {0, 0};
+    v2f mv = {0, 0};
 
     if (yk_input_is_key_held(YK_KEY_W))
     {
@@ -56,7 +56,7 @@ int main()
 
     yk_renderer2d_set_bg(0.2f, 0.3f, 0.3f, 1.f);
 
-    yk_physics_innit();
+    // yk_physics_innit();
 
     square py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}};
 
@@ -86,19 +86,20 @@ int main()
         // debug_input(&cam2d, delta_time);
 
         update_player(&py, delta_time);
-        yk_physics_update(delta_time);
+        // yk_physics_update(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
         yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
+        //yk_renderer2d_render_rect(&ren2d, &(YK_Transform){.pos = {0, 0, 0}, .rot = {0, 0, 0}, .scale = {1, 1, -5.f}}, &YK_COLOR_BLUE);
 
         for (int i = 0; i < NUM; i++)
         {
-            f4 timeValue = (glfwGetTime() + i * 0.1f) * 5.f;
+            f4 timeValue = (glfwGetTime() + i * 0.1f);
             f4 r = sin(timeValue) / 2.0f + 0.5f;
             f4 g = sin(timeValue + 2.0f) / 2.0f + 0.5f;
             f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
 
-            squares[i].transform.rot.z = timeValue * 5.f;
+            squares[i].transform.rot.z = timeValue;
             yk_renderer2d_render_rect(&ren2d, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
         }
 

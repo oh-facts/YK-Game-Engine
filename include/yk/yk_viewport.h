@@ -7,7 +7,7 @@
 
 typedef struct YK_Viewport
 {
-    YK_Mat4f view_mat;
+    m4f view_mat;
     
 } YK_Viewport;
 

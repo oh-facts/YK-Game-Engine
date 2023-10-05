@@ -48,9 +48,9 @@ typedef struct YK_Key_states
 } YK_Key_states;
 
 extern YK_Key_states yk_key_states;
-extern YK_Vec2f yk_input_mouse_pos;
-extern YK_Vec2f yk_input_mouse_pos_old;
-extern YK_Vec2f yk_input_mouse_pos_mv;
+extern v2f yk_input_mouse_pos;
+extern v2f yk_input_mouse_pos_old;
+extern v2f yk_input_mouse_pos_mv;
 extern f4 yk_input_mouse_scroll;
 extern i4 yk_last_key;
 
