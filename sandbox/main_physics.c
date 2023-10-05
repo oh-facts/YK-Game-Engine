@@ -12,7 +12,7 @@ struct entity
 typedef struct entity entity;
 
 #define SPEED 5
-#define JUMP_FORCE ((YK_Vec2f){0.f, 800.f})
+#define JUMP_FORCE ((v2f){0.f, 800.f})
 void update_player(entity *py)
 {
     v2f mv = {0, 0};
