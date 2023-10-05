@@ -12,17 +12,17 @@ struct YK_Color
 
 typedef struct YK_Color YK_Color;
 
-#define YK_COLOR_RED       ((struct YK_Color){1.0f, 0.0f, 0.0f, 1.0f})
-#define YK_COLOR_GREEN     ((struct YK_Color){0.0f, 1.0f, 0.0f, 1.0f})
-#define YK_COLOR_BLUE      ((struct YK_Color){0.0f, 0.0f, 1.0f, 1.0f})
-#define YK_COLOR_YELLOW    ((struct YK_Color){1.0f, 1.0f, 0.0f, 1.0f})
-#define YK_COLOR_MAGENTA   ((struct YK_Color){1.0f, 0.0f, 1.0f, 1.0f})
-#define YK_COLOR_CYAN      ((struct YK_Color){0.0f, 1.0f, 1.0f, 1.0f})
-#define YK_COLOR_ORANGE    ((struct YK_Color){1.0f, 0.5f, 0.0f, 1.0f})
-#define YK_COLOR_PURPLE    ((struct YK_Color){0.5f, 0.0f, 0.5f, 1.0f})
-#define YK_COLOR_TEAL      ((struct YK_Color){0.0f, 0.5f, 0.5f, 1.0f})
-#define YK_COLOR_GRAY      ((struct YK_Color){0.5f, 0.5f, 0.5f, 1.0f})
-#define YK_COLOR_WHITE      ((struct YK_Color){1.0f, 1.0f, 1.0f, 1.0f})
+#define YK_COLOR_RED              ((struct YK_Color){1.0f, 0.0f, 0.0f, 1.0f})
+#define YK_COLOR_GREEN            ((struct YK_Color){0.0f, 1.0f, 0.0f, 1.0f})
+#define YK_COLOR_BLUE             ((struct YK_Color){0.0f, 0.0f, 1.0f, 1.0f})
+#define YK_COLOR_YELLOW           ((struct YK_Color){1.0f, 1.0f, 0.0f, 1.0f})
+#define YK_COLOR_MAGENTA          ((struct YK_Color){1.0f, 0.0f, 1.0f, 1.0f})
+#define YK_COLOR_CYAN             ((struct YK_Color){0.0f, 1.0f, 1.0f, 1.0f})
+#define YK_COLOR_ORANGE           ((struct YK_Color){1.0f, 0.5f, 0.0f, 1.0f})
+#define YK_COLOR_PURPLE           ((struct YK_Color){0.5f, 0.0f, 0.5f, 1.0f})
+#define YK_COLOR_TEAL             ((struct YK_Color){0.0f, 0.5f, 0.5f, 1.0f})
+#define YK_COLOR_GRAY             ((struct YK_Color){0.5f, 0.5f, 0.5f, 1.0f})
+#define YK_COLOR_WHITE            ((struct YK_Color){1.0f, 1.0f, 1.0f, 1.0f})
 #define YK_COLOR_TRANSPARENT      ((struct YK_Color){0.0f, 0.0f, 0.0f, 0.0f})
 
 /*

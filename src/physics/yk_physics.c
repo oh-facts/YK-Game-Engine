@@ -8,7 +8,7 @@ void yk_physics_innit()
 }
 
 f4 accumulator = 0.f;
-f4 fixed_delta = 1/60.f;
+#define fixed_delta 0.001f
 
 void yk_particle_integrate(f4 delta)
 {
