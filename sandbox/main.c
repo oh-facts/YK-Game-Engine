@@ -1,6 +1,6 @@
 #include <yk/yk_app.h>
 
-#define NUM 1000
+#define NUM 100
 
 struct square
 {

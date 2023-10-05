@@ -14,20 +14,22 @@ typedef struct YK_AABB YK_AABB;
 
 b1 yk_physics_aabb_overlap_test(YK_AABB* a, YK_AABB* b);
 
-//To do: Make 2d versions of everything to preserve sanity.
-
-struct YK_Particle
+struct YK_Particle2d
 {
-    v3f pos;
-    v3f vel;
-    v3f acc;
+    v2f pos;
+    v2f vel;
+    v2f acc;
     f4 damping;
     f4 i_mass;
     
 };
 
-typedef struct YK_Particle YK_Particle;
+typedef struct YK_Particle2d YK_Particle2d;
 
+void yk_physics_innit();
 void yk_particle_integrate(f4 duration);
+
+
+extern YK_Yektor particles;
 
 #endif

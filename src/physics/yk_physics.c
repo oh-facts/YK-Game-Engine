@@ -1,6 +1,18 @@
 #include <yk/physics/yk_physics.h>
 
-b1 yk_physics_aabb_overlap_test(YK_AABB* a, YK_AABB* b)
+YK_Yektor particles;
+
+void yk_physics_innit()
+{
+    yk_yektor_innit(&particles, 5, sizeof(YK_Particle2d));
+}
+
+void yk_particle_integrate(f4 duration)
+{
+    
+}
+
+b1 yk_physics_aabb_overlap_test(YK_AABB *a, YK_AABB *b)
 {
     f4 d1x = b->min.x - a->max.x;
     f4 d1y = b->min.y - a->max.y;
@@ -14,5 +26,4 @@ b1 yk_physics_aabb_overlap_test(YK_AABB* a, YK_AABB* b)
         return false;
 
     return true;
-
 }

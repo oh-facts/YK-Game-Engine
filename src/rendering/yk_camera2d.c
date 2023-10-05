@@ -33,7 +33,6 @@ m4f yk_camera2d_get_projection_matrix(YK_Camera2d *camera, f4 aspect_ratio)
 
 m4f yk_camera2d_get_view_matrix(YK_Camera2d *camera)
 {
-
     v3f _temp = yk_math_vec3f_add(&camera->pos, &YK_WORLD_FORWARD);
     return yk_look_at(&camera->pos, &_temp, &YK_WORLD_UP);
 }
