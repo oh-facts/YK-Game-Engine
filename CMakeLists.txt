@@ -86,6 +86,7 @@ add_custom_target(
 
 
 #temp
-add_executable(yk-test sandbox/main.c)
+#add_executable(yk-test sandbox/main.c)
+add_executable(yk-test sandbox/main2.c)
 
 target_link_libraries(yk-test yk)

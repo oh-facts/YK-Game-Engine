@@ -27,7 +27,7 @@ void yk_yektor_innit(YK_Yektor *vector, size_t size, size_t element_size)
     vector->capacity = size;
 }
 
-void yk_yektor_push(YK_Yektor *vector, void *element)
+void* yk_yektor_push(YK_Yektor *vector, void *element)
 {
     if (vector->size >= vector->capacity)
     {
@@ -37,6 +37,8 @@ void yk_yektor_push(YK_Yektor *vector, void *element)
     void *dest = (char *)vector->data + (vector->size * vector->element_size);
     memcpy(dest, element, vector->element_size);
     vector->size++;
+
+    return dest;
 }
 
 void yk_yektor_insert(YK_Yektor *vector, void *element, size_t index)

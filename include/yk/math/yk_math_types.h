@@ -66,4 +66,11 @@ typedef struct YK_Transform
     v3f scale;
 } YK_Transform;
 
+typedef struct YK_Transform2d
+{
+    v2f pos;
+    f4 rot_z;
+    v2f scale;
+} YK_Transform2d;
+
 #endif

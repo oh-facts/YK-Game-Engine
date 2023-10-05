@@ -1,6 +1,5 @@
 #include <yk/rendering/yk_renderer2d.h>
 
-
 struct YK_Rect
 {
     GLuint shader_program;
@@ -25,18 +24,32 @@ void yk_rect_innit(YK_Rect *out)
     out->shader_program = yk_shader_create("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
 
     f4 vertices[] = {
-    // Position           // Texture Coords
-    0.5f,  0.5f,  0.0f,  1.0f,  1.0f,
-    0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-   -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,
-   -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+        // Position           // Texture Coords
+        0.5f,
+        0.5f,
+        0.0f,
+        1.0f,
+        1.0f,
+        0.5f,
+        -0.5f,
+        0.0f,
+        1.0f,
+        0.0f,
+        -0.5f,
+        -0.5f,
+        0.0f,
+        0.0f,
+        0.0f,
+        -0.5f,
+        0.5f,
+        0.0f,
+        0.0f,
+        1.0f,
     };
 
     u4 indices[] = {
-    0, 1, 3,
-    1, 2, 3
-    };
-
+        0, 1, 3,
+        1, 2, 3};
 
     GLuint vbo, ebo;
     glGenVertexArrays(1, &out->vertex_arrays);
@@ -70,12 +83,12 @@ void yk_rect_innit(YK_Rect *out)
     glUniform1i(tex0Uni, 0);
 }
 
-void yk_renderer2d_render_rect(YK_Renderer2d *renderer,YK_Transform *transform, YK_Color *col)
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
 {
     yk_renderer2d_render_rect_sprite(renderer, transform, col, &white_square);
 }
 
-void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform *transform, YK_Color *col, YK_Texture *texture)
+void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture)
 {
     glUseProgram(yk_rect_default.shader_program);
     glBindVertexArray(yk_rect_default.vertex_arrays);
@@ -89,15 +102,14 @@ void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform *tra
     {
         m4f out;
         out = yk_mat4f_identity();
+        // Use a union and allow a transform3d to store this.
+        // Other option is to have translate, rotate and scale for 2d
+        YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
+        yk_math_transform_translate(&out, &_trans.pos);
 
-        yk_math_transform_translate(&out, &transform->pos);
+        yk_math_transform_rotate(&out, _trans.rot.z, &YK_WORLD_FORWARD);
 
-        v3f _rot = transform->rot;
-        yk_math_transform_rotate(&out, _rot.x, &YK_WORLD_RIGHT);
-        yk_math_transform_rotate(&out, _rot.y, &YK_WORLD_UP);
-        yk_math_transform_rotate(&out, _rot.z, &YK_WORLD_FORWARD);
-
-        yk_math_transform_scale(&out, &transform->scale);
+        yk_math_transform_scale(&out, &_trans.scale);
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
     }
