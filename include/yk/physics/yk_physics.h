@@ -27,7 +27,7 @@ struct YK_Particle2d
 typedef struct YK_Particle2d YK_Particle2d;
 
 void yk_physics_innit();
-void yk_particle_integrate(f4 duration);
+void yk_particle_integrate(f4 delta);
 
 
 extern YK_Yektor particles;

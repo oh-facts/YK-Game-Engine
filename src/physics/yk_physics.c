@@ -7,9 +7,19 @@ void yk_physics_innit()
     yk_yektor_innit(&particles, 5, sizeof(YK_Particle2d));
 }
 
-void yk_particle_integrate(f4 duration)
+f4 accumulator = 0.f;
+f4 fixed_delta = 1/60.f;
+
+void yk_particle_integrate(f4 delta)
 {
-    
+    accumulator += delta;
+
+    while (accumulator > fixed_delta)
+    {
+        
+        
+        accumulator -= fixed_delta;
+    }
 }
 
 b1 yk_physics_aabb_overlap_test(YK_AABB *a, YK_AABB *b)
