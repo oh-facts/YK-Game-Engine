@@ -200,13 +200,13 @@ void yk_render_object_destroy(YK_Render_object *obj)
     glDeleteProgram(obj->shaderProgram);
 }
 
-void yk_render_object_set_pos(YK_Render_object *obj, v3f *pos)
+void yk_render_object_set_pos(YK_Render_object *obj, YK_Vec3f *pos)
 {
     obj->model_mat = yk_mat4f_identity();
     yk_maths_transform_translate(&obj->model_mat, pos);
 }
 
-void yk_render_object_move(YK_Render_object *obj, v3f *pos)
+void yk_render_object_move(YK_Render_object *obj, YK_Vec3f *pos)
 {
     yk_maths_transform_translate(&obj->model_mat, pos);
 }
@@ -227,8 +227,8 @@ void yk_renderer_run(YK_Renderer *renderer, YK_Window *win)
 
     renderer->view_mat = yk_mat4f_identity();
     {
-        v3f _temp = yk_math_vec3f_add(cam->pos, cam->front);
-        renderer->view_mat = yk_look_at(cam->pos, _temp, YK_WORLD_UP);
+        YK_Vec3f _temp = yk_math_vec3f_add(&cam->pos, &cam->front);
+        renderer->view_mat = yk_look_at(&cam->pos, &_temp, &YK_WORLD_UP);
     }
 
     renderer->proj_mat = yk_mat4f_identity();

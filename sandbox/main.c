@@ -64,7 +64,7 @@ void yk_ecs_sprite_render_system(YK_Renderer2d *ren)
     if (has_component(i, POSITION_COMPONENT) && has_component(i, SPRITE_COMPONENT))
     {
       YK_Sprite *_sprite = yk_yektor_get(&sprite_comps, i);
-      v3f *_pos = yk_yektor_get(&pos_comps, i);
+      YK_Vec3f *_pos = yk_yektor_get(&pos_comps, i);
 
       // printf(" %d %f %d \n", i, _pos->x, _sprite->texture.width);
 
@@ -88,7 +88,7 @@ void yk_ecs_player_system(int player, f4 delta)
 {
   if (has_component(player, POSITION_COMPONENT) && has_component(player, PLAYER_COMPONENT))
   {
-    v3f *_pos = yk_yektor_get(&pos_comps, player);
+    YK_Vec3f *_pos = yk_yektor_get(&pos_comps, player);
 
     float speed = 5.f * delta;
     if (yk_input_is_key_held(YK_KEY_W))
@@ -119,7 +119,7 @@ void yk_ecs_physics_system(YK_Renderer2d *ren, YK_Sprite *debug_draw)
   {
     if (has_component(i, POSITION_COMPONENT) && has_component(i, COLLIDER_COMPONENT))
     {
-      v3f *_pos = yk_yektor_get(&pos_comps, i);
+      YK_Vec3f *_pos = yk_yektor_get(&pos_comps, i);
       YK_Aabb *_aabb = yk_yektor_get(&aabb_comps, i);
 
       _aabb->pos.x = _pos->x;
@@ -139,13 +139,13 @@ void yk_ecs_collide_system(f4 delta)
   {
     if (has_component(i, POSITION_COMPONENT) && has_component(i, COLLIDER_COMPONENT))
     {
-      v3f *_pos = yk_yektor_get(&pos_comps, i);
+      YK_Vec3f *_pos = yk_yektor_get(&pos_comps, i);
       YK_Aabb *_aabb = yk_yektor_get(&aabb_comps, i);
       YK_Aabb *_aabb2 = yk_yektor_get(&aabb_comps, i + 1);
 
       if (yk_physics_colliding(_aabb, _aabb2))
       {
-        v3f a = yk_physics_get_overlap_distance(_aabb,_aabb2);
+        YK_Vec3f a = yk_physics_get_overlap_distance(_aabb,_aabb2);
         *_pos = yk_math_vec3f_sub(_pos, &a);
       }
     }
@@ -181,7 +181,7 @@ int main()
   YK_Renderer2d ren2d;
   yk_renderer2d_innit(&ren2d, &cam2d, &win);
 
-  yk_yektor_innit(&pos_comps, 10, sizeof(v3f));
+  yk_yektor_innit(&pos_comps, 10, sizeof(YK_Vec3f));
   yk_yektor_innit(&sprite_comps, 10, sizeof(YK_Sprite));
   yk_yektor_innit(&aabb_comps, 10, sizeof(YK_Aabb));
 
@@ -196,7 +196,7 @@ int main()
     yk_sprite_innit(&_sprite, "yk-res/textures/default.jpg");
     yk_yektor_push(&sprite_comps, &_sprite);
 
-    v3f _pos = {-1.f, 0.f, -1.f};
+    YK_Vec3f _pos = {-1.f, 0.f, -1.f};
     yk_yektor_push(&pos_comps, &_pos);
 
     YK_Aabb _aabb;
@@ -216,7 +216,7 @@ int main()
     yk_sprite_innit(&_sprite, "yk-res/textures/yk.png");
     yk_yektor_push(&sprite_comps, &_sprite);
 
-    v3f _pos = {0.f, 0.f, -1.f};
+    YK_Vec3f _pos = {0.f, 0.f, -1.f};
     yk_yektor_push(&pos_comps, &_pos);
 
     py.cam = &cam2d;
@@ -240,7 +240,7 @@ int main()
     }
 
     {
-      v3f _pos = {1.f, 0.f, -1.f};
+      YK_Vec3f _pos = {1.f, 0.f, -1.f};
       yk_yektor_push(&pos_comps, &_pos);
     }
 

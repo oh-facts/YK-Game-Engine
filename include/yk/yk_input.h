@@ -29,13 +29,13 @@ f4 yk_input_get_mouse_scroll();
 /*
   Simply exists for now.
 */
-v2f yk_input_get_mouse_pos();
+YK_Vec2f yk_input_get_mouse_pos();
 
 /*
   Returns a 2d vector pointing in the direction
   in which the mouse moves, with center (of the screen)
    as origin.
 */
-v2f yk_input_get_mouse_movement();
+YK_Vec2f yk_input_get_mouse_movement();
 
 #endif

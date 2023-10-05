@@ -139,16 +139,17 @@ void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform *tra
     u4 colorLoc = glGetUniformLocation(yk_rect_default.shader_program, "color");
 
     {
-        m4f out = yk_mat4f_identity();
+        YK_Mat4f out;
+        out = yk_mat4f_identity();
 
-        out = yk_math_transform_translate(out, transform->pos);
+        yk_math_transform_translate(&out, &transform->pos);
 
-        v3f _rot = transform->rot;
-        out = yk_math_transform_rotate(out, _rot.x, YK_WORLD_RIGHT);
-        out = yk_math_transform_rotate(out, _rot.y, YK_WORLD_UP);
-        out = yk_math_transform_rotate(out, _rot.z, YK_WORLD_FORWARD);
+        YK_Vec3f _rot = transform->rot;
+        yk_math_transform_rotate(&out, _rot.x, &YK_WORLD_RIGHT);
+        yk_math_transform_rotate(&out, _rot.y, &YK_WORLD_UP);
+        yk_math_transform_rotate(&out, _rot.z, &YK_WORLD_FORWARD);
 
-        out = yk_math_transform_scale(out, transform->scale);
+        yk_math_transform_scale(&out, &transform->scale);
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
     }
@@ -172,9 +173,9 @@ void yk_rect_destroy(YK_Rect *out)
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path)
 {
 
-    yk_vec3f_mem_set(out->transform.pos, 0);
-    yk_vec3f_mem_set(out->transform.scale, 1);
-    yk_vec3f_mem_set(out->transform.rot, 0);
+    yk_vec3f_mem_set(&out->transform.pos, 0);
+    yk_vec3f_mem_set(&out->transform.scale, 1);
+    yk_vec3f_mem_set(&out->transform.rot, 0);
 
     out->shaderProgram = yk_shader_create("yk-res/shaders/rect/default.vert", "yk-res/shaders/rect/default.frag");
 
@@ -236,20 +237,20 @@ void yk_sprite_destroy(YK_Sprite *sprite)
     glDeleteProgram(sprite->shaderProgram);
 }
 
-m4f yk_sprite_get_model_mat(YK_Sprite *sprite)
+YK_Mat4f yk_sprite_get_model_mat(YK_Sprite *sprite)
 {
-    m4f out;
+    YK_Mat4f out;
     out = yk_mat4f_identity();
 
     YK_Transform _trans = sprite->transform;
-    yk_math_transform_translate(out, _trans.pos);
+    yk_math_transform_translate(&out, &_trans.pos);
 
-    v3f _rot = _trans.rot;
-    out = yk_math_transform_rotate(out, _rot.x, YK_WORLD_RIGHT);
-    out = yk_math_transform_rotate(out, _rot.y, YK_WORLD_UP);
-    out = yk_math_transform_rotate(out, _rot.z, YK_WORLD_FORWARD);
+    YK_Vec3f _rot = _trans.rot;
+    yk_math_transform_rotate(&out, _rot.x, &YK_WORLD_RIGHT);
+    yk_math_transform_rotate(&out, _rot.y, &YK_WORLD_UP);
+    yk_math_transform_rotate(&out, _rot.z, &YK_WORLD_FORWARD);
 
-    out = yk_math_transform_scale(out, _trans.scale);
+    yk_math_transform_scale(&out, &_trans.scale);
 
     return out;
 }
@@ -300,7 +301,7 @@ void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite)
     u4 projectionLoc = glGetUniformLocation(sprite->shaderProgram, "projection");
 
     {
-        m4f model = yk_sprite_get_model_mat(sprite);
+        YK_Mat4f model = yk_sprite_get_model_mat(sprite);
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &model.m00);
     }

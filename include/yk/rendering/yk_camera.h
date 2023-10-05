@@ -6,7 +6,7 @@
 #include <yk/yk_input.h>
 #include <yk/yk_defines.h>
 
-#define YK_WORLD_UP (v3f){0.f,0.1f,0.f}
+#define YK_WORLD_UP (YK_Vec3f){0.f,0.1f,0.f}
 
 typedef enum YK_Camera_type
 {
@@ -16,8 +16,8 @@ typedef enum YK_Camera_type
 
 typedef struct YK_Camera
 {
-    v3f pos;
-    v3f front;
+    YK_Vec3f pos;
+    YK_Vec3f front;
     f4 fov;
     f4 yaw;
     f4 pitch;

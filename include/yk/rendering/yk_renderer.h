@@ -22,8 +22,8 @@ typedef struct YK_Render_object
     GLuint index_count;
     GLuint vertex_count;
     GLuint texture;
-    m4f model_mat;
-    v3f pos;
+    YK_Mat4f model_mat;
+    YK_Vec3f pos;
     YK_Render_object_type type;
 
 } YK_Render_object;
@@ -37,9 +37,9 @@ typedef struct YK_Renderer
     */
     YK_Camera *current_cam;
 
-    m4f view_mat;
+    YK_Mat4f view_mat;
 
-    m4f proj_mat;
+    YK_Mat4f proj_mat;
 } YK_Renderer;
 
 
@@ -48,8 +48,8 @@ YK_Render_object yk_render_object_create(YK_Render_object_type type, const char 
 void yk_render_object(YK_Renderer *renderer, YK_Render_object *obj);
 void yk_render_object_destroy(YK_Render_object *obj);
 
-void yk_render_object_set_pos(YK_Render_object *obj, v3f *pos);
-void yk_render_object_move(YK_Render_object *obj, v3f *pos);
+void yk_render_object_set_pos(YK_Render_object *obj, YK_Vec3f *pos);
+void yk_render_object_move(YK_Render_object *obj, YK_Vec3f *pos);
 
 void yk_renderer_innit(YK_Renderer *renderer, YK_Camera *current_cam);
 void yk_renderer_run(YK_Renderer *renderer, YK_Window *win);

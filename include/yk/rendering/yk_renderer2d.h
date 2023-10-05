@@ -50,8 +50,9 @@ typedef struct YK_Rect
 } YK_Rect;
 
 extern YK_Yektor yk_rects;
+extern YK_Texture white_square;
 extern i4 draw_calls;
-
+extern YK_Rect yk_rect_default;
 
 
 /*
@@ -61,9 +62,9 @@ Yes, I get it. But I need to understand the goals of the renderer better to want
 typedef struct YK_Line
 {
     GLuint shaderProgram;
-    v3f pos;
-    m4f model_mat;
-    v4f col;
+    YK_Vec3f pos;
+    YK_Mat4f model_mat;
+    YK_Vec4f col;
 } YK_Line;
 
 typedef struct YK_Renderer2d
@@ -75,9 +76,9 @@ typedef struct YK_Renderer2d
     */
     YK_Camera2d *current_cam;
 
-    m4f view_mat;
+    YK_Mat4f view_mat;
 
-    m4f proj_mat;
+    YK_Mat4f proj_mat;
 
 } YK_Renderer2d;
 
@@ -91,7 +92,7 @@ void yk_rect_destroy(YK_Rect *out);
 
 void yk_sprite_innit(YK_Sprite *out, const char *texture_path);
 void yk_sprite_destroy(YK_Sprite *sprite);
-m4f yk_sprite_get_model_mat(YK_Sprite *sprite);
+YK_Mat4f yk_sprite_get_model_mat(YK_Sprite *sprite);
 
 // void yk_renderer2d_
 void yk_renderer2d_render_sprite(YK_Renderer2d *renderer, YK_Sprite *sprite);

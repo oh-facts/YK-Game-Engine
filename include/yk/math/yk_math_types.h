@@ -3,13 +3,13 @@
 
 #include <yk/yk_core_types.h>
 
-typedef struct v2i
+typedef struct YK_Vec2i
 {
     i4 x, y;
 
-} v2i;
+} YK_Vec2i;
 
-typedef union v2f
+typedef union YK_Vec2f
 {
     struct
     {
@@ -20,9 +20,9 @@ typedef union v2f
         f4 u,v;
     };
 
-} v2f;
+} YK_Vec2f;
 
-typedef struct v3f
+typedef struct YK_Vec3f
 {
     struct
     {
@@ -33,9 +33,9 @@ typedef struct v3f
         f4 r, g, b;
     };
     
-} v3f;
+} YK_Vec3f;
 
-typedef union v4f
+typedef union YK_Vec4f
 {
     struct
     {
@@ -45,15 +45,15 @@ typedef union v4f
     {
         f4 r, g, b, a;
     };
-} v4f;
+} YK_Vec4f;
 
-typedef struct m4f
+typedef struct YK_Mat4f
 {
     f4 m00, m01, m02, m03,
         m10, m11, m12, m13,
         m20, m21, m22, m23,
         m30, m31, m32, m33;
-} m4f;
+} YK_Mat4f;
 
 
 /*
@@ -61,9 +61,9 @@ Stores pos, rot and scale
 */
 typedef struct YK_Transform
 {
-    v3f pos;
-    v3f rot;
-    v3f scale;
+    YK_Vec3f pos;
+    YK_Vec3f rot;
+    YK_Vec3f scale;
 } YK_Transform;
 
 #endif

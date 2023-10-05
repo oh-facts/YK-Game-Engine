@@ -15,7 +15,7 @@ typedef struct entity entity;
 #define JUMP_FORCE ((YK_Vec2f){0.f, 800.f})
 void update_player(entity *py)
 {
-    v2f mv = {0, 0};
+    YK_Vec2f mv = {0, 0};
 
     if (yk_input_is_key_held(YK_KEY_W))
     {
@@ -39,11 +39,11 @@ void update_player(entity *py)
     if (yk_input_is_key_tapped(YK_KEY_SPACE))
     {
         yk_rigidbody_add_force(0, &JUMP_FORCE);
-        v2f acc = ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, py->id))->acceleration;
+        YK_Vec2f acc = ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, py->id))->acceleration;
     }
 
     yk_rigidbody_set_vel(py->id, &mv);
-    v2f pos = yk_rigidbody_get_pos(py->id);
+    YK_Vec2f pos = yk_rigidbody_get_pos(py->id);
     py->transform.pos.x = pos.x;
     py->transform.pos.y = pos.y;
     // printf("%f\n",py->transform.pos.x);
@@ -78,14 +78,14 @@ int main()
 
     entity py = {.transform = {{0, 0, -2.f}, {0, 0, 0}, {1.f, 1.f, 0}}, .id = 0};
 
-    yk_rigidbody_add_(&(v2f){py.transform.pos.x, py.transform.pos.y}, 1.f);
+    yk_rigidbody_add_(&(YK_Vec2f){py.transform.pos.x, py.transform.pos.y}, 1.f);
     py.aabb.pos.x = py.transform.pos.x;
     py.aabb.pos.y = py.transform.pos.y;
     py.aabb.size.x = py.transform.scale.x;
     py.aabb.size.y = py.transform.scale.y;
 
     entity floor = {.transform = {{0, -2.f, -2.f}, {0, 0, 0}, {5.f, 1.f, 0}}, .id = 1};
-    yk_rigidbody_add_(&(v2f){floor.transform.pos.x, floor.transform.pos.y}, 1.f);
+    yk_rigidbody_add_(&(YK_Vec2f){floor.transform.pos.x, floor.transform.pos.y}, 1.f);
 
     YK_Texture outline = yk_texture_create("yk-res/textures/outline.png");
 
