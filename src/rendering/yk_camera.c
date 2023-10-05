@@ -49,7 +49,7 @@ void _camera_mouse_movement(YK_Camera *camera)
     if (camera->pitch < -89.0f)
         camera->pitch = -89.0f;
 
-    YK_Vec3f front;
+    v3f front;
     front.x = -cos(camera->yaw * DEG_TO_RAD) * cos(camera->pitch * DEG_TO_RAD);
     front.y = sin(camera->pitch * DEG_TO_RAD);
     front.z = sin(camera->yaw * DEG_TO_RAD) * cos(camera->pitch * DEG_TO_RAD);
@@ -76,26 +76,26 @@ void _camera_keyboard(YK_Camera *camera, f4 delta_time)
     float cameraSpeed = 2.5f * delta_time;
     if (yk_input_is_key_held(YK_KEY_W))
     {
-        YK_Vec3f temp = yk_math_vec3f_mul_s(&camera->front, cameraSpeed);
+        v3f temp = yk_math_vec3f_mul_s(&camera->front, cameraSpeed);
         camera->pos = yk_math_vec3f_add(&camera->pos, &temp);
     }
     if (yk_input_is_key_held(YK_KEY_S))
     {
-        YK_Vec3f temp = yk_math_vec3f_mul_s(&camera->front, cameraSpeed);
+        v3f temp = yk_math_vec3f_mul_s(&camera->front, cameraSpeed);
         camera->pos = yk_math_vec3f_sub(&camera->pos, &temp);
     }
     if (yk_input_is_key_held(YK_KEY_A))
     {
-        YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &YK_WORLD_UP);
-        YK_Vec3f temp2 = yk_vec3f_normalize(&temp);
-        YK_Vec3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
+        v3f temp = yk_math_vec3f_cross(&camera->front, &YK_WORLD_UP);
+        v3f temp2 = yk_vec3f_normalize(&temp);
+        v3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
         camera->pos = yk_math_vec3f_sub(&camera->pos, &temp3);
     }
     if (yk_input_is_key_held(YK_KEY_D))
     {
-        YK_Vec3f temp = yk_math_vec3f_cross(&camera->front, &YK_WORLD_UP);
-        YK_Vec3f temp2 = yk_vec3f_normalize(&temp);
-        YK_Vec3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
+        v3f temp = yk_math_vec3f_cross(&camera->front, &YK_WORLD_UP);
+        v3f temp2 = yk_vec3f_normalize(&temp);
+        v3f temp3 = yk_math_vec3f_mul_s(&temp2, cameraSpeed);
         camera->pos = yk_math_vec3f_add(&camera->pos, &temp3);
     }
 }

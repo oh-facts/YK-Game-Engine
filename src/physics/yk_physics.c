@@ -28,7 +28,7 @@ void yk_physics_innit()
 
 
 // I really really don't know if its better like this or to copy values.
-void yk_rigidbody_add_(YK_Vec2f *pos, f4 mass)
+void yk_rigidbody_add_(v2f *pos, f4 mass)
 {
     yk_yektor_push(&yk_rigidbodies, &(YK_Rigidbody){*pos, {0, 0}, {0, 0}, mass});
 }
@@ -47,11 +47,11 @@ void yk_physics_update(f4 delta)
         {
             YK_Rigidbody *current = yk_yektor_get(&yk_rigidbodies, i);
 
-            YK_Vec2f _at = yk_math_vec2f_mul_s(&current->acceleration, fixed_delta);
+            v2f _at = yk_math_vec2f_mul_s(&current->acceleration, fixed_delta);
 
             current->velocity = yk_math_vec2f_add(&current->velocity, &_at);
 
-            YK_Vec2f _temp_v = yk_math_vec2f_mul_s(&current->velocity, fixed_delta);
+            v2f _temp_v = yk_math_vec2f_mul_s(&current->velocity, fixed_delta);
             current->pos = yk_math_vec2f_add(&current->pos, &_temp_v);
 
             // printf("%f \n",current->pos.x);
@@ -61,19 +61,19 @@ void yk_physics_update(f4 delta)
     }
 }
 
-YK_Vec2f yk_rigidbody_get_pos(i4 id)
+v2f yk_rigidbody_get_pos(i4 id)
 {
     return ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->pos;
 }
 
-void yk_rigidbody_set_vel(i4 id, YK_Vec2f *vel)
+void yk_rigidbody_set_vel(i4 id, v2f *vel)
 {
     ((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->velocity = *vel;
 }
 
-void yk_rigidbody_add_force(i4 id, YK_Vec2f *force)
+void yk_rigidbody_add_force(i4 id, v2f *force)
 {
-    YK_Vec2f *_acc = &((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->acceleration;
+    v2f *_acc = &((YK_Rigidbody *)yk_yektor_get(&yk_rigidbodies, id))->acceleration;
     *_acc = yk_math_vec2f_add(_acc, force);
 }
 
@@ -127,9 +127,9 @@ b1 yk_physics_colliding(YK_Aabb *a, const YK_Aabb *b)
     return false;
 }
 
-YK_Vec3f yk_physics_get_collision_dir(const YK_Aabb *aabb)
+v3f yk_physics_get_collision_dir(const YK_Aabb *aabb)
 {
-    YK_Vec3f out_coll_dir = {0.0f, 0.0f, 0.f};
+    v3f out_coll_dir = {0.0f, 0.0f, 0.f};
 
     switch (aabb->coll_dir)
     {
@@ -225,9 +225,9 @@ void yk_physics_resolve_collision(YK_Aabb *a, const YK_Aabb *b)
     }
 }
 
-YK_Vec3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b)
+v3f yk_physics_get_overlap_distance(YK_Aabb *a, const YK_Aabb *b)
 {
-    YK_Vec3f translation = {0.0f, 0.0f, 0.0f};
+    v3f translation = {0.0f, 0.0f, 0.0f};
 
     f4 halfWidthA = a->size.x / 2.0f;
     f4 halfHeightA = a->size.y / 2.0f;

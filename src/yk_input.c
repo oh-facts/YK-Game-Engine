@@ -20,11 +20,11 @@ f4 yk_input_get_mouse_scroll()
 {
     return yk_input_mouse_scroll;
 }
-YK_Vec2f yk_input_get_mouse_pos()
+v2f yk_input_get_mouse_pos()
 {
     return yk_input_mouse_pos;
 }
-YK_Vec2f yk_input_get_mouse_movement()
+v2f yk_input_get_mouse_movement()
 {
     return yk_math_vec2f_sub(&yk_input_mouse_pos_old, &yk_input_mouse_pos);
 }

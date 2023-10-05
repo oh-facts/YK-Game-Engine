@@ -12,7 +12,7 @@ typedef struct square square;
 #define SPEED 4
 void update_player(square *py, f4 delta)
 {
-    YK_Vec2f mv = {0, 0};
+    v2f mv = {0, 0};
 
     if (yk_input_is_key_held(YK_KEY_W))
     {

@@ -1,7 +1,7 @@
 #include <yk/math/yk_math_transform.h>
 #include <immintrin.h>
 
-void yk_math_transform_translate(YK_Mat4f *mat, const YK_Vec3f *vec)
+void yk_math_transform_translate(m4f *mat, const v3f *vec)
 {
     // Better to make translation and multiply or directly?
     // And do I += or assign fresh?
@@ -11,14 +11,14 @@ void yk_math_transform_translate(YK_Mat4f *mat, const YK_Vec3f *vec)
     mat->m32 += mat->m02 * vec->x + mat->m12 * vec->y + mat->m22 * vec->z;
 }
 
-void yk_math_transform_rotate(YK_Mat4f *mat, const f4 angle, const YK_Vec3f *axis)
+void yk_math_transform_rotate(m4f *mat, const f4 angle, const v3f *axis)
 {
     // same question. Do I multiply the matrices explicitly, or do them element wise
     float c = cosf(angle);
     float s = sinf(angle);
     float t = 1.0f - c;
 
-    YK_Vec3f _axis = yk_vec3f_normalize(axis);
+    v3f _axis = yk_vec3f_normalize(axis);
     float x = _axis.x;
     float y = _axis.y;
     float z = _axis.z;
@@ -37,7 +37,7 @@ void yk_math_transform_rotate(YK_Mat4f *mat, const f4 angle, const YK_Vec3f *axi
 
 }
 
-void yk_math_transform_scale(YK_Mat4f *mat, const YK_Vec3f *scale)
+void yk_math_transform_scale(m4f *mat, const v3f *scale)
 {
     /*
     YK_Mat4f scaleMat = {
@@ -63,7 +63,7 @@ void yk_math_transform_scale(YK_Mat4f *mat, const YK_Vec3f *scale)
 
     // which method is better?
 }
-void yk_maths_transform_translate(YK_Mat4f *mat, const YK_Vec3f *vec)
+void yk_maths_transform_translate(m4f *mat, const v3f *vec)
 {
     __m128 vec_data = _mm_loadu_ps((float *)vec);
     __m128 row0 = _mm_loadu_ps(&mat->m00);
@@ -80,13 +80,13 @@ void yk_maths_transform_translate(YK_Mat4f *mat, const YK_Vec3f *vec)
 /*
 */
 
-void yk_maths_transform_rotate(YK_Mat4f *mat, const f4 angle, const YK_Vec3f *axis)
+void yk_maths_transform_rotate(m4f *mat, const f4 angle, const v3f *axis)
 {
     printf("Eeska meeska mickey mouse");
 }
 
 
-void yk_maths_transform_scale(YK_Mat4f *mat, const YK_Vec3f *scale)
+void yk_maths_transform_scale(m4f *mat, const v3f *scale)
 {
     __m128 scale_vec = _mm_loadu_ps((float *)scale);
 
