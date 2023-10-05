@@ -1,0 +1,22 @@
+Low level optmizations like using ptr over passing struct as value, returning struct vs having an out * variable
+is utterly useless at this point. These optmizations only make sense when you are at a stage where you can ship games
+and you notice how much time is spent.
+
+Passing 16 bytes is completely fine. Obviously if its very large, then care, or if it idiomatically makes sense,
+which it usually does sometimes then care. Don't do something obviously bad. Optimize algorithmically/access pattern-wise
+/cache coherency,but don't care about ptr/variable or other "Low level" stuff. It is impossible to predict at this stage
+and it will constantly change based on a million different factors.
+
+if vs switch
+because i see so much misinformation on the internet. I am writing it here.
+If you are going case = {n,n + k, n + 2k, ....}, n and k are integers, then switch is alyways better because they are optmizied
+into jump tables which are literally o(1). ofc, you can make jump tables yourself but I feel its best to let the compiler decide 
+and I would consider this "Low level" stuff
+
+
+credits
+Casey Muratori
+Ms Bea
+Kanye West
+Linus Torvaalds
+Finn, Jake, Marceline and BMO
