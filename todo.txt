@@ -1,40 +1,14 @@
 /*
-  v0.1.0
-  To Do
-    1. Make Vectors       9/3 done
-    2. Rework app         9/3 done (removed app)
-    3. Make ecs           9/3 done
-    4.5 Make ecs better.  9/7 done
-    5. make physics       9/10 done
-
-  v0.1.0 Demo
-    game-jam
-
-  v0.1.1
-  To Do
-    1. vulkan
-    2. make the best renderer ever
-    3. make ecs sparse set instead of bitmask
-
-  v0.1.1 Demo
-    4. game-jam
-
-  v0.1.2
-  To Do
-    1. ray-casting pipeline
-    2. Sandbox
-
-  Backlog
-  v0.1.0
-    1. make api
-    2. clean up engine
-
-
-
-  Renderer2d
+Back burner
+   Renderer2d
     1. Rect tiling
     2. rendering priority
   Physics2d
-    1. friction, acceleration : completed acceleration and time step.
+    1. friction, acceleration
+  math
+    1. Make transform able to ignore
+  
+  build
+    1. stop copying all assets folder to build folder everytime, instead only copy when updated
      
 */
