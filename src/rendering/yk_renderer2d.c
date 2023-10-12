@@ -186,7 +186,7 @@ void yk_renderer2d_cleanup()
 
 void yk_line_innit(YK_Line *out)
 {
-    out->shader_program = yk_shader_create("yk-res/default/line.vert", "yk-res/default/line.frag");
+    out->shader_program = yk_shader_create("yk-res/shaders/default/line.vert", "yk-res/shaders/default/line.frag");
     f4 vertices[] =
         {
             -0.5, 0.f,

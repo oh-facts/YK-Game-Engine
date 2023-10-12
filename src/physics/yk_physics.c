@@ -158,7 +158,7 @@ void yk_particle_collison_shape_debug_draw(YK_Renderer2d *ren)
       YK_AABB *aabb = &particle->collider.collision_shape.aabb;
       v2f pos = yk_aabb_get_pos(aabb);
       v2f scale = yk_aabb_get_scale(aabb);
-      yk_renderer2d_render_rect(ren, &(YK_Transform2d){.pos = pos, .scale = scale, .rot_z = 0.f}, &YK_COLOR_BLUE);
+      yk_renderer2d_render_rect(ren, &(YK_Transform2d){.pos = pos, .scale = scale, .rot_z = 0.f}, &(YK_Color){1,0,0,0.4f});
 
       /*
       printf("pos: ");

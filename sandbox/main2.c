@@ -58,18 +58,21 @@ int main()
     entity py = {.transform = {{0, 0}, 0, {1.f, 1.f}}};
     entity testo = {.transform = {{1.f, 1.f}, 0, {1.f, 1.f}}};
 
-    yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
+    yk_renderer2d_set_bg(0.07f, 0.13f, 0.17f, 1.f);
 
     YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
     yk_physics_innit();
     py.particle = yk_particles_create((v2f){0, 0}, 0.f, 1.f);
     testo.particle = yk_particles_create((v2f){1.f, 1.f}, 0.f, 1.f);
 
-    yk_particle_set_aabb(py.particle, (v2f){0,-0.4f}, (v2f){0.5f,0.2f});
-    //yk_particle_set_aabb(py.particle, (v2f){0,0}, (v2f){1.f,1.f});
-    
-    yk_particle_set_aabb(testo.particle, (v2f){0.f,0.f}, testo.transform.scale);
+    yk_particle_set_aabb(py.particle, (v2f){0, -0.4f}, (v2f){0.5f, 0.2f});
+    // yk_particle_set_aabb(py.particle, (v2f){0,0}, (v2f){1.f,1.f});
 
+    yk_particle_set_aabb(testo.particle, (v2f){0.f, 0.f}, testo.transform.scale);
+
+    v2f *pos = &py.transform.pos;
+    f4 rot = 90;
+    v2f scale = {.x = 1, .y = 0.1f};
 
     while (yk_window_is_running(&win))
     {
@@ -84,13 +87,15 @@ int main()
         update_player(&py, delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
-        
-        yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
-        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &YK_COLOR_RED, &test);
-        yk_particle_collison_shape_debug_draw(&ren2d);  
 
-        yk_renderer2d_render_line(&ren2d,&py.transform,&YK_COLOR_WHITE);
-      // printf("Draw Calls: %d\n",draw_calls);
+        yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
+        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &(YK_Color){0.3f, 0.3f, 1.f, 1.f}, &test);
+       
+
+        yk_particle_collison_shape_debug_draw(&ren2d);
+
+        yk_renderer2d_render_line(&ren2d, &(YK_Transform2d){.pos = *pos, .rot_z = rot, .scale = scale}, &YK_COLOR_WHITE);
+        // printf("Draw Calls: %d\n",draw_calls);
 
         yk_window_run(&win);
     }
