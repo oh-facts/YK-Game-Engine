@@ -15,8 +15,75 @@ and I would consider this "Low level" stuff
 
 
 credits
-Casey Muratori
 Ms Bea
 Kanye West
-Linus Torvaalds
 Finn, Jake, Marceline and BMO
+
+10/6/23
+1:47 am
+
+I don't think I understand the size of this project.
+Unreal Engine and RAGE, the best engines in the market
+use bullet/physx/chaos physics middleware
+WTF
+How can I ever compete? When two of the biggest engines
+couldn't?
+I can't keep telling myself that I am better.
+
+but I am better.
+
+Phew, dodged a bullet3
+
+I wonder what this all really means
+
+Wait I am learning music and art too.
+
+All I want is to make vidjya game.
+
+How much better am I than tier 1 mega corps working 9 - 5 every day of the year?
+
+I need to be atleast 10x better.
+
+
+
+"If you were to round down, he is about infinite times better than whatever, whoever or wheneve he chooses
+to be better than. He needs no one and can invent the universe, and every neighboring (or otherwise) reality 
+he chooses to. The reason why he suffers from non tangible inner demons is due to a safety mechanism he inserted to nerf
+himself so others don't feel bad. Yes, he thinks about you :D"
+
+- psydup 1:3
+
+
+Hi!
+
+I'm going to be working on physics/aabb related stuff today.
+Then I have classes.
+I am listening to a cover on Alex G's Nintendo 64
+
+I like the cover better
+
+
+:D
+
+
+I got the "debug draw" to work
+
+Basically, I wanted to see if my collision shapes were in the right place.
+I need to make them move with the rb now.
+
+But right now, I need to do my hw.
+
+bye bye :D
+
+
+
+10/12
+12:03 am
+
+I am waiting for my earbuds to charge so I can view a documentary.
+Until then, I will get my aabb to update position as rb moves. I added a 
+debug draw so it'll be easier.
+
+
+
+

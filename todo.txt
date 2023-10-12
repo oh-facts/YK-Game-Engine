@@ -1,13 +1,33 @@
 /*
+
+To do
+  Physics2d
+    1. colliders
+    2. integrate
+    3. collide
+    4. resolution
+    5. aabb/aabb
+    6. aabb/circle
+    7. circle/circle
+
+    Renderer2d
+    1. batching
+    2. tilemaps
+    3. sprite animations
+
 Back burner
    Renderer2d
     1. Rect tiling
     2. rendering priority
   Physics2d
     1. friction, acceleration
+  
   math
     1. Make transform able to ignore
   
+
+
+  completed
   build
     1. stop copying all assets folder to build folder everytime, instead only copy when updated
      

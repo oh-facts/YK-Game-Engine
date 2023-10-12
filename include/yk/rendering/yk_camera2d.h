@@ -13,7 +13,7 @@
 #define YK_WORLD_DOWN         (v3f){ 0.f,-1.f, 0.f}
 #define YK_WORLD_FORWARD      (v3f){ 0.f, 0.f,-1.f}
 #define YK_WORLD_BACKWARD     (v3f){ 0.f, 0.f, 1.f}
-
+ 
 /*
   Orthographic 2d camera.
   Meant to be used with the renderer2d.

@@ -1,3 +1,5 @@
+#include "yk/math/yk_math_types.h"
+#include "yk/physics/yk_physics.h"
 #include <yk/yk_app.h>
 
 struct entity
@@ -53,13 +55,20 @@ int main()
     f4 delta_time = 0.f;
     f4 last_frame = 0.f;
 
-    entity py = {.transform = {{0, 0}, 0, {1.f,1.f}}};
+    entity py = {.transform = {{0, 0}, 0, {1.f, 1.f}}};
+    entity testo = {.transform = {{1.f, 1.f}, 0, {1.f, 1.f}}};
 
     yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
 
     YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
     yk_physics_innit();
     py.particle = yk_particles_create((v2f){0, 0}, 0.f, 1.f);
+    testo.particle = yk_particles_create((v2f){1.f, 1.f}, 0.f, 1.f);
+
+    yk_particle_set_aabb(py.particle, (v2f){0,-0.4f}, (v2f){0.5f,0.2f});
+    //yk_particle_set_aabb(py.particle, (v2f){0,0}, (v2f){1.f,1.f});
+    
+    yk_particle_set_aabb(testo.particle, (v2f){0.f,0.f}, testo.transform.scale);
 
     while (yk_window_is_running(&win))
     {
@@ -75,8 +84,9 @@ int main()
 
         yk_renderer2d_run(&ren2d, &win);
         yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
-
-        // printf("Draw Calls: %d\n",draw_calls);
+        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &YK_COLOR_RED, &test);
+        yk_particle_collison_shape_debug_draw(&ren2d);  
+      // printf("Draw Calls: %d\n",draw_calls);
 
         yk_window_run(&win);
     }
