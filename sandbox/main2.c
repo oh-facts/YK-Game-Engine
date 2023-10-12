@@ -70,6 +70,7 @@ int main()
     
     yk_particle_set_aabb(testo.particle, (v2f){0.f,0.f}, testo.transform.scale);
 
+
     while (yk_window_is_running(&win))
     {
 
@@ -83,9 +84,12 @@ int main()
         update_player(&py, delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
+        
         yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
         yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &YK_COLOR_RED, &test);
         yk_particle_collison_shape_debug_draw(&ren2d);  
+
+        yk_renderer2d_render_line(&ren2d,&py.transform,&YK_COLOR_WHITE);
       // printf("Draw Calls: %d\n",draw_calls);
 
         yk_window_run(&win);
