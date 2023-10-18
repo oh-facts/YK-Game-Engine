@@ -92,7 +92,7 @@ void yk_rect_innit(YK_Rect *out)
     GLuint tex0Uni = glGetUniformLocation(out->shader_program, "tex0");
     glUseProgram(out->shader_program);
     glUniform1i(tex0Uni, 0);
-}
+}   
 
 void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
 {
@@ -115,18 +115,20 @@ void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform2d *t
         out = yk_mat4f_identity();
         // Use a union and allow a transform3d to store this.
         // Other option is to have translate, rotate and scale for 2d
-        YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
-        yk_math_transform_translate(&out, &_trans.pos);
+        //YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
+        
+        yk_math_transform_translate(&out, &(v3f){transform->pos.x,transform->pos.y,-1.f});
 
-        yk_math_transform_rotate(&out, _trans.rot.z, &YK_WORLD_FORWARD);
+        yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
 
-        yk_math_transform_scale(&out, &_trans.scale);
+        yk_math_transform_scale(&out, &(v3f){transform->scale.x,transform->scale.y,-1.f});
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
     }
 
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
+    
     glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -228,12 +230,11 @@ void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transfor
         out = yk_mat4f_identity();
         // Use a union and allow a transform3d to store this.
         // Other option is to have translate, rotate and scale for 2d
-        YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
-        yk_math_transform_translate(&out, &_trans.pos);
+        yk_math_transform_translate(&out, &(v3f){transform->pos.x,transform->pos.y,-1.f});
 
-        yk_math_transform_rotate(&out, _trans.rot.z, &YK_WORLD_FORWARD);
+        yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
 
-        yk_math_transform_scale(&out, &_trans.scale);
+        yk_math_transform_scale(&out, &(v3f){transform->scale.x,transform->scale.y,-1.f});
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
     }
