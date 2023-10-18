@@ -63,6 +63,7 @@ int main()
     YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
     yk_physics_innit();
     py.particle = yk_particles_create((v2f){0, 0}, 0.f, 1.f);
+
     testo.particle = yk_particles_create((v2f){1.f, 1.f}, 0.f, 1.f);
 
     yk_particle_set_aabb(py.particle, (v2f){0, -0.4f}, (v2f){0.5f, 0.2f});
@@ -74,6 +75,11 @@ int main()
     f4 rot = 90;
     v2f scale = {.x = 1, .y = 0.1f};
 
+    YK_Color moop = {77, 77, 256, 256};
+    NORMALIZE_RGBA(moop);
+
+    //py.particle->vel.x = 0.2f;
+
     while (yk_window_is_running(&win))
     {
 
@@ -82,14 +88,15 @@ int main()
         last_frame = current_frame;
 
         // debug_input(&cam2d, delta_time);
-        yk_particle_integrate(delta_time);
-
+        
         update_player(&py, delta_time);
+
+        yk_particle_integrate(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
 
         yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
-        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &(YK_Color){0.3f, 0.3f, 1.f, 1.f}, &test);
+        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &moop  , &test);
        
 
         yk_particle_collison_shape_debug_draw(&ren2d);

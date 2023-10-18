@@ -4,14 +4,6 @@
 #include <yk/math/yk_math_types.h>
 
 
-struct YK_Color
-{
-    f4 r,g,b,a;
-};
-
-
-typedef struct YK_Color YK_Color;
-
 #define YK_COLOR_RED              ((struct YK_Color){1.0f, 0.0f, 0.0f, 1.0f})
 #define YK_COLOR_GREEN            ((struct YK_Color){0.0f, 1.0f, 0.0f, 1.0f})
 #define YK_COLOR_BLUE             ((struct YK_Color){0.0f, 0.0f, 1.0f, 1.0f})
@@ -26,8 +18,12 @@ typedef struct YK_Color YK_Color;
 #define YK_COLOR_TRANSPARENT      ((struct YK_Color){0.0f, 0.0f, 0.0f, 0.0f})
 
 /*
+    N: r,g,b,a normalized range.
+    
+*/
 enum YK_COLOR_TYPE
 {
+    YK_COLOR_N,
     YK_COLOR_RGBA,
     YK_COLOR_HEX,
 };
@@ -35,26 +31,35 @@ enum YK_COLOR_TYPE
 typedef enum YK_COLOR_TYPE YK_COLOR_TYPE;
 
 
-union YK_Color
+struct YK_Color
 {
-    struct
+    union
     {
-        f4 r, g, b;
+        struct
+        {
+           f4 r,g,b;
+        };
+        
+        f4 hex;
+        
     };
 
-    struct
-    {
-        i4 hex;
-    };
-
-    i4 a;
+    f4 a;
 
     YK_COLOR_TYPE type;
     
 };
 
-typedef union YK_Color YK_Color;
+typedef struct YK_Color YK_Color;
 
-void yk_color_normalized(YK_Color *out);
-*/
+#define NORMALIZE_RGBA(color) do { \
+    (color).r = (color).r / 255.0; \
+    (color).g = (color).g / 255.0; \
+    (color).b = (color).b / 255.0; \
+} while (0)
+
+#define NORMALIZE_HEX
+
+//void yk_color_normalized(YK_Color *out);
+
 #endif

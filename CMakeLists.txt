@@ -69,11 +69,6 @@ add_custom_target(
 
 
 #|----------------|
-add_custom_target(
-    yk_copy-resources ALL
-    COMMAND ${CMAKE_COMMAND} -E echo "Copying yk-res directory..."
-)
-
 
 set(files_copied FALSE)
 

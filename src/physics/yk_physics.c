@@ -12,7 +12,7 @@ void yk_physics_innit()
 }
 
 f4 accumulator = 0.f;
-#define fixed_delta 0.001f
+#define fixed_delta (0.01f)
 #define half_a_t2 (fixed_delta * fixed_delta * 0.5f)
 
 void yk_particle_integrate(f4 delta)
@@ -59,7 +59,7 @@ void yk_particle_integrate(f4 delta)
         }
         if (yk_particle_collision_test(particle1, particle2))
         {
-          //printf("collide\n");
+          printf("collide\n");
         }
       }
     }
