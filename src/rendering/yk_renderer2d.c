@@ -190,7 +190,8 @@ void yk_line_innit(YK_Line *out)
     f4 vertices[] =
         {
             -0.5, 0.f,
-            0.5f, 0.f};
+            0.5f, 0.f
+        };
 
     GLuint vbo;
     glGenVertexArrays(1, &out->vertex_arrays);
@@ -210,12 +211,6 @@ void yk_line_innit(YK_Line *out)
     glDeleteBuffers(1, &vbo);
 
     glUseProgram(out->shader_program);
-}
-
-void yk_line_destroy(YK_Line *out)
-{
-    glDeleteVertexArrays(1, &(out->vertex_arrays));
-    glDeleteProgram(out->shader_program);
 }
 
 void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
@@ -251,4 +246,10 @@ void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transfor
     draw_calls++;
 
     glBindVertexArray(0);
+}
+
+void yk_line_destroy(YK_Line *out)
+{
+    glDeleteVertexArrays(1, &(out->vertex_arrays));
+    glDeleteProgram(out->shader_program);
 }

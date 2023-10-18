@@ -72,7 +72,7 @@ int main()
     yk_particle_set_aabb(testo.particle, (v2f){0.f, 0.f}, testo.transform.scale);
 
     v2f *pos = &py.transform.pos;
-    f4 rot = 90;
+    f4 rot = 90 * DEG_TO_RAD;
     v2f scale = {.x = 1, .y = 0.1f};
 
     YK_Color moop = {77, 77, 256, 256};
