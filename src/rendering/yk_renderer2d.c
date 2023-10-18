@@ -254,3 +254,9 @@ void yk_line_destroy(YK_Line *out)
     glDeleteVertexArrays(1, &(out->vertex_arrays));
     glDeleteProgram(out->shader_program);
 }
+
+void yk_renderer2d_render_rect_outline(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col)
+{
+    //I am going to have to work this out properly
+    yk_renderer2d_render_line(renderer,transform,col);
+}
