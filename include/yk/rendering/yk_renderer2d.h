@@ -42,6 +42,7 @@ typedef struct YK_Renderer2d
 void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col);
 void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col, YK_Texture *texture);
 void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col);
+void yk_renderer2d_render_line(YK_Renderer2d *renderer, v2f pos_start, v2f pos_end, YK_Color* col);
 
 void yk_renderer2d_innit(YK_Renderer2d *renderer, YK_Camera2d *current_cam, YK_Window *win);
 void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win);

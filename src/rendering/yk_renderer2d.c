@@ -254,3 +254,8 @@ void yk_line_destroy(YK_Line *out)
     glDeleteVertexArrays(1, &(out->vertex_arrays));
     glDeleteProgram(out->shader_program);
 }
+
+void yk_renderer2d_render_line(YK_Renderer2d *renderer, v2f pos_start, v2f pos_end, YK_Color* col)
+{
+    
+}
