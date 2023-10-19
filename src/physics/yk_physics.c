@@ -59,7 +59,7 @@ void yk_particle_integrate(f4 delta)
         }
         if (yk_particle_collision_test(particle1, particle2))
         {
-          printf("collide\n");
+          //printf("collide\n");
         }
       }
     }

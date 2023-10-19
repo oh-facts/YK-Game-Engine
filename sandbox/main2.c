@@ -95,8 +95,8 @@ int main()
 
         yk_renderer2d_run(&ren2d, &win);
 
-        yk_renderer2d_render_rect_outline(&ren2d, &py.transform,&YK_COLOR_CYAN);
-        yk_renderer2d_render_line_p(&ren2d, yk_math_vec2f_add(&py.transform.pos,&(v2f){1.f,1.f}), rot, 0.05f, &YK_COLOR_MAGENTA);
+        yk_renderer2d_render_rect_outline(&ren2d, &py.transform, 0.01f, &YK_COLOR_CYAN);
+        yk_renderer2d_render_line_p(&ren2d, yk_math_vec2f_add(&py.transform.pos, &(v2f){1.f, 1.f}), rot, 0.05f, &YK_COLOR_MAGENTA);
         yk_renderer2d_render_line(&ren2d, &(YK_Transform2d){.pos = *pos, .rot_z = rot, .scale = scale}, &YK_COLOR_MAGENTA);
         yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
         yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &moop, &test);

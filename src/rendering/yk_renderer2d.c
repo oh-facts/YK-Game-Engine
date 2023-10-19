@@ -292,10 +292,14 @@ void yk_line_destroy(YK_Line *out)
     glDeleteProgram(out->shader_program);
 }
 
-void yk_renderer2d_render_rect_outline(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
+void yk_renderer2d_render_rect_outline(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 thickness, YK_Color *col)
 {
-    yk_renderer2d_render_line_p(renderer, transform->pos, 30.f*DEG_TO_RAD, 0.1f, col);
-    yk_renderer2d_render_line_p(renderer, transform->pos, 45.f*DEG_TO_RAD, 0.1f, col);
-    yk_renderer2d_render_line_p(renderer, transform->pos, 60.f*DEG_TO_RAD, 0.1f, col);
-    yk_renderer2d_render_line_p(renderer, transform->pos, 90.f*DEG_TO_RAD, 0.1f, col);
+    v2f _pos = transform->pos;
+    v2f _hscalex = {.y = transform->scale.x / 2, .x = 0.f};
+    v2f _hscaley = {.x = transform->scale.y / 2, .y = 0.f};
+
+    yk_renderer2d_render_line_p(renderer, yk_math_vec2f_add(&_pos, &_hscalex), 0.f, thickness, col);
+    yk_renderer2d_render_line_p(renderer, yk_math_vec2f_sub(&_pos, &_hscalex), 0.f, thickness, col);
+    yk_renderer2d_render_line_p(renderer, yk_math_vec2f_add(&_pos, &_hscaley), 90.f * DEG_TO_RAD, thickness, col);
+    yk_renderer2d_render_line_p(renderer, yk_math_vec2f_sub(&_pos, &_hscaley), 90.f * DEG_TO_RAD, thickness, col);
 }
