@@ -191,8 +191,11 @@ void yk_line_innit(YK_Line *out)
     out->shader_program = yk_shader_create("yk-res/shaders/default/line.vert", "yk-res/shaders/default/line.frag");
     f4 vertices[] =
         {
-            -0.5, 0.f,
-            0.5f, 0.f
+            -0.5, 0.5f,
+            0.5f, 0.5f,
+            -0.5f,-0.5f,
+            0.5f,-0.5f
+
         };
 
     GLuint vbo;
@@ -243,7 +246,7 @@ void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transfor
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
     glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
 
-    glDrawArrays(GL_LINES, 0, 2);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
     draw_calls++;
 
     glBindVertexArray(0);
@@ -253,9 +256,4 @@ void yk_line_destroy(YK_Line *out)
 {
     glDeleteVertexArrays(1, &(out->vertex_arrays));
     glDeleteProgram(out->shader_program);
-}
-
-void yk_renderer2d_render_line(YK_Renderer2d *renderer, v2f pos_start, v2f pos_end, YK_Color* col)
-{
-    
 }

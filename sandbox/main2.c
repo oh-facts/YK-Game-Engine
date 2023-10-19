@@ -72,13 +72,13 @@ int main()
     yk_particle_set_aabb(testo.particle, (v2f){0.f, 0.f}, testo.transform.scale);
 
     v2f *pos = &py.transform.pos;
-    f4 rot = 90 * DEG_TO_RAD;
+    f4 rot = 0 * DEG_TO_RAD;
     v2f scale = {.x = 1, .y = 0.1f};
 
     YK_Color moop = {77, 77, 256, 256};
     NORMALIZE_RGBA(moop);
 
-    //py.particle->vel.x = 0.2f;
+    // py.particle->vel.x = 0.2f;
 
     while (yk_window_is_running(&win))
     {
@@ -88,20 +88,19 @@ int main()
         last_frame = current_frame;
 
         // debug_input(&cam2d, delta_time);
-        
+
         update_player(&py, delta_time);
 
         yk_particle_integrate(delta_time);
 
         yk_renderer2d_run(&ren2d, &win);
 
+        yk_renderer2d_render_line(&ren2d, &(YK_Transform2d){.pos = *pos, .rot_z = rot, .scale = scale}, &YK_COLOR_MAGENTA);
         yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
-        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &moop  , &test);
-       
+        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &moop, &test);
 
         yk_particle_collison_shape_debug_draw(&ren2d);
 
-        yk_renderer2d_render_line(&ren2d, &(YK_Transform2d){.pos = *pos, .rot_z = rot, .scale = scale}, &YK_COLOR_WHITE);
         // printf("Draw Calls: %d\n",draw_calls);
 
         yk_window_run(&win);
