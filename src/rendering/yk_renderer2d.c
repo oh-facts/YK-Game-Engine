@@ -92,7 +92,7 @@ void yk_rect_innit(YK_Rect *out)
     GLuint tex0Uni = glGetUniformLocation(out->shader_program, "tex0");
     glUseProgram(out->shader_program);
     glUniform1i(tex0Uni, 0);
-}   
+}
 
 void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
 {
@@ -115,20 +115,20 @@ void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform2d *t
         out = yk_mat4f_identity();
         // Use a union and allow a transform3d to store this.
         // Other option is to have translate, rotate and scale for 2d
-        //YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
-        
-        yk_math_transform_translate(&out, &(v3f){transform->pos.x,transform->pos.y,-1.f});
+        // YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
+
+        yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, -1.f});
 
         yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
 
-        yk_math_transform_scale(&out, &(v3f){transform->scale.x,transform->scale.y,-1.f});
+        yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, -1.f});
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
     }
 
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
-    
+
     glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -191,8 +191,11 @@ void yk_line_innit(YK_Line *out)
     out->shader_program = yk_shader_create("yk-res/shaders/default/line.vert", "yk-res/shaders/default/line.frag");
     f4 vertices[] =
         {
-            -0.5, 0.f,
-            0.5f, 0.f
+            -0.5, 0.5f,
+            0.5f, 0.5f,
+            -0.5f, -0.5f,
+            0.5f, -0.5f
+
         };
 
     GLuint vbo;
@@ -230,11 +233,11 @@ void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transfor
         out = yk_mat4f_identity();
         // Use a union and allow a transform3d to store this.
         // Other option is to have translate, rotate and scale for 2d
-        yk_math_transform_translate(&out, &(v3f){transform->pos.x,transform->pos.y,-1.f});
+        yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, -1.f});
 
         yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
 
-        yk_math_transform_scale(&out, &(v3f){transform->scale.x,transform->scale.y,-1.f});
+        yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, -1.f});
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
     }
@@ -243,7 +246,41 @@ void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transfor
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
     glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
 
-    glDrawArrays(GL_LINES, 0, 2);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
+    draw_calls++;
+
+    glBindVertexArray(0);
+}
+
+void yk_renderer2d_render_line_p(YK_Renderer2d *renderer, v2f pos, f4 rot, f4 thickness, YK_Color *col)
+{
+    glUseProgram(yk_line_default.shader_program);
+    glBindVertexArray(yk_line_default.vertex_arrays);
+
+    u4 modelLoc = glGetUniformLocation(yk_line_default.shader_program, "model");
+    u4 viewLoc = glGetUniformLocation(yk_line_default.shader_program, "view");
+    u4 projectionLoc = glGetUniformLocation(yk_line_default.shader_program, "projection");
+    u4 colorLoc = glGetUniformLocation(yk_line_default.shader_program, "color");
+
+    {
+        m4f out;
+        out = yk_mat4f_identity();
+        // Use a union and allow a transform3d to store this.
+        // Other option is to have translate, rotate and scale for 2d
+        yk_math_transform_translate(&out, &(v3f){pos.x, pos.y, -1.f});
+
+        yk_math_transform_rotate(&out, rot, &YK_WORLD_FORWARD);
+
+        yk_math_transform_scale(&out, &(v3f){1.f, thickness, -1.f});
+
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
+    }
+
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
+    glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 8);
     draw_calls++;
 
     glBindVertexArray(0);
@@ -255,8 +292,10 @@ void yk_line_destroy(YK_Line *out)
     glDeleteProgram(out->shader_program);
 }
 
-void yk_renderer2d_render_rect_outline(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col)
+void yk_renderer2d_render_rect_outline(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
 {
-    //I am going to have to work this out properly
-    yk_renderer2d_render_line(renderer,transform,col);
+    yk_renderer2d_render_line_p(renderer, transform->pos, 30.f*DEG_TO_RAD, 0.1f, col);
+    yk_renderer2d_render_line_p(renderer, transform->pos, 45.f*DEG_TO_RAD, 0.1f, col);
+    yk_renderer2d_render_line_p(renderer, transform->pos, 60.f*DEG_TO_RAD, 0.1f, col);
+    yk_renderer2d_render_line_p(renderer, transform->pos, 90.f*DEG_TO_RAD, 0.1f, col);
 }
