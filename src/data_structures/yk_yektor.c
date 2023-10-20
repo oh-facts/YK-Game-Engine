@@ -27,7 +27,7 @@ void yk_yektor_innit(YK_Yektor *vector, size_t size, size_t element_size)
     vector->capacity = size;
 }
 
-void* yk_yektor_push(YK_Yektor *vector, void *element)
+void *yk_yektor_push(YK_Yektor *vector, void *element)
 {
     if (vector->size >= vector->capacity)
     {
@@ -41,7 +41,7 @@ void* yk_yektor_push(YK_Yektor *vector, void *element)
     return dest;
 }
 
-void yk_yektor_insert(YK_Yektor *vector, void *element, size_t index)
+void *yk_yektor_insert(YK_Yektor *vector, void *element, size_t index)
 {
     if (index > vector->size)
     {
@@ -60,6 +60,9 @@ void yk_yektor_insert(YK_Yektor *vector, void *element, size_t index)
 
     dest = (char *)vector->data + (index * vector->element_size);
     memcpy(dest, element, vector->element_size);
+
+    vector->size++;
+    return dest;
 }
 
 void yk_yektor_set(YK_Yektor *vector, void *element, size_t index)
@@ -87,7 +90,7 @@ void *yk_yektor_get(YK_Yektor *vector, size_t index)
     }
     else
     {
-        //pitiful
+        // pitiful
         printf("error \n");
         return NULL;
     }
@@ -101,6 +104,16 @@ void yk_yektor_pop(YK_Yektor *vector)
     {
         vector->size--;
     }
+}
+
+void *yk_yektor_pop_get(YK_Yektor *vector)
+{
+    void *out = (char *)vector->data + (vector->size * vector->element_size);
+    if (vector->size > 0)
+    {
+        vector->size--;
+    }
+    return out;
 }
 
 void yk_yektor_destroy(YK_Yektor *vector)

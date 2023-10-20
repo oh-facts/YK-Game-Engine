@@ -31,7 +31,7 @@ set(yk_src_rendering    "vendor/glad/src/glad.c" "vendor/stb/src/stb_image.c" "s
                         "src/rendering/yk_color.c" "src/yk_window.c"
 )
 
-set(yk_src_core         "src/yk_file_reader.c" "src/math/yk_vector.c" "src/data_structures/yk_yektor.c" "src/ecs/yk_ecs.c"
+set(yk_src_core         "src/yk_file_reader.c" "src/math/yk_vector.c" "src/data_structures/yk_yektor.c"
                         "src/physics/yk_physics.c" "src/yk_input.c"
 )
 
@@ -104,5 +104,6 @@ endif()
 
 #------Sand box builds-------#
 #add_executable(yk-test sandbox/main.c)
-add_executable(yk-test sandbox/main2.c)
+#add_executable(yk-test sandbox/main2.c)
+add_executable(yk-test sandbox/yektor_test.c)
 target_link_libraries(yk-test yk)
