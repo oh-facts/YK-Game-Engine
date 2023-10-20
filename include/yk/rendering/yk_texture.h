@@ -20,6 +20,9 @@ typedef struct YK_Texture
 
 } YK_Texture;
 
+/*
+    Creates a texture
+*/
 YK_Texture yk_texture_create(const char *path);
 
 #endif

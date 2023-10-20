@@ -4,6 +4,10 @@
 #include <yk/rendering/yk_color.h>
 #include <yk/physics/yk_physics.h>
 
+b1 yk_particle_collision_test(YK_Particle2d *a, YK_Particle2d *b);
+void yk_particle_collision_shape_update(YK_Particle2d *particle);
+void yk_aabb_update_pos(YK_AABB *out, v2f pos);
+
 YK_Yektor particles;
 
 void yk_physics_innit()
@@ -59,7 +63,7 @@ void yk_particle_integrate(f4 delta)
         }
         if (yk_particle_collision_test(particle1, particle2))
         {
-          //printf("collide\n");
+          // printf("collide\n");
         }
       }
     }
@@ -103,7 +107,7 @@ b1 yk_particle_collision_test(YK_Particle2d *a, YK_Particle2d *b)
 
 YK_Particle2d *yk_particles_create(v2f pos, f4 damping, f4 mass)
 {
-  return yk_yektor_push(&particles, &(YK_Particle2d){pos, {0, 0}, {0, 0}, damping, 1.f / mass, YK_COLLISION_SHAPE_NONE});
+  return yk_yektor_push(&particles, &(YK_Particle2d){pos, {0, 0}, {0, 0}, damping, 1.f / mass, YK_COLLISION_SHAPE_NONE, false});
 }
 
 void yk_particle_set_aabb(YK_Particle2d *out, v2f pos, v2f scale)
@@ -152,20 +156,17 @@ void yk_particle_collison_shape_debug_draw(YK_Renderer2d *ren)
   for (i4 i = 0; i < size; i++)
   {
     YK_Particle2d *particle = yk_yektor_get(&particles, i);
+    if (!particle->debug_draw)
+    {
+      continue;
+    }
     switch (particle->collision_shape_type)
     {
     case 1:
       YK_AABB *aabb = &particle->collider.collision_shape.aabb;
       v2f pos = yk_aabb_get_pos(aabb);
       v2f scale = yk_aabb_get_scale(aabb);
-      yk_renderer2d_render_rect(ren, &(YK_Transform2d){.pos = pos, .scale = scale, .rot_z = 0.f}, &(YK_Color){1,0,0,0.4f});
-
-      /*
-      printf("pos: ");
-      yk_vec2f_print(&pos);
-      printf("scale: ");
-      yk_vec2f_print(&scale);
-      */
+      yk_renderer2d_render_quad(ren, &(YK_Transform2d){.pos = pos, .scale = scale, .rot_z = 0.f}, &(YK_Color){1, 0, 0, 0.4f});
     }
   }
 }

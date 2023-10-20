@@ -104,6 +104,6 @@ endif()
 
 #------Sand box builds-------#
 #add_executable(yk-test sandbox/main.c)
-#add_executable(yk-test sandbox/main2.c)
-add_executable(yk-test sandbox/yektor_test.c)
+add_executable(yk-test sandbox/main2.c)
+#add_executable(yk-test sandbox/yektor_test.c)
 target_link_libraries(yk-test yk)

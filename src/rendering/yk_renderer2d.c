@@ -94,12 +94,12 @@ void yk_rect_innit(YK_Rect *out)
     glUniform1i(tex0Uni, 0);
 }
 
-void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
+void yk_renderer2d_render_quad(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
 {
-    yk_renderer2d_render_rect_sprite(renderer, transform, col, &white_square);
+    yk_renderer2d_render_quad_sprite(renderer, transform, col, &white_square);
 }
 
-void yk_renderer2d_render_rect_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture)
+void yk_renderer2d_render_quad_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture)
 {
     glUseProgram(yk_rect_default.shader_program);
     glBindVertexArray(yk_rect_default.vertex_arrays);
@@ -160,7 +160,7 @@ void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window
     draw_calls = 0;
 }
 
-void yk_renderer2d_run(YK_Renderer2d *renderer, YK_Window *win)
+void yk_renderer2d_begin_draw(YK_Renderer2d *renderer, YK_Window *win)
 {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -180,7 +180,7 @@ void yk_renderer2d_set_bg(f4 r, f4 g, f4 b, f4 a)
     glClearColor(r, g, b, a);
 }
 
-void yk_renderer2d_cleanup()
+void yk_renderer2d_destroy()
 {
     yk_rect_destroy(&yk_rect_default);
     yk_line_destroy(&yk_line_default);
@@ -292,7 +292,7 @@ void yk_line_destroy(YK_Line *out)
     glDeleteProgram(out->shader_program);
 }
 
-void yk_renderer2d_render_rect_outline(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 thickness, YK_Color *col)
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 thickness, YK_Color *col)
 {
     v2f _pos = transform->pos;
     v2f _hscalex = {.y = transform->scale.x / 2, .x = 0.f};

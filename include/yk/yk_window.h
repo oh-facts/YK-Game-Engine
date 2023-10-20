@@ -18,6 +18,9 @@
 
 #define TITLE "yk"
 
+/*
+    A window
+*/
 typedef struct YK_Window
 {
     GLFWwindow *win_ptr;
@@ -26,11 +29,35 @@ typedef struct YK_Window
 
 } YK_Window;
 
+/*
+    Initializes a window
+*/
+
 void yk_window_innit(YK_Window *out);
+
+/*
+    Must be called every frame for windowing and input to run correctly
+*/
 void yk_window_run(YK_Window *out);
+
+/*
+    Destroys window
+*/
 void yk_window_destroy(YK_Window *out);
+
+/*
+    Resizes window
+*/
 void yk_window_resize(YK_Window *win, int x, int y);
+
+/*
+    Set vsync.
+*/
 void yk_window_set_vsync(YK_Window *win, b1 flag);
+
+/*
+    Sets window position. You need to account for window titlebar heigh (30 units)
+*/
 void yk_window_set_pos(YK_Window *win, int x, int y);
 
 /*
@@ -39,6 +66,9 @@ false to enable
 */
 void yk_window_disable_cursor(YK_Window *win, b1 flag);
 
+/*
+    returns true if window is active
+*/
 b1 yk_window_is_running(YK_Window *win);
 
 typedef struct YK_Key_states

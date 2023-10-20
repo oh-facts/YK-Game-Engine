@@ -26,17 +26,47 @@ typedef struct YK_Camera2d
 
 } YK_Camera2d;
 
+/*
+  initializes a camera
+*/
+
 void yk_camera2d_innit(YK_Camera2d *camera);
+
+/*
+  does nothing
+*/
 void yk_camera2d_update(YK_Camera2d *camera, f4 delta_time);
 
+/*
+  calculates camera's projection matrix
+*/
 m4f yk_camera2d_get_projection_matrix(YK_Camera2d *camera, f4 aspect_ratio);
+
+/*
+  calculates camera's view matrix
+*/
 m4f yk_camera2d_get_view_matrix(YK_Camera2d *camera);
 
 void yk_camera2d_set_pos2d(YK_Camera2d *camera, v3f *pos);
 
+/*
+  moves camera up by distance
+*/
 void yk_camera2d_move_up(YK_Camera2d *camera, f4 distance);
+
+/*
+  moves camera left by distance
+*/
 void yk_camera2d_move_left(YK_Camera2d *camera, f4 distance);
+
+/*
+  moves camera right by distance
+*/
 void yk_camera2d_move_right(YK_Camera2d *camera, f4 distance);
+
+/*
+  moves camera down by distance
+*/
 void yk_camera2d_move_down(YK_Camera2d *camera, f4 distance);
 
 

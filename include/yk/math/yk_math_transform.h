@@ -10,19 +10,28 @@ Notable observation: My regular implementation might be so bad, that my SIMD app
 #include <yk/math/yk_matrix.h>
 #include <yk/math/yk_vector.h>
 
+/*
+    translates matrix by vec
+*/
 
 void yk_math_transform_translate(m4f *mat, const v3f *vec);
+/*
+    rotates matrix by angle along axis
+*/
+
 void yk_math_transform_rotate(m4f *mat, const f4 angle, const v3f *axis);
+/*
+    Scales matrix by scale
+*/
 void yk_math_transform_scale(m4f *mat, const v3f *scale);
 
-//plural because they are doing more maths  (joke. S is SIMD)
-//https://www.youtube.com/shorts/pz7Q9U7A1dw
+// plural because they are doing more maths  (joke. S is SIMD)
+// https://www.youtube.com/shorts/pz7Q9U7A1dw
 
 void yk_maths_transform_translate(m4f *mat, const v3f *vec);
 void yk_maths_transform_rotate(m4f *mat, const f4 angle, const v3f *axis);
 void yk_maths_transform_scale(m4f *mat, const v3f *scale);
 
-
-//My SIMD for rotate just wouldn't work.
+// My SIMD for rotate just wouldn't work.
 
 #endif

@@ -63,8 +63,10 @@ int main()
     YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
     yk_physics_innit();
     py.particle = yk_particles_create((v2f){0, 0}, 0.f, 1.f);
+    py.particle->debug_draw = true;
 
     testo.particle = yk_particles_create((v2f){1.f, 1.f}, 0.f, 1.f);
+    testo.particle->debug_draw = true;
 
     yk_particle_set_aabb(py.particle, (v2f){0, -0.4f}, (v2f){0.5f, 0.2f});
     // yk_particle_set_aabb(py.particle, (v2f){0,0}, (v2f){1.f,1.f});
@@ -93,13 +95,13 @@ int main()
 
         yk_particle_integrate(delta_time);
 
-        yk_renderer2d_run(&ren2d, &win);
+        yk_renderer2d_begin_draw(&ren2d, &win);
 
-        yk_renderer2d_render_rect_outline(&ren2d, &py.transform, 0.01f, &YK_COLOR_CYAN);
+        yk_renderer2d_render_rect(&ren2d, &py.transform, 0.01f, &YK_COLOR_CYAN);
         yk_renderer2d_render_line_p(&ren2d, yk_math_vec2f_add(&py.transform.pos, &(v2f){1.f, 1.f}), rot, 0.05f, &YK_COLOR_MAGENTA);
         yk_renderer2d_render_line(&ren2d, &(YK_Transform2d){.pos = *pos, .rot_z = rot, .scale = scale}, &YK_COLOR_MAGENTA);
-        yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
-        yk_renderer2d_render_rect_sprite(&ren2d, &testo.transform, &moop, &test);
+        yk_renderer2d_render_quad_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
+        yk_renderer2d_render_quad_sprite(&ren2d, &testo.transform, &moop, &test);
 
         yk_particle_collison_shape_debug_draw(&ren2d);
 
@@ -108,7 +110,7 @@ int main()
         yk_window_run(&win);
     }
 
-    yk_renderer2d_cleanup();
+    yk_renderer2d_destroy();
     yk_window_destroy(&win);
 
     return 0;

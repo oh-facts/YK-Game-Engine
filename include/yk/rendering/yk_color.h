@@ -30,7 +30,12 @@ enum YK_COLOR_TYPE
 
 typedef enum YK_COLOR_TYPE YK_COLOR_TYPE;
 
-
+/* 
+    stores color
+    as rgb or hex
+    transparency in a
+    color needs to be normalized before sending it to functions that accept color
+*/
 struct YK_Color
 {
     union

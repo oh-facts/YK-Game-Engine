@@ -89,8 +89,8 @@ int main()
 
     update_player(&py, delta_time);
 
-    yk_renderer2d_run(&ren2d, &win);
-    yk_renderer2d_render_rect_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test2);
+    yk_renderer2d_begin_draw(&ren2d, &win);
+    yk_renderer2d_render_quad_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test2);
 
     for (int i = 0; i < NUM; i++)
     {
@@ -100,7 +100,7 @@ int main()
       f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
 
       squares[i].transform.rot_z = timeValue * ROT_SPEED;
-      yk_renderer2d_render_rect(&ren2d, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
+      yk_renderer2d_render_quad(&ren2d, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
     }
 
     // printf("Draw Calls: %d\n",draw_calls);
@@ -108,7 +108,7 @@ int main()
     yk_window_run(&win);
   }
 
-  yk_renderer2d_cleanup();
+  yk_renderer2d_destroy();
   yk_window_destroy(&win);
 
   return 0;

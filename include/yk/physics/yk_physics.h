@@ -4,6 +4,9 @@
 #include <yk/math/yk_math.h>
 #include <yk/data_structures/yk_yektor.h>
 
+/*
+  collision shape ids
+*/
 enum YK_COLLISION_SHAPE
 {
   YK_COLLISION_SHAPE_NONE,
@@ -11,25 +14,28 @@ enum YK_COLLISION_SHAPE
   YK_COLLISION_SHAPE_CIRCLE
 };
 
-
-struct YK_AABB
+/*
+  aabb collision shape
+*/
+typedef struct YK_AABB
 {
   v2f min;
   v2f max;
-};
+} YK_AABB;
 
-typedef struct YK_AABB YK_AABB;
-
-struct YK_Circle
+/*
+  circle collision shape
+*/
+typedef struct YK_Circle
 {
   v2f center;
   f4 radius;
-};
+} YK_Circle;
 
-typedef struct YK_Circle YK_Circle;
-
-
-struct YK_Collider
+/*
+  Physics Collider 
+*/
+typedef struct YK_Collider
 {
   union
   {
@@ -40,13 +46,18 @@ struct YK_Collider
 
   v2f offset;
 
-};
+} YK_Collider;
 
-typedef struct YK_Collider YK_Collider;
-
+/*
+  Tests aabb/aabb collision
+*/
 b1 yk_physics_aabb_overlap_test(YK_AABB *a, YK_AABB *b);
 
-struct YK_Particle2d
+/*
+  A physics particle. Won't be added to simulation if instantiated
+  normally. Needs to be created using yk_particle_create
+*/
+typedef struct YK_Particle2d
 {
   v2f pos;
   v2f vel;
@@ -55,23 +66,51 @@ struct YK_Particle2d
   f4 i_mass;
   i4 collision_shape_type;
   YK_Collider collider;
-};
+  b1 debug_draw;
+} YK_Particle2d;
 
-typedef struct YK_Particle2d YK_Particle2d;
-
+/*
+  Initializes the physics sim
+*/
 void yk_physics_innit();
-void yk_particle_integrate(f4 delta);
-void yk_particle_set_aabb(YK_Particle2d *out, v2f pos, v2f scale);
-YK_AABB yk_particle_create_aabb(v2f pos, v2f scale);
-b1 yk_particle_collision_test(YK_Particle2d *a, YK_Particle2d *b);
-void yk_particle_collision_shape_update(YK_Particle2d *particle);
-void yk_particle_collison_shape_debug_draw(YK_Renderer2d *ren);
-void yk_aabb_update_pos(YK_AABB *out, v2f pos);
 
+/*
+  sets particle aabb
+*/
+void yk_particle_set_aabb(YK_Particle2d *out, v2f pos, v2f scale);
+
+/*
+  Creates an AABB with pos and scale
+*/
+YK_AABB yk_particle_create_aabb(v2f pos, v2f scale);
+
+/*
+  physics update. needs to be called every frame
+*/
+void yk_particle_integrate(f4 delta);
+
+/*
+  Draw particle collision shapes, but only for particles that have debug shape drawing
+  enabled
+*/
+void yk_particle_collison_shape_debug_draw(YK_Renderer2d *ren);
+
+/*
+  calculates position of aabb
+*/
 v2f yk_aabb_get_pos(YK_AABB *aabb);
 
+/*
+  calculates scale of aabb
+*/
 v2f yk_aabb_get_scale(YK_AABB *aabb);
 
+/*
+  creates a particle and adds it to the physics sim.
+  Returns a handle to the particle.
+  Particle is owned by the sim.
+*/
 YK_Particle2d *yk_particles_create(v2f pos, f4 damping, f4 mass);
+
 
 #endif
