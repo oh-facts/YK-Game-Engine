@@ -1,5 +1,6 @@
 #ifndef YK_SCENE_H
 #define YK_SCENE_H
+#include <yk/ecs/yk_ecs.h>
 
 typedef struct {
     int* entities;

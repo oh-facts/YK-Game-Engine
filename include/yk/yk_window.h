@@ -1,9 +1,13 @@
 #ifndef YK_WINDOW_H
 #define YK_WINDOW_H
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <yk/math/yk_math_types.h>
 #include <yk/yk_core_types.h>
 #include <yk/yk_key_codes.h>
+
+
 
 #define WIDTH 720
 #define HEIGHT 720
@@ -11,11 +15,19 @@
 #define WIN_TOP_LEFT_X 0
 #define WIN_TOP_LEFT_Y 30
 
+
 #define TITLE "yk"
 
-typedef struct YK_Window YK_Window;
+/*
+    A window
+*/
+typedef struct YK_Window
+{
+    GLFWwindow *win_ptr;
+    int width;
+    int height;
 
-YK_Window* yk_window_create();
+} YK_Window;
 
 /*
     Initializes a window
@@ -58,12 +70,6 @@ void yk_window_disable_cursor(YK_Window *win, b1 flag);
     returns true if window is active
 */
 b1 yk_window_is_running(YK_Window *win);
-
-i4 yk_window_get_time();
-
-f4 yk_window_get_aspect_ratio(YK_Window *win);
-
-v2i yk_window_get_size(YK_Window *win);
 
 typedef struct YK_Key_states
 {

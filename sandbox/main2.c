@@ -46,16 +46,16 @@ void update_npc(entity *npc)
 
 int main()
 {
-
-    YK_Window *win = yk_window_create();
-    yk_window_set_vsync(win, false);
+    YK_Window win;
+    yk_window_innit(&win);
+    yk_window_set_vsync(&win, false);
 
     YK_Camera2d cam2d;
     yk_camera2d_innit(&cam2d);
     cam2d.zoom = 1.f;
 
     YK_Renderer2d ren2d;
-    yk_renderer2d_innit(&ren2d, &cam2d, win);
+    yk_renderer2d_innit(&ren2d, &cam2d, &win);
 
     f4 delta_time = 0.f;
     f4 last_frame = 0.f;
@@ -87,10 +87,10 @@ int main()
 
     // py.particle->vel.x = 0.2f;
 
-    while (yk_window_is_running(win))
+    while (yk_window_is_running(&win))
     {
 
-        f4 current_frame = yk_window_get_time();
+        f4 current_frame = glfwGetTime();
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
@@ -100,7 +100,7 @@ int main()
         update_player(&py, delta_time);
         update_npc(&testo);
 
-        yk_renderer2d_begin_draw(&ren2d, win);
+        yk_renderer2d_begin_draw(&ren2d, &win);
 
         yk_renderer2d_render_rect(&ren2d, &py.transform, 0.01f, &YK_COLOR_CYAN);
         yk_renderer2d_render_line_p(&ren2d, yk_math_vec2f_add(&py.transform.pos, &(v2f){1.f, 1.f}), rot, 0.05f, &YK_COLOR_MAGENTA);
@@ -112,11 +112,11 @@ int main()
 
         // printf("Draw Calls: %d\n",draw_calls);
 
-        yk_window_run(win);
+        yk_window_run(&win);
     }
 
     yk_renderer2d_destroy();
-    yk_window_destroy(win);
+    yk_window_destroy(&win);
 
     return 0;
 }

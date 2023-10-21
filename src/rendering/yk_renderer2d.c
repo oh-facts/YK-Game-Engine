@@ -1,5 +1,4 @@
 #include <yk/rendering/yk_renderer2d.h>
-#include <glad/glad.h>
 
 struct YK_Rect
 {
@@ -104,7 +103,7 @@ void yk_rect_destroy(YK_Rect *out)
 void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window *win)
 {
     ren->current_cam = current_cam;
-    ren->proj_mat = yk_camera2d_get_projection_matrix(current_cam, yk_window_get_aspect_ratio(win));
+    ren->proj_mat = yk_camera2d_get_projection_matrix(current_cam, (f4)win->width / win->height);
     ren->view_mat = yk_camera2d_get_view_matrix(current_cam);
 
     white_square = yk_texture_create("yk-res/textures/white_square.png");
@@ -125,10 +124,11 @@ void yk_renderer2d_begin_draw(YK_Renderer2d *renderer, YK_Window *win)
 
     renderer->view_mat = yk_camera2d_get_view_matrix(renderer->current_cam);
 
+    f4 _aspect_ratio = (f4)win->width / win->height;
 
     // make some kind of callback so you only need to recalculate when updating zoom/aspect ratio
-    renderer->proj_mat = yk_camera2d_get_projection_matrix(renderer->current_cam, yk_window_get_aspect_ratio(win));
-    
+    renderer->proj_mat = yk_camera2d_get_projection_matrix(renderer->current_cam, _aspect_ratio);
+
     draw_calls = 0;
 }
 
