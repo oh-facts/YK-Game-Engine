@@ -11,6 +11,7 @@
 #include <yk/rendering/yk_renderer2d.h>
 #include <yk/rendering/yk_camera2d.h>
 
+/*
 typedef struct YK_App
 {
     YK_Window m_win;
@@ -25,5 +26,6 @@ void yk_app_run(YK_App *app);
 void yk_app_quit(YK_App *app);
 
 void yk_app_is_running(YK_App *app);
+*/
 
 #endif

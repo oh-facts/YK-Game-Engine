@@ -1,4 +1,6 @@
 #include <yk/rendering/yk_texture.h>
+#include <glad/glad.h>
+#include <stb/stb_image.h>
 
 YK_Texture yk_texture_create(const char *path)
 {

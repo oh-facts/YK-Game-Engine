@@ -5,6 +5,20 @@
 #include <yk/yk_input.h>
 #include <yk/math/yk_math.h>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+/*
+    A window
+*/
+typedef struct YK_Window
+{
+    GLFWwindow *win_ptr;
+    int width;
+    int height;
+
+} YK_Window;
+
 /*
   Stores the last key pressed. Read only. I will kill
   you if you set it to something.
@@ -91,6 +105,13 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         yk_last_key = key;
         // printf("%d %d \n", yk_key_states.before[key], yk_key_states.current[key]);
     }
+}
+
+YK_Window *yk_window_create()
+{
+    YK_Window *out = malloc(sizeof(YK_Window));
+    yk_window_innit(out);
+    return out;
 }
 
 void yk_window_innit(YK_Window *out)
@@ -226,4 +247,19 @@ void yk_window_disable_cursor(YK_Window *win, b1 flag)
         return;
     }
     glfwSetInputMode(win->win_ptr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+i4 yk_window_get_time()
+{
+    return glfwGetTime();
+}
+
+v2i yk_window_get_size(YK_Window *win)
+{
+    return (v2i){.x = win->width, .y = win->height};
+}
+
+f4 yk_window_get_aspect_ratio(YK_Window *win)
+{
+    return (((f4)win->width)/((f4)win->height));
 }

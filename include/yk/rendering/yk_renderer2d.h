@@ -1,7 +1,7 @@
 #ifndef YK_RENDERER2D_H
 #define YK_RENDERER2D_H
 
-#include <glad/glad.h>
+
 #include <yk/rendering/yk_camera2d.h>
 #include <yk/math/yk_math.h>
 #include <yk/rendering/yk_shader.h>
