@@ -49,7 +49,7 @@ int main()
 
   YK_Camera2d cam2d;
   yk_camera2d_innit(&cam2d);
-  cam2d.zoom = 3.f;
+  cam2d.zoom = 5.f;
 
   YK_Renderer2d ren2d;
   yk_renderer2d_innit(&ren2d, &cam2d, &win);
@@ -100,7 +100,7 @@ int main()
       f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
 
       squares[i].transform.rot_z = timeValue * ROT_SPEED;
-      yk_renderer2d_render_quad(&ren2d, &squares[i].transform, &(YK_Color){r, g, b, 1.f});
+      yk_renderer2d_render_quad_z(&ren2d, &squares[i].transform, 0.4f , &(YK_Color){r, g, b, 1.f});
     }
 
     // printf("Draw Calls: %d\n",draw_calls);

@@ -94,16 +94,6 @@ void yk_rect_innit(YK_Rect *out)
     glUniform1i(tex0Uni, 0);
 }
 
-void yk_renderer2d_render_quad(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
-{
-    yk_renderer2d_render_quad_sprite(renderer, transform, col, &white_square);
-}
-
-void yk_renderer2d_render_quad_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture)
-{
-    yk_renderer2d_render_quad_sprite_z(renderer, transform, -1, col, texture);
-}
-
 void yk_rect_destroy(YK_Rect *out)
 {
     glDeleteVertexArrays(1, &(out->vertex_arrays));
@@ -271,8 +261,20 @@ void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transfor
     yk_renderer2d_render_line_p(renderer, yk_math_vec2f_sub(&_pos, &_hscaley), 90.f * DEG_TO_RAD, thickness, col);
 }
 
+
+void yk_renderer2d_render_quad(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
+{
+    yk_renderer2d_render_quad_sprite_z(renderer, transform, 1, col, &white_square);
+}
+
+void yk_renderer2d_render_quad_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture)
+{
+    yk_renderer2d_render_quad_sprite_z(renderer, transform, 1, col, texture);
+}
+
 void yk_renderer2d_render_quad_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col)
 {
+    yk_renderer2d_render_quad_sprite_z(renderer, transform, layer, col, &white_square);
 }
 
 void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col, YK_Texture *texture)
@@ -293,12 +295,11 @@ void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d 
         // Other option is to have translate, rotate and scale for 2d
         // YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
 
-        yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, -1.f});
+        yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, -layer});
 
         yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
 
         yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, 0.f});
-
 
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
     }

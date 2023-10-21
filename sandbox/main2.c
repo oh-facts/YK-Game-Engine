@@ -47,7 +47,7 @@ int main()
 
     YK_Camera2d cam2d;
     yk_camera2d_innit(&cam2d);
-    cam2d.zoom = 1.f;
+    cam2d.zoom = 0.4f;
 
     YK_Renderer2d ren2d;
     yk_renderer2d_innit(&ren2d, &cam2d, &win);
