@@ -39,6 +39,11 @@ void update_player(entity *py, f4 delta)
     py->transform.pos = py->particle->pos;
 }
 
+void update_npc(entity *npc)
+{
+    npc->transform.pos = npc->particle->pos;
+}
+
 int main()
 {
     YK_Window win;
@@ -91,9 +96,9 @@ int main()
 
         // debug_input(&cam2d, delta_time);
 
-        update_player(&py, delta_time);
-
         yk_particle_integrate(delta_time);
+        update_player(&py, delta_time);
+        update_npc(&testo);
 
         yk_renderer2d_begin_draw(&ren2d, &win);
 

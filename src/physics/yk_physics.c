@@ -63,7 +63,7 @@ void yk_particle_integrate(f4 delta)
         }
         if (yk_particle_collision_test(particle1, particle2))
         {
-          // printf("collide\n");
+          yk_particle_overlap_resolve(particle1, particle2);
         }
       }
     }
@@ -90,6 +90,48 @@ b1 yk_physics_aabb_overlap_test(YK_AABB *a, YK_AABB *b)
   }
 
   return true;
+}
+
+void yk_particle_overlap_resolve(YK_Particle2d *a, YK_Particle2d *b)
+{
+  YK_AABB *aabb1 = &a->collider.collision_shape.aabb;
+  YK_AABB *aabb2 = &b->collider.collision_shape.aabb;
+
+  v2f overlap;
+
+  overlap.x = fmin(aabb1->max.x - aabb2->min.x, aabb2->max.x - aabb1->min.x);
+  overlap.y = fmin(aabb1->max.y - aabb2->min.y, aabb2->max.y - aabb1->min.y);
+
+  if (overlap.x > 0 && overlap.y > 0)
+  {
+    // resolve the overlap along the axis with the most overlap
+    if (overlap.x < overlap.y)
+    {
+      if (a->pos.x < b->pos.x)
+      {
+        a->pos.x -= overlap.x / 2;
+        b->pos.x += overlap.x / 2;
+      }
+      else
+      {
+        a->pos.x += overlap.x / 2;
+        b->pos.x -= overlap.x / 2;
+      }
+    }
+    else
+    {
+      if (a->pos.y < b->pos.y)
+      {
+        a->pos.y -= overlap.y / 2;
+        b->pos.y += overlap.y / 2;
+      }
+      else
+      {
+        a->pos.y += overlap.y / 2;
+        b->pos.y -= overlap.y / 2;
+      }
+    }
+  }
 }
 
 b1 yk_particle_collision_test(YK_Particle2d *a, YK_Particle2d *b)

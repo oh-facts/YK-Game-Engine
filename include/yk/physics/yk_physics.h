@@ -53,6 +53,7 @@ typedef struct YK_Collider
 */
 b1 yk_physics_aabb_overlap_test(YK_AABB *a, YK_AABB *b);
 
+
 /*
   A physics particle. Won't be added to simulation if instantiated
   normally. Needs to be created using yk_particle_create
@@ -88,6 +89,12 @@ YK_AABB yk_particle_create_aabb(v2f pos, v2f scale);
   physics update. needs to be called every frame
 */
 void yk_particle_integrate(f4 delta);
+
+
+/*
+
+*/
+void yk_particle_overlap_resolve(YK_Particle2d* a, YK_Particle2d* b);
 
 /*
   Draw particle collision shapes, but only for particles that have debug shape drawing
