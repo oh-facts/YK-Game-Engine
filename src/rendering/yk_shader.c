@@ -1,9 +1,10 @@
 #include <yk/rendering/yk_shader.h>
+#include <glad/glad.h>
 
 void yk_check_compile_errors(GLuint shader, const char *type);
 void yk_check_link_errors(GLuint shader, const char *type);
 
-GLuint yk_shader_create(const char *vertexFile, const char *fragmentFile)
+u4 yk_shader_create(const char *vertexFile, const char *fragmentFile)
 {
 
     const char *vertexShaderSource = yk_file_reader(vertexFile);
