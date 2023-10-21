@@ -28,7 +28,7 @@ void yk_camera2d_update(YK_Camera2d *camera, f4 delta_time)
 m4f yk_camera2d_get_projection_matrix(YK_Camera2d *camera, f4 aspect_ratio)
 {
     // return yk_mat4f_perspective(45.f * DEG_TO_RAD, 1.f, 0.1f, 100.f);
-    f4 zoom = camera->zoom;
+    f4 zoom = (1/camera->zoom*2.f);
     return yk_mat4f_ortho(-aspect_ratio * zoom, aspect_ratio * zoom, -zoom, zoom, 0.1f, 100.f);
 }
 
