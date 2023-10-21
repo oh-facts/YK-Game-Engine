@@ -101,40 +101,7 @@ void yk_renderer2d_render_quad(YK_Renderer2d *renderer, YK_Transform2d *transfor
 
 void yk_renderer2d_render_quad_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture)
 {
-    glUseProgram(yk_rect_default.shader_program);
-    glBindVertexArray(yk_rect_default.vertex_arrays);
-    glBindTexture(GL_TEXTURE_2D, texture->id);
-
-    u4 modelLoc = glGetUniformLocation(yk_rect_default.shader_program, "model");
-    u4 viewLoc = glGetUniformLocation(yk_rect_default.shader_program, "view");
-    u4 projectionLoc = glGetUniformLocation(yk_rect_default.shader_program, "projection");
-    u4 colorLoc = glGetUniformLocation(yk_rect_default.shader_program, "color");
-
-    {
-        m4f out;
-        out = yk_mat4f_identity();
-        // Use a union and allow a transform3d to store this.
-        // Other option is to have translate, rotate and scale for 2d
-        // YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
-
-        yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, -1.f});
-
-        yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
-
-        yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, -1.f});
-
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
-    }
-
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
-
-    glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
-
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    draw_calls++;
-
-    glBindVertexArray(0);
+    yk_renderer2d_render_quad_sprite_z(renderer, transform, -1, col, texture);
 }
 
 void yk_rect_destroy(YK_Rect *out)
@@ -302,4 +269,47 @@ void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transfor
     yk_renderer2d_render_line_p(renderer, yk_math_vec2f_sub(&_pos, &_hscalex), 0.f, thickness, col);
     yk_renderer2d_render_line_p(renderer, yk_math_vec2f_add(&_pos, &_hscaley), 90.f * DEG_TO_RAD, thickness, col);
     yk_renderer2d_render_line_p(renderer, yk_math_vec2f_sub(&_pos, &_hscaley), 90.f * DEG_TO_RAD, thickness, col);
+}
+
+void yk_renderer2d_render_quad_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col)
+{
+}
+
+void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col, YK_Texture *texture)
+{
+    glUseProgram(yk_rect_default.shader_program);
+    glBindVertexArray(yk_rect_default.vertex_arrays);
+    glBindTexture(GL_TEXTURE_2D, texture->id);
+
+    u4 modelLoc = glGetUniformLocation(yk_rect_default.shader_program, "model");
+    u4 viewLoc = glGetUniformLocation(yk_rect_default.shader_program, "view");
+    u4 projectionLoc = glGetUniformLocation(yk_rect_default.shader_program, "projection");
+    u4 colorLoc = glGetUniformLocation(yk_rect_default.shader_program, "color");
+
+    {
+        m4f out;
+        out = yk_mat4f_identity();
+        // Use a union and allow a transform3d to store this.
+        // Other option is to have translate, rotate and scale for 2d
+        // YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
+
+        yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, -1.f});
+
+        yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
+
+        yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, 0.f});
+
+
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
+    }
+
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
+
+    glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    draw_calls++;
+
+    glBindVertexArray(0);
 }

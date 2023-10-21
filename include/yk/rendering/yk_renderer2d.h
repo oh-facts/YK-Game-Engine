@@ -12,13 +12,12 @@
 // for a 2d renderer, only an ortho camera makes sense. if you want to do 3d stuff pr funky 2d stuff like
 // perspective, then use a 3d camera/renderer. 8/30?
 
-
 extern i4 draw_calls;
 
 typedef struct YK_Renderer2d
 {
     /*
-        Current camera2d reference. Cameras are "owned" by the creator. 
+        Current camera2d reference. Cameras are "owned" by the creator.
         The renderer can choose which camera to render
         to. Soon enough there will be a viewport to offload some duties to.
     */
@@ -33,27 +32,37 @@ typedef struct YK_Renderer2d
 /*
     Renders a quad. A quad is a filled rectangle
 */
-void yk_renderer2d_render_quad(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col);
+void yk_renderer2d_render_quad(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col);
+
+/*
+    Renders a quad at layer z. A quad is a filled rectangle
+*/
+void yk_renderer2d_render_quad_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col);
 
 /*
     Renders a sprite on a quad.
 */
-void yk_renderer2d_render_quad_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col, YK_Texture *texture);
+void yk_renderer2d_render_quad_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture);
+
+/*
+    Renders a sprite at layer z on a quad.
+*/
+void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col, YK_Texture *texture);
 
 /*
     Renders a line at transform
 */
-void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color* col);
+void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col);
 
 /*
     Renders a line with midpoint at pos.
 */
-void yk_renderer2d_render_line_p(YK_Renderer2d *renderer, v2f pos, f4 rot, f4 thickness, YK_Color* col);
+void yk_renderer2d_render_line_p(YK_Renderer2d *renderer, v2f pos, f4 rot, f4 thickness, YK_Color *col);
 
 /*
     Renders a rect. A rect is an outlined rectangle.
 */
-void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 thickness, YK_Color* col);
+void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 thickness, YK_Color *col);
 
 /*
     Initializes a renderer
@@ -71,7 +80,7 @@ void yk_renderer2d_begin_draw(YK_Renderer2d *renderer, YK_Window *win);
 void yk_renderer2d_destroy();
 
 /*
-    Sets renderer background    
+    Sets renderer background
 */
 void yk_renderer2d_set_bg(f4 r, f4 g, f4 b, f4 a);
 

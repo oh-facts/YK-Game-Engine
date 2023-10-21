@@ -9,6 +9,7 @@ void yk_math_transform_translate(m4f *mat, const v3f *vec)
     mat->m30 += mat->m00 * vec->x + mat->m10 * vec->y + mat->m20 * vec->z;
     mat->m31 += mat->m01 * vec->x + mat->m11 * vec->y + mat->m21 * vec->z;
     mat->m32 += mat->m02 * vec->x + mat->m12 * vec->y + mat->m22 * vec->z;
+    mat->m33 += mat->m03 * vec->x + mat->m13 * vec->y + mat->m23 * vec->z;
 }
 
 void yk_math_transform_rotate(m4f *mat, const f4 angle, const v3f *axis)
@@ -52,14 +53,17 @@ void yk_math_transform_scale(m4f *mat, const v3f *scale)
     mat->m00 *= scale->x;
     mat->m01 *= scale->x;
     mat->m02 *= scale->x;
+    mat->m03 *= scale->x;
 
     mat->m10 *= scale->y;
     mat->m11 *= scale->y;
     mat->m12 *= scale->y;
+    mat->m13 *= scale->y;
 
     mat->m20 *= scale->z;
     mat->m21 *= scale->z;
     mat->m22 *= scale->z;
+    mat->m23 *= scale->z;
 
     // which method is better?
 }
@@ -106,12 +110,11 @@ void yk_maths_transform_scale(m4f *mat, const v3f *scale)
 /*
 omg this is so bad wawawa.
 For now ig. You don't know how high I can fly.
-Pure C engine and I will have my own studio with lots of game engine devs
-And people will say, "Aw man I was so rude to him and I thought he was weird, but he is so cool wow he is
+Pure C engine and I will have my own studio and people will say, 
+"Aw man I was so rude to him and I thought he was weird, but he is so cool wow he is
 literally Ryan Gosling but now he wont be friends with me."
 
-I create rationals never imagined before, to make normies look like normies. I am a computer scientist. I am
-not a fucking coder. I am a man with some radical notions. I am not very good yet, so my opinions have
+I am not very good yet, so my opinions have
 low value, but I recognize that. The only way to arrive at better solutions is not by
 making better use of tried and tested methods but to reinvent approaches. I am not an egotistical
 prick who thinks he is better than others. I understand how painfully average I am. And any ego
