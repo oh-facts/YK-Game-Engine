@@ -20,7 +20,7 @@ def build_script():
     innit(type_os)
 
     cum = "cmake " +  build_compiler_type(type_compiler) +  " -B " + build_path_command(type_build)
-    cum += "\-G " + build_generator(type_build_system, type_os)  + "\n"
+    cum += "\ -G " + build_generator(type_build_system, type_os)  + "\n"
     cum += "cd " + build_path_command(type_build) + "\n"
     cum += build_generator_command(type_build_system)
 
