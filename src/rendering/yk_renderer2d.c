@@ -1,4 +1,5 @@
 #include <yk/rendering/yk_renderer2d.h>
+#include <glad/glad.h>
 
 struct YK_Rect
 {

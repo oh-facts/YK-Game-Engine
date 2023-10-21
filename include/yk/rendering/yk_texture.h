@@ -1,21 +1,21 @@
 #ifndef YK_TEXTURE_H
 #define YK_TEXTURE_H
-#include <glad/glad.h>
-#include <stb/stb_image.h>
+
+#include <yk/yk_core_types.h>
 
 
 typedef enum YK_Texture_format
 {
-    YK_TEXTURE_RGB = GL_RGB,
-    YK_TEXTURE_RGBA = GL_RGBA
+    YK_TEXTURE_RGB,
+    YK_TEXTURE_RGBA
 
 } YK_Texture_format;
 
 typedef struct YK_Texture
 {
-    GLuint id;
-    int width;
-    int height;
+    u4 id;
+    i4 width;
+    i4 height;
     YK_Texture_format format;
 
 } YK_Texture;
