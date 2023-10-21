@@ -49,7 +49,7 @@ int main()
 
   YK_Camera2d cam2d;
   yk_camera2d_innit(&cam2d);
-  cam2d.zoom = 5.f;
+  cam2d.zoom = 0.5f;
 
   YK_Renderer2d ren2d;
   yk_renderer2d_innit(&ren2d, &cam2d, &win);
@@ -59,7 +59,7 @@ int main()
 
   yk_renderer2d_set_bg(0.2f, 0.3f, 0.3f, 1.f);
 
-  entity py = {.transform = {{0, 0}, 0, {2.f, 2.f}}};
+  entity py = {.transform = {{0, 0}, 0, {1.f, 1.f}}};
 
   yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
 
