@@ -44,14 +44,13 @@ m4f yk_mat4f_scalar(const f4 diagonal)
 
 m4f yk_mat4f_ortho(const f4 left, const f4 right, const f4 bottom, const f4 top, const f4 near, const f4 far)
 {
-    m4f mat = yk_mat4f_zero();
+    m4f mat = yk_mat4f_identity();
     mat.m00 = 2.0 / (right - left);
     mat.m11 = 2.0 / (top - bottom);
     mat.m22 = -2.0 / (far - near);
-    mat.m03 = -(right + left) / (right - left);
-    mat.m13 = -(top + bottom) / (top - bottom);
-    mat.m23 = -(far + near) / (far - near);
-    mat.m33 = 1.0;
+    mat.m30 = -(right + left) / (right - left);
+    mat.m31 = -(top + bottom) / (top - bottom);
+    mat.m32 = -(far + near) / (far - near);
 
     return mat;
 }
