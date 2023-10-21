@@ -6,6 +6,7 @@ void yk_camera2d_innit(YK_Camera2d *camera)
     camera->front.z = -1.f;
 
     yk_vec3f_mem_set(&camera->pos, 0.f);
+    camera->pos.z = 0.1f;
 
     camera->zoom = 1.f;
 }
