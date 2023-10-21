@@ -29,8 +29,16 @@ typedef struct YK_Window
 
 } YK_Window;
 
+
+typedef struct YK_Window YK_Window;
+
 /*
-    Initializes a window
+    Create a widnow handle
+*/
+YK_Window* yk_window_create();
+
+/*
+    Initializes a window. Don't use this function for now. Use create window.
 */
 
 void yk_window_innit(YK_Window *out);

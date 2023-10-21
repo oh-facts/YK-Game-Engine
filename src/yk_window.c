@@ -5,6 +5,7 @@
 #include <yk/yk_input.h>
 #include <yk/math/yk_math.h>
 
+
 /*
   Stores the last key pressed. Read only. I will kill
   you if you set it to something.
@@ -194,6 +195,7 @@ void yk_window_run(YK_Window *out)
 void yk_window_destroy(YK_Window *out)
 {
     glfwDestroyWindow(out->win_ptr);
+    free(out);
     glfwTerminate();
 }
 
@@ -226,4 +228,11 @@ void yk_window_disable_cursor(YK_Window *win, b1 flag)
         return;
     }
     glfwSetInputMode(win->win_ptr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+YK_Window *yk_window_create()
+{
+    YK_Window *out = malloc(sizeof(YK_Window));
+    yk_window_innit(out);
+    return out;
 }
