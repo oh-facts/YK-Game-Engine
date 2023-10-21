@@ -1,8 +1,6 @@
 #ifndef YK_WINDOW_H
 #define YK_WINDOW_H
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <yk/math/yk_math_types.h>
 #include <yk/yk_core_types.h>
 #include <yk/yk_key_codes.h>
@@ -19,17 +17,8 @@
 #define TITLE "yk"
 
 /*
-    A window
+    Forward declaration
 */
-typedef struct YK_Window
-{
-    GLFWwindow *win_ptr;
-    int width;
-    int height;
-
-} YK_Window;
-
-
 typedef struct YK_Window YK_Window;
 
 /*
@@ -78,6 +67,21 @@ void yk_window_disable_cursor(YK_Window *win, b1 flag);
     returns true if window is active
 */
 b1 yk_window_is_running(YK_Window *win);
+
+/*
+    returns window size
+*/
+v2i yk_window_size(YK_Window* win);
+
+/*
+    returns window aspect ratio
+*/
+f4 yk_window_aspect_ratio(YK_Window *win);
+
+/*
+    returns glfwgettime
+*/
+f4 yk_get_time();
 
 typedef struct YK_Key_states
 {

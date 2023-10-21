@@ -2,9 +2,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <yk/yk_input.h>
 #include <yk/math/yk_math.h>
 
+/*
+    A window
+*/
+struct YK_Window
+{
+    GLFWwindow *win_ptr;
+    int width;
+    int height;
+};
 
 /*
   Stores the last key pressed. Read only. I will kill
@@ -235,4 +247,22 @@ YK_Window *yk_window_create()
     YK_Window *out = malloc(sizeof(YK_Window));
     yk_window_innit(out);
     return out;
+}
+
+v2i yk_window_size(YK_Window *win)
+{
+    return (v2i){win->width, win->height};
+}
+
+f4 yk_window_aspect_ratio(YK_Window *win)
+{
+    return (f4)win->width / win->height;
+}
+
+/*
+    returns glfwgettime
+*/
+f4 yk_get_time()
+{
+    return glfwGetTime();
 }

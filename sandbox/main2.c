@@ -90,7 +90,7 @@ int main()
     while (yk_window_is_running(win))
     {
 
-        f4 current_frame = glfwGetTime();
+        f4 current_frame = yk_get_time();
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 

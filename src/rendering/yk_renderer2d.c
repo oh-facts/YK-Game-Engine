@@ -103,7 +103,7 @@ void yk_rect_destroy(YK_Rect *out)
 void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window *win)
 {
     ren->current_cam = current_cam;
-    ren->proj_mat = yk_camera2d_get_projection_matrix(current_cam, (f4)win->width / win->height);
+    ren->proj_mat = yk_camera2d_get_projection_matrix(current_cam, yk_window_aspect_ratio(win));
     ren->view_mat = yk_camera2d_get_view_matrix(current_cam);
 
     white_square = yk_texture_create("yk-res/textures/white_square.png");
@@ -124,10 +124,8 @@ void yk_renderer2d_begin_draw(YK_Renderer2d *renderer, YK_Window *win)
 
     renderer->view_mat = yk_camera2d_get_view_matrix(renderer->current_cam);
 
-    f4 _aspect_ratio = (f4)win->width / win->height;
-
     // make some kind of callback so you only need to recalculate when updating zoom/aspect ratio
-    renderer->proj_mat = yk_camera2d_get_projection_matrix(renderer->current_cam, _aspect_ratio);
+    renderer->proj_mat = yk_camera2d_get_projection_matrix(renderer->current_cam, yk_window_aspect_ratio(win));
 
     draw_calls = 0;
 }
@@ -277,7 +275,7 @@ void yk_renderer2d_render_quad_z(YK_Renderer2d *renderer, YK_Transform2d *transf
 }
 
 #define MAX_LAYER (10.f)
-#define I_MAX_LAYER (1.f/MAX_LAYER)
+#define I_MAX_LAYER (1.f / MAX_LAYER)
 
 void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col, YK_Texture *texture)
 {
