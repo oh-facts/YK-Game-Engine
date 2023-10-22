@@ -60,17 +60,17 @@ int main()
     f4 delta_time = 0.f;
     f4 last_frame = 0.f;
 
-    entity py = {.transform = {{0, 0}, 0, {1.f, 1.f}}};
-    entity testo = {.transform = {{1.f, 1.f}, 0, {1.f, 1.f}}};
+    entity py = {.transform = {{-1.f, 0}, 0, {1.f, 1.f}}};
+    entity testo = {.transform = {{1.f, 0.f}, 0, {1.f, 1.f}}};
 
     yk_renderer2d_set_bg(0.07f, 0.13f, 0.17f, 1.f);
 
     YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
     yk_physics_innit();
-    py.particle = yk_particles_create((v2f){0, 0}, 0.f, 1.f);
+    py.particle = yk_particles_create((v2f){-1.f, 0}, 0.f, 1.f);
     py.particle->debug_draw = true;
 
-    testo.particle = yk_particles_create((v2f){1.f, 1.f}, 0.f, 1.f);
+    testo.particle = yk_particles_create((v2f){1.f, 0.f}, 0.f, 1.f);
     testo.particle->debug_draw = true;
 
     yk_particle_set_aabb(py.particle, (v2f){0, -0.4f}, (v2f){0.5f, 0.2f});
@@ -103,7 +103,7 @@ int main()
         yk_renderer2d_begin_draw(&ren2d, win);
 
         yk_renderer2d_render_rect(&ren2d, &py.transform, 0.01f, &YK_COLOR_CYAN);
-        yk_renderer2d_render_line_p(&ren2d, yk_math_vec2f_add(&py.transform.pos, &(v2f){1.f, 1.f}), rot, 0.05f, &YK_COLOR_MAGENTA);
+        yk_renderer2d_render_line_p(&ren2d, yk_math_vec2f_add(&py.transform.pos, &(v2f){1.f, 1.f}), current_frame, 0.05f, &YK_COLOR_MAGENTA);
         yk_renderer2d_render_line(&ren2d, &(YK_Transform2d){.pos = *pos, .rot_z = rot, .scale = scale}, &YK_COLOR_MAGENTA);
         yk_renderer2d_render_quad_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
         yk_renderer2d_render_quad_sprite(&ren2d, &testo.transform, &moop, &test);
