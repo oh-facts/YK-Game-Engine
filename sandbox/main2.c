@@ -39,15 +39,10 @@ void update_player(entity *py, f4 delta)
     py->transform.pos = py->particle->pos;
 }
 
-void update_npc(entity *npc)
-{
-    npc->transform.pos = npc->particle->pos;
-}
-
 int main()
 {
-    YK_Window* win = yk_window_create_default();
-    //yk_window_innit(&win);
+    YK_Window *win = yk_window_create_default();
+    
     yk_window_set_vsync(win, false);
 
     YK_Camera2d cam2d;
@@ -60,23 +55,42 @@ int main()
     f4 delta_time = 0.f;
     f4 last_frame = 0.f;
 
-    entity py = {.transform = {{-1.f, 0}, 0, {1.f, 1.f}}};
-    entity testo = {.transform = {{1.f, 0.f}, 0, {1.f, 1.f}}};
-
     yk_renderer2d_set_bg(0.07f, 0.13f, 0.17f, 1.f);
 
     YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
     yk_physics_innit();
-    py.particle = yk_particles_create((v2f){-1.f, 0}, 0.f, 1.f);
-    py.particle->debug_draw = true;
 
-    testo.particle = yk_particles_create((v2f){1.f, 0.f}, 0.f, 1.f);
-    testo.particle->debug_draw = true;
+    entity py = {.transform = {{-1.f, 0}, 0, {1.f, 1.f}}};
+    {
+        py.particle = yk_particles_create((v2f){-1.f, 0}, 0.f, 1.f);
+        py.particle->debug_draw = true;
+        py.particle->static_object = false;
+        yk_particle_set_aabb(py.particle, (v2f){0, -0.4f}, (v2f){0.5f, 0.2f});
+    }
 
-    yk_particle_set_aabb(py.particle, (v2f){0, -0.4f}, (v2f){0.5f, 0.2f});
+    {
+        YK_Particle2d *wall = yk_particles_create((v2f){1.f, -1.f}, 0.f, 1.f);
+        wall->debug_draw = true;
+        wall->static_object = true;
+        yk_particle_set_aabb(wall, (v2f){0.f, 0.f}, (v2f){1.f, 1.0f});
+    }
+
+    {
+        YK_Particle2d *wall = yk_particles_create((v2f){-1.f, -1.f}, 0.f, 1.f);
+        wall->debug_draw = true;
+        wall->static_object = true;
+        yk_particle_set_aabb(wall, (v2f){0.f, 0.f}, (v2f){0.5f, 0.3f});
+    }
+
+    entity testo = {.transform = {{1.f, 0.f}, 0, {1.f, 1.f}}};
+    {
+        testo.particle = yk_particles_create((v2f){1.f, 0.f}, 0.f, 1.f);
+        testo.particle->debug_draw = true;
+        testo.particle->static_object = true;
+        yk_particle_set_aabb(testo.particle, (v2f){0.f, 0.f}, testo.transform.scale);
+    }
+
     // yk_particle_set_aabb(py.particle, (v2f){0,0}, (v2f){1.f,1.f});
-
-    yk_particle_set_aabb(testo.particle, (v2f){0.f, 0.f}, testo.transform.scale);
 
     v2f *pos = &py.transform.pos;
     f4 rot = 0 * DEG_TO_RAD;
@@ -98,7 +112,6 @@ int main()
 
         yk_particle_integrate(delta_time);
         update_player(&py, delta_time);
-        update_npc(&testo);
 
         yk_renderer2d_begin_draw(&ren2d, win);
 

@@ -53,6 +53,10 @@ void yk_particle_integrate(f4 delta)
       {
         continue;
       }
+      if (particle1->static_object)
+      {
+        continue;
+      }
 
       for (i4 j = i + 1; j < size; j++)
       {
@@ -107,28 +111,38 @@ void yk_particle_overlap_resolve(YK_Particle2d *a, YK_Particle2d *b)
     // resolve the overlap along the axis with the most overlap
     if (overlap.x < overlap.y)
     {
-      if (a->pos.x < b->pos.x)
+      if (yk_aabb_get_pos(aabb1).x < yk_aabb_get_pos(aabb2).x)
       {
         a->pos.x -= overlap.x / 2;
-        b->pos.x += overlap.x / 2;
+        if (!b->static_object)
+          b->pos.x += overlap.x / 2;
       }
       else
       {
         a->pos.x += overlap.x / 2;
-        b->pos.x -= overlap.x / 2;
+        if (!b->static_object)
+
+          b->pos.x -= overlap.x / 2;
       }
     }
     else
     {
-      if (a->pos.y < b->pos.y)
+      if (yk_aabb_get_pos(aabb1).y < yk_aabb_get_pos(aabb2).y)
       {
         a->pos.y -= overlap.y / 2;
-        b->pos.y += overlap.y / 2;
+        if (!b->static_object)
+        {
+          b->pos.y += overlap.y / 2;
+        }
       }
       else
       {
         a->pos.y += overlap.y / 2;
-        b->pos.y -= overlap.y / 2;
+
+        if (!b->static_object)
+        {
+          b->pos.y -= overlap.y / 2;
+        }
       }
     }
   }
@@ -139,7 +153,7 @@ b1 yk_particle_collision_test(YK_Particle2d *a, YK_Particle2d *b)
   i4 shape_a = a->collision_shape_type;
   i4 shape_b = b->collision_shape_type;
 
-  if (shape_a == YK_COLLISION_SHAPE_RECT && shape_b == YK_COLLISION_SHAPE_RECT)
+  if (shape_a == YK_COLLISION_SHAPE_AABB && shape_b == YK_COLLISION_SHAPE_AABB)
   {
     return yk_physics_aabb_overlap_test(&a->collider.collision_shape.aabb, &b->collider.collision_shape.aabb);
   }
@@ -154,12 +168,12 @@ YK_Particle2d *yk_particles_create(v2f pos, f4 damping, f4 mass)
 
 void yk_particle_set_aabb(YK_Particle2d *out, v2f pos, v2f scale)
 {
-  out->collision_shape_type = YK_COLLISION_SHAPE_RECT;
+  out->collision_shape_type = YK_COLLISION_SHAPE_AABB;
   out->collider.offset = pos;
-  out->collider.collision_shape.aabb = yk_particle_create_aabb(yk_math_vec2f_add(&pos, &out->pos), scale);
+  out->collider.collision_shape.aabb = yk_aabb_create(yk_math_vec2f_add(&pos, &out->pos), scale);
 }
 
-YK_AABB yk_particle_create_aabb(v2f pos, v2f scale)
+YK_AABB yk_aabb_create(v2f pos, v2f scale)
 {
   YK_AABB out;
   out.min.x = pos.x - scale.x / 2.0f;

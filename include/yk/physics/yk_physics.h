@@ -10,7 +10,7 @@
 enum YK_COLLISION_SHAPE
 {
   YK_COLLISION_SHAPE_NONE,
-  YK_COLLISION_SHAPE_RECT,
+  YK_COLLISION_SHAPE_AABB,
   YK_COLLISION_SHAPE_CIRCLE
 };
 
@@ -68,6 +68,8 @@ typedef struct YK_Particle2d
   i4 collision_shape_type;
   YK_Collider collider;
   b1 debug_draw;
+  b1 static_object;
+
 } YK_Particle2d;
 
 /*
@@ -76,14 +78,17 @@ typedef struct YK_Particle2d
 void yk_physics_innit();
 
 /*
-  sets particle aabb
+  sets collision_shape_type to aabb
+  sets collider to AABB
 */
 void yk_particle_set_aabb(YK_Particle2d *out, v2f pos, v2f scale);
 
 /*
-  Creates an AABB with pos and scale
+  Creates an AABB with pos and scale. Use set aabb if you
+  want to add it to your physics particle.
+  or check what aabb create does and take according steps.
 */
-YK_AABB yk_particle_create_aabb(v2f pos, v2f scale);
+YK_AABB yk_aabb_create(v2f pos, v2f scale);
 
 /*
   physics update. needs to be called every frame
