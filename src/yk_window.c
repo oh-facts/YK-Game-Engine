@@ -16,6 +16,10 @@ struct YK_Window
     GLFWwindow *win_ptr;
     int width;
     int height;
+    int width_old;
+    int height_old;
+    int pos_x_old;
+    int pos_y_old;
 };
 
 /*
@@ -44,22 +48,6 @@ v2f yk_input_mouse_pos_mv;
   Stores mouse scroll. Set internally. Treat as read-only
 */
 f4 yk_input_mouse_scroll;
-
-void _keys_innit()
-{
-
-    for (int i = 0; i < YK_KEY_LAST; i++)
-    {
-        yk_key_states.before[i] = 0;
-        yk_key_states.current[i] = 0;
-    }
-    yk_last_key = YK_KEY_UNKNOWN;
-    yk_input_mouse_scroll = 0;
-    yk_input_mouse_pos.x = WIDTH / 2;
-    yk_input_mouse_pos.y = HEIGHT / 2;
-    yk_input_mouse_pos_old.x = WIDTH / 2;
-    yk_input_mouse_pos_old.y = HEIGHT / 2;
-}
 
 void framebuffer_size_callback(GLFWwindow *window, int newWidth, int newHeight)
 {
@@ -106,65 +94,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
 }
 
-void yk_window_innit(YK_Window *out)
-{
-
-    if (!glfwInit())
-    {
-        fprintf(stderr, "Failed to initialize GLFW\n");
-        exit(EXIT_FAILURE);
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    out->win_ptr = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
-    out->width = WIDTH;
-    out->height = HEIGHT;
-    glfwSetWindowPos(out->win_ptr, WIN_TOP_LEFT_X, WIN_TOP_LEFT_Y);
-
-    if (out->win_ptr == NULL)
-    {
-        fprintf(stderr, "Failed to create GLFW window\n");
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-
-    glfwMakeContextCurrent(out->win_ptr);
-    glfwSetWindowUserPointer(out->win_ptr, out);
-    glfwSetCursorPos(out->win_ptr, WIDTH / 2, HEIGHT / 2);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        fprintf(stderr, "Failed to initialize GLAD\n");
-        glfwDestroyWindow(out->win_ptr);
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-
-    glEnable(GL_DEPTH_TEST);
-    glViewport(0, 0, WIDTH, HEIGHT);
-
-    glfwSetFramebufferSizeCallback(out->win_ptr, framebuffer_size_callback);
-    glfwSetCursorPosCallback(out->win_ptr, mouse_callback);
-    glfwSetScrollCallback(out->win_ptr, scroll_callback);
-    glfwSetKeyCallback(out->win_ptr, key_callback);
-
-    if (glfwRawMouseMotionSupported())
-    {
-        glfwSetInputMode(out->win_ptr, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-    }
-    else
-    {
-        printf("Raw Input not supported");
-    }
-    _keys_innit();
-}
-
 b1 full_screen_toggle = true;
 
-void yk_window_run(YK_Window *out)
+void yk_window_update(YK_Window *out)
 {
     if (yk_input_is_key_tapped(YK_KEY_ESCAPE))
     {
@@ -182,7 +114,8 @@ void yk_window_run(YK_Window *out)
         else
         {
             full_screen_toggle = true;
-            yk_window_resize(out, WIDTH, HEIGHT);
+            yk_window_set_pos(out, out->pos_x_old, out->pos_y_old);
+            yk_window_resize(out, out->width_old, out->height_old);
         }
     }
 
@@ -204,6 +137,7 @@ void yk_window_run(YK_Window *out)
 
     // printf("%f\n",yk_input_mouse_position.x);
 }
+
 void yk_window_destroy(YK_Window *out)
 {
     glfwDestroyWindow(out->win_ptr);
@@ -242,10 +176,98 @@ void yk_window_disable_cursor(YK_Window *win, b1 flag)
     glfwSetInputMode(win->win_ptr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
-YK_Window *yk_window_create()
+YK_Window *yk_window_create_default()
+{
+    YK_Window *out = yk_window_create(TITLE, WIDTH, HEIGHT);
+    glfwSetWindowPos(out->win_ptr, WIN_TOP_LEFT_X, WIN_TOP_LEFT_Y);
+    out->pos_x_old = WIN_TOP_LEFT_X;
+    out->pos_y_old = WIN_TOP_LEFT_Y;
+    return out;
+}
+
+YK_Window *yk_window_create(const char *title, i4 width, i4 height)
 {
     YK_Window *out = malloc(sizeof(YK_Window));
-    yk_window_innit(out);
+
+    if (!glfwInit())
+    {
+        fprintf(stderr, "Failed to initialize GLFW\n");
+        exit(EXIT_FAILURE);
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    out->win_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
+    out->width = width;
+    out->height = height;
+    out->width_old = width;
+    out->height_old = height;
+
+    if (out->win_ptr == NULL)
+    {
+        fprintf(stderr, "Failed to create GLFW window\n");
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    glfwMakeContextCurrent(out->win_ptr);
+    glfwSetWindowUserPointer(out->win_ptr, out);
+    glfwSetCursorPos(out->win_ptr, width / 2, height / 2);
+
+    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+
+    int xPos = (mode->width - width) / 2;
+    int yPos = (mode->height - height) / 2;
+
+    out->pos_x_old = xPos;
+    out->pos_y_old = yPos;
+
+    glfwSetWindowPos(out->win_ptr, xPos, yPos);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        fprintf(stderr, "Failed to initialize GLAD\n");
+        glfwDestroyWindow(out->win_ptr);
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    glEnable(GL_DEPTH_TEST);
+    glViewport(0, 0, width, height);
+
+    glfwSetFramebufferSizeCallback(out->win_ptr, framebuffer_size_callback);
+    glfwSetCursorPosCallback(out->win_ptr, mouse_callback);
+    glfwSetScrollCallback(out->win_ptr, scroll_callback);
+    glfwSetKeyCallback(out->win_ptr, key_callback);
+
+    if (glfwRawMouseMotionSupported())
+    {
+        glfwSetInputMode(out->win_ptr, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+    }
+    else
+    {
+        printf("Raw Input not supported");
+    }
+
+    // keys initialize
+    {
+        for (int i = 0; i < YK_KEY_LAST; i++)
+        {
+            yk_key_states.before[i] = 0;
+            yk_key_states.current[i] = 0;
+        }
+
+        yk_last_key = YK_KEY_UNKNOWN;
+        yk_input_mouse_scroll = 0;
+        yk_input_mouse_pos.x = width / 2;
+        yk_input_mouse_pos.y = height / 2;
+        yk_input_mouse_pos_old.x = width / 2;
+        yk_input_mouse_pos_old.y = height / 2;
+    }
+
     return out;
 }
 

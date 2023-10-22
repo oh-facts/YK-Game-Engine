@@ -43,16 +43,16 @@ void update_player(entity *py, f4 delta)
 
 int main()
 {
-  YK_Window win;
-  yk_window_innit(&win);
-  yk_window_set_vsync(&win, false);
+  // YK_Window *win = yk_window_create("this is a title", 960, 540);
+  YK_Window *win = yk_window_create_default();
+  yk_window_set_vsync(win, false);
 
   YK_Camera2d cam2d;
   yk_camera2d_innit(&cam2d);
   cam2d.zoom = 0.5f;
 
   YK_Renderer2d ren2d;
-  yk_renderer2d_innit(&ren2d, &cam2d, &win);
+  yk_renderer2d_innit(&ren2d, &cam2d, win);
 
   f4 delta_time = 0.f;
   f4 last_frame = 0.f;
@@ -78,10 +78,10 @@ int main()
   YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
   YK_Texture test2 = yk_texture_create("yk-res/textures/default.jpg");
 
-  while (yk_window_is_running(&win))
+  while (yk_window_is_running(win))
   {
 
-    f4 current_frame = glfwGetTime();
+    f4 current_frame = yk_get_time();
     delta_time = current_frame - last_frame;
     last_frame = current_frame;
 
@@ -89,27 +89,27 @@ int main()
 
     update_player(&py, delta_time);
 
-    yk_renderer2d_begin_draw(&ren2d, &win);
-    yk_renderer2d_render_quad_sprite_z(&ren2d, &py.transform, -8.f ,&YK_COLOR_WHITE, &test2);
+    yk_renderer2d_begin_draw(&ren2d, win);
+    yk_renderer2d_render_quad_sprite_z(&ren2d, &py.transform, -8.f, &YK_COLOR_WHITE, &test2);
 
     for (int i = 0; i < NUM; i++)
     {
-      f4 timeValue = (glfwGetTime() + i * 0.1f) * SIM_SPEED;
+      f4 timeValue = (yk_get_time() + i * 0.1f) * SIM_SPEED;
       f4 r = sin(timeValue) / 2.0f + 0.5f;
       f4 g = sin(timeValue + 2.0f) / 2.0f + 0.5f;
       f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
 
       squares[i].transform.rot_z = timeValue * ROT_SPEED;
-      yk_renderer2d_render_quad_z(&ren2d, &squares[i].transform, -9.f , &(YK_Color){r, g, b, 1.f});
+      yk_renderer2d_render_quad_z(&ren2d, &squares[i].transform, -9.f, &(YK_Color){r, g, b, 1.f});
     }
 
     // printf("Draw Calls: %d\n",draw_calls);
 
-    yk_window_run(&win);
+    yk_window_update(win);
   }
 
   yk_renderer2d_destroy();
-  yk_window_destroy(&win);
+  yk_window_destroy(win);
 
   return 0;
 }

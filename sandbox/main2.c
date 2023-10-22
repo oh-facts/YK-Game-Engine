@@ -46,7 +46,7 @@ void update_npc(entity *npc)
 
 int main()
 {
-    YK_Window* win = yk_window_create();
+    YK_Window* win = yk_window_create_default();
     //yk_window_innit(&win);
     yk_window_set_vsync(win, false);
 
@@ -112,7 +112,7 @@ int main()
 
         // printf("Draw Calls: %d\n",draw_calls);
 
-        yk_window_run(win);
+        yk_window_update(win);
     }
 
     yk_renderer2d_destroy();

@@ -5,37 +5,36 @@
 #include <yk/yk_core_types.h>
 #include <yk/yk_key_codes.h>
 
-
-
 #define WIDTH 720
 #define HEIGHT 720
 
 #define WIN_TOP_LEFT_X 0
 #define WIN_TOP_LEFT_Y 30
 
-
 #define TITLE "yk"
 
 /*
-    Forward declaration
+    Window Handle. alt + enter to go full screen.
+    Need to call yk_window_update every frame to 
+    input/run correctly
 */
 typedef struct YK_Window YK_Window;
 
 /*
-    Create a widnow handle
+    Create a window handle with default settings.
+    Default settings are - 720 x 720, top left position
 */
-YK_Window* yk_window_create();
+YK_Window *yk_window_create_default();
 
 /*
-    Initializes a window. Don't use this function for now. Use create window.
+    Create a window handle with settings
 */
-
-void yk_window_innit(YK_Window *out);
+YK_Window *yk_window_create(const char *title, i4 width, i4 height);
 
 /*
     Must be called every frame for windowing and input to run correctly
 */
-void yk_window_run(YK_Window *out);
+void yk_window_update(YK_Window *out);
 
 /*
     Destroys window
@@ -71,7 +70,7 @@ b1 yk_window_is_running(YK_Window *win);
 /*
     returns window size
 */
-v2i yk_window_size(YK_Window* win);
+v2i yk_window_size(YK_Window *win);
 
 /*
     returns window aspect ratio
