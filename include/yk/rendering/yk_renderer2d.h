@@ -60,6 +60,11 @@ void yk_renderer2d_render_line(YK_Renderer2d *renderer, YK_Transform2d *transfor
 void yk_renderer2d_render_line_p(YK_Renderer2d *renderer, v2f pos, f4 rot, f4 thickness, YK_Color *col);
 
 /*
+    Renders a line starting at origin of length length and direction dir.
+*/
+void yk_renderer2d_render_line_o(YK_Renderer2d *renderer, v2f origin, v2f dir, f4 length, f4 thickness, YK_Color *col);
+
+/*
     Renders a rect. A rect is an outlined rectangle.
 */
 void yk_renderer2d_render_rect(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 thickness, YK_Color *col);

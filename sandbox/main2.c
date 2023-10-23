@@ -10,8 +10,10 @@ struct entity
 
 typedef struct entity entity;
 
+YK_Particle2d *super_mega_cunt;
+
 #define SPEED 4
-void update_player(entity *py, f4 delta)
+void update_player(entity *py, f4 delta, /*debug purposes*/ YK_Renderer2d *ren)
 {
     v2f mv = {0, 0};
 
@@ -35,6 +37,18 @@ void update_player(entity *py, f4 delta)
         mv.x = SPEED;
     }
 
+    if (yk_input_is_key_held(YK_KEY_SPACE))
+    {
+        v2f _pos = yk_aabb_get_pos(&py->particle->collider.collision_shape.aabb);
+        //_pos.y -= 1.f;
+        v2f _dir = {0.f, -1.f};
+        // yk_vec2f_print(&_pos);
+        b1 hit = yk_physics_aabb_raycast(&super_mega_cunt->collider.collision_shape.aabb, _pos, _dir, 0.5f);
+        yk_renderer2d_render_line_o(ren, _pos, _dir, 0.5f, 0.05f, &YK_COLOR_ORANGE);
+
+        printf("%d", hit);
+    }
+
     py->particle->vel = mv;
     py->transform.pos = py->particle->pos;
 }
@@ -42,7 +56,7 @@ void update_player(entity *py, f4 delta)
 int main()
 {
     YK_Window *win = yk_window_create_default();
-    
+
     yk_window_set_vsync(win, false);
 
     YK_Camera2d cam2d;
@@ -69,17 +83,10 @@ int main()
     }
 
     {
-        YK_Particle2d *wall = yk_particles_create((v2f){1.f, -1.f}, 0.f, 1.f);
-        wall->debug_draw = true;
-        wall->static_object = true;
-        yk_particle_set_aabb(wall, (v2f){0.f, 0.f}, (v2f){1.f, 1.0f});
-    }
-
-    {
-        YK_Particle2d *wall = yk_particles_create((v2f){-1.f, -1.f}, 0.f, 1.f);
-        wall->debug_draw = true;
-        wall->static_object = true;
-        yk_particle_set_aabb(wall, (v2f){0.f, 0.f}, (v2f){0.5f, 0.3f});
+        super_mega_cunt = yk_particles_create((v2f){-1.f, -1.f}, 0.f, 1.f);
+        super_mega_cunt->debug_draw = true;
+        super_mega_cunt->static_object = true;
+        yk_particle_set_aabb(super_mega_cunt, (v2f){0.f, 0.f}, (v2f){0.2f, 0.1f});
     }
 
     entity testo = {.transform = {{1.f, 0.f}, 0, {1.f, 1.f}}};
@@ -111,13 +118,16 @@ int main()
         // debug_input(&cam2d, delta_time);
 
         yk_particle_integrate(delta_time);
-        update_player(&py, delta_time);
 
         yk_renderer2d_begin_draw(&ren2d, win);
+        update_player(&py, delta_time, &ren2d);
 
         yk_renderer2d_render_rect(&ren2d, &py.transform, 0.01f, &YK_COLOR_CYAN);
+
+        yk_renderer2d_render_line_o(&ren2d, V2F_ZERO, (v2f){1, 1}, 0.4f, 0.05f, &YK_COLOR_GREEN);
         yk_renderer2d_render_line_p(&ren2d, yk_math_vec2f_add(&py.transform.pos, &(v2f){1.f, 1.f}), current_frame, 0.05f, &YK_COLOR_MAGENTA);
         yk_renderer2d_render_line(&ren2d, &(YK_Transform2d){.pos = *pos, .rot_z = rot, .scale = scale}, &YK_COLOR_MAGENTA);
+
         yk_renderer2d_render_quad_sprite(&ren2d, &py.transform, &YK_COLOR_WHITE, &test);
         yk_renderer2d_render_quad_sprite(&ren2d, &testo.transform, &moop, &test);
 

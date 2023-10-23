@@ -242,3 +242,33 @@ v2f yk_aabb_get_scale(YK_AABB *aabb)
   out.y = aabb->max.y - aabb->min.y;
   return out;
 }
+
+//https://gdbooks.gitbooks.io/3dcollisions/content/Chapter3/raycast_aabb.html
+
+b1 yk_physics_aabb_raycast(const YK_AABB *aabb, v2f origin, v2f dir, f4 distance)
+{
+  f4 divx = 1.0f / dir.x;
+  f4 divy = 1.0f / dir.y;
+
+  f4 tmin = (aabb->min.x - origin.x) * divx;
+  f4 tmax = (aabb->max.x - origin.x) * divx;
+  f4 tymin = (aabb->min.y - origin.y) * divy;
+  f4 tymax = (aabb->max.y - origin.y) * divy;
+
+  if ((tmin > tymax) || (tymin > tmax))
+  {
+    return false;
+  }
+
+  if (tymin > tmin)
+  {
+    tmin = tymin;
+  }
+
+  if (tymax < tmax)
+  {
+    tmax = tymax;
+  }
+
+  return (tmin < 1.0f && tmax > 0.0f);
+}

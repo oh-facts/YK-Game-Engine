@@ -124,5 +124,9 @@ v2f yk_aabb_get_scale(YK_AABB *aabb);
 */
 YK_Particle2d *yk_particles_create(v2f pos, f4 damping, f4 mass);
 
+/*
+  Raycast against an aabb from origin in dirction of distance
+*/
+b1 yk_physics_aabb_raycast(const YK_AABB* aabb, v2f origin, v2f dir, f4 distance);
 
 #endif
