@@ -36,6 +36,7 @@ void yk_particle_integrate(f4 delta)
       v2f temp = yk_math_vec2f_mul_s(&particle->vel, fixed_delta);
       v2f temp2 = yk_math_vec2f_mul_s(&particle->acc, half_a_t2);
       v2f temp3 = yk_math_vec2f_add(&temp, &temp2);
+      temp3.y -= particle->gravity * fixed_delta;
 
       particle->pos = yk_math_vec2f_add(&particle->pos, &temp3);
 
@@ -163,7 +164,7 @@ b1 yk_particle_collision_test(YK_Particle2d *a, YK_Particle2d *b)
 
 YK_Particle2d *yk_particles_create(v2f pos, f4 damping, f4 mass)
 {
-  return yk_yektor_push(&particles, &(YK_Particle2d){pos, {0, 0}, {0, 0}, damping, 1.f / mass, YK_COLLISION_SHAPE_NONE, false});
+  return yk_yektor_push(&particles, &(YK_Particle2d){pos, {0, 0}, {0, 0}, damping, 1.f / mass, YK_COLLISION_SHAPE_NONE, false, false, 0.f});
 }
 
 void yk_particle_set_aabb(YK_Particle2d *out, v2f pos, v2f scale)
@@ -243,7 +244,7 @@ v2f yk_aabb_get_scale(YK_AABB *aabb)
   return out;
 }
 
-//https://gdbooks.gitbooks.io/3dcollisions/content/Chapter3/raycast_aabb.html
+// https://gdbooks.gitbooks.io/3dcollisions/content/Chapter3/raycast_aabb.html
 
 b1 yk_physics_aabb_raycast(const YK_AABB *aabb, v2f origin, v2f dir, f4 distance)
 {

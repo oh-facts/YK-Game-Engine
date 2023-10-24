@@ -69,7 +69,7 @@ typedef struct YK_Particle2d
   YK_Collider collider;
   b1 debug_draw;
   b1 static_object;
-
+  f4 gravity;
 } YK_Particle2d;
 
 /*

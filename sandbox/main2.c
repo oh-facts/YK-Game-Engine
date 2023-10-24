@@ -80,6 +80,7 @@ int main()
         py.particle->debug_draw = true;
         py.particle->static_object = false;
         yk_particle_set_aabb(py.particle, (v2f){0, -0.4f}, (v2f){0.5f, 0.2f});
+        py.particle->gravity = 1.f;
     }
 
     {
