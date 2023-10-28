@@ -98,6 +98,7 @@ b1 full_screen_toggle = true;
 
 void yk_window_update(YK_Window *out)
 {
+    glfwMakeContextCurrent(out->win_ptr);
     if (yk_input_is_key_tapped(YK_KEY_ESCAPE))
     {
         glfwSetWindowShouldClose(out->win_ptr, true);
@@ -185,7 +186,7 @@ YK_Window *yk_window_create_default()
     return out;
 }
 
-YK_Window *yk_window_create(const char *title, i4 width, i4 height)
+YK_Window *yk_window_create_share(const char *title, i4 width, i4 height, YK_Window *share)
 {
     YK_Window *out = malloc(sizeof(YK_Window));
 
@@ -199,7 +200,15 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    out->win_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
+    if (share)
+    {
+        out->win_ptr = glfwCreateWindow(width, height, title, NULL, share->win_ptr);
+    }
+    else
+    {
+        out->win_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
+    }
+
     out->width = width;
     out->height = height;
     out->width_old = width;
@@ -213,7 +222,15 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
     }
 
     glfwMakeContextCurrent(out->win_ptr);
-    glfwSetWindowUserPointer(out->win_ptr, out);
+    if (share)
+    {
+        //glfwSetWindowUserPointer(out->win_ptr, out);
+    }
+    else
+    {
+        glfwSetWindowUserPointer(out->win_ptr, out);
+    }
+
     glfwSetCursorPos(out->win_ptr, width / 2, height / 2);
 
     GLFWmonitor *monitor = glfwGetPrimaryMonitor();
@@ -269,6 +286,11 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
     }
 
     return out;
+}
+
+YK_Window *yk_window_create(const char *title, i4 width, i4 height)
+{
+    return yk_window_create_share(title, width, height, NULL);
 }
 
 v2i yk_window_size(YK_Window *win)

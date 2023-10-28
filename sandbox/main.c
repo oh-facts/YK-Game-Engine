@@ -43,8 +43,10 @@ void update_player(entity *py, f4 delta)
 
 int main()
 {
-  // YK_Window *win = yk_window_create("this is a title", 960, 540);
   YK_Window *win = yk_window_create_default();
+  // YK_Window *win = yk_window_create();
+  YK_Window *debugwin = yk_window_create_share("editor", 40, 40, win);
+
   yk_window_set_vsync(win, false);
 
   YK_Camera2d cam2d;
@@ -105,6 +107,7 @@ int main()
 
     // printf("Draw Calls: %d\n",draw_calls);
 
+    yk_window_update(debugwin);
     yk_window_update(win);
   }
 

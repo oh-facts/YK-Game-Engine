@@ -31,6 +31,9 @@ YK_Window *yk_window_create_default();
 */
 YK_Window *yk_window_create(const char *title, i4 width, i4 height);
 
+
+YK_Window *yk_window_create_share(const char *title, i4 width, i4 height, YK_Window *share);
+
 /*
     Must be called every frame for windowing and input to run correctly
 */
