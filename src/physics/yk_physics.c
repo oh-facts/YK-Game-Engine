@@ -199,11 +199,15 @@ void yk_particle_collision_shape_update(YK_Particle2d *particle)
   switch (particle->collision_shape_type)
   {
   case 1:
+  {
     yk_aabb_update_pos(&particle->collider.collision_shape.aabb, yk_math_vec2f_add(&particle->pos, &particle->collider.offset));
     break;
+  }
 
   default:
+  {
     printf("Control shouldn't reach here. Particle collision shape update called on particle w/o collision shape");
+  }
   }
 }
 
@@ -217,13 +221,17 @@ void yk_particle_collison_shape_debug_draw(YK_Renderer2d *ren)
     {
       continue;
     }
+    
     switch (particle->collision_shape_type)
     {
     case 1:
+    {
       YK_AABB *aabb = &particle->collider.collision_shape.aabb;
       v2f pos = yk_aabb_get_pos(aabb);
       v2f scale = yk_aabb_get_scale(aabb);
       yk_renderer2d_render_quad(ren, &(YK_Transform2d){.pos = pos, .scale = scale, .rot_z = 0.f}, &(YK_Color){1, 0, 0, 0.4f});
+      break;
+    }
     }
   }
 }
