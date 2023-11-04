@@ -7,6 +7,7 @@
 
 /*
     Reads a file at filepath and retuns data as a char *
+    The returned char* needs to be freed by the caller.
 */
 char *yk_file_reader(const char *filepath);
 

@@ -30,6 +30,12 @@ char *yk_file_reader(const char *filepath)
     }
 
     char *string = malloc(sizeof(char) * (length + 1));
+    if (string == NULL)
+    {
+        fprintf(stderr, "Error: File reader malloc failed for file %s\n", filepath);
+        fclose(file);
+        return NULL;
+    }
 
     char c;
     int i = 0;
