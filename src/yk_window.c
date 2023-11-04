@@ -189,6 +189,12 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
 {
     YK_Window *out = malloc(sizeof(YK_Window));
 
+    if (out == NULL)
+    {
+        fprintf(stderr, "Failed to allocate memory for YK_Window\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (!glfwInit())
     {
         fprintf(stderr, "Failed to initialize GLFW\n");
@@ -200,17 +206,17 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     out->win_ptr = glfwCreateWindow(width, height, title, NULL, NULL);
-    out->width = width;
-    out->height = height;
-    out->width_old = width;
-    out->height_old = height;
-
     if (out->win_ptr == NULL)
     {
         fprintf(stderr, "Failed to create GLFW window\n");
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
+
+    out->width = width;
+    out->height = height;
+    out->width_old = width;
+    out->height_old = height;
 
     glfwMakeContextCurrent(out->win_ptr);
     glfwSetWindowUserPointer(out->win_ptr, out);
@@ -227,22 +233,34 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
 
     glfwSetWindowPos(out->win_ptr, xPos, yPos);
 
+    /*
+        Initialize glad
+    */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         fprintf(stderr, "Failed to initialize GLAD\n");
+
         glfwDestroyWindow(out->win_ptr);
+        free(out);
         glfwTerminate();
+
         exit(EXIT_FAILURE);
     }
 
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, width, height);
 
+    /*
+        Set up call backs
+    */
     glfwSetFramebufferSizeCallback(out->win_ptr, framebuffer_size_callback);
     glfwSetCursorPosCallback(out->win_ptr, mouse_callback);
     glfwSetScrollCallback(out->win_ptr, scroll_callback);
     glfwSetKeyCallback(out->win_ptr, key_callback);
 
+    /*
+        Raw input detection. Default to Raw Input if detected.
+    */
     if (glfwRawMouseMotionSupported())
     {
         glfwSetInputMode(out->win_ptr, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
@@ -252,7 +270,7 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
         printf("Raw Input not supported");
     }
 
-    // keys initialize
+    // keys initialization
     {
         for (int i = 0; i < YK_KEY_LAST; i++)
         {
