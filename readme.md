@@ -5,13 +5,7 @@
 
 ## YK Game Engine
 
-  
-
-  
-
-hi
-
-  
+  A game engine written in C and w/ opengl for its rendering backend. Cross platform and optimized for performance and scalability.
   
 
 ## Features

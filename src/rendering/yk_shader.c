@@ -4,7 +4,7 @@
 void yk_check_compile_errors(GLuint shader, const char *type);
 void yk_check_link_errors(GLuint shader, const char *type);
 
-u4 yk_shader_create(const char *vertexFile, const char *fragmentFile)
+u4 yk_shader_program_create_vertex_fragment(const char *vertexFile, const char *fragmentFile)
 {
 
     const char *vertexShaderSource = yk_file_reader(vertexFile);
@@ -31,6 +31,12 @@ u4 yk_shader_create(const char *vertexFile, const char *fragmentFile)
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    /*
+        Since the pointers are const, they need to be casted to remove constness
+    */
+    free((char *)vertexShaderSource);
+    free((char *)fragmentShaderSource);
 
     return shader_program;
 }
