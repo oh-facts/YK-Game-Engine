@@ -35,33 +35,19 @@ void yk_rect_innit(YK_Rect *out)
 {
     out->shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
 
-    f4 vertices[] = {
-        // Position           // Texture Coords
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
-        1.0f,
-        0.5f,
-        -0.5f,
-        0.0f,
-        1.0f,
-        0.0f,
-        -0.5f,
-        -0.5f,
-        0.0f,
-        0.0f,
-        0.0f,
-        -0.5f,
-        0.5f,
-        0.0f,
-        0.0f,
-        1.0f,
+       f4 vertices[] = {
+        // pos x,y,z         // uv cords
+        0.5f,  0.5f,  0.0f,  1.0f,  1.0f,
+        0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+       -0.5f, -0.5f,  0.0f,  0.0f,  0.0f,
+       -0.5f,  0.5f,  0.0f,  0.0f,  1.0f
     };
+
 
     u4 indices[] = {
         0, 1, 3,
-        1, 2, 3};
+        1, 2, 3
+    };
 
     GLuint vbo, ebo;
     glGenVertexArrays(1, &out->vertex_arrays);
