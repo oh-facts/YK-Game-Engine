@@ -33,7 +33,7 @@ i4 draw_calls;
 
 void yk_rect_innit(YK_Rect *out)
 {
-    out->shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
+    out->shader_program = yk_shader_create("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
 
     f4 vertices[] = {
         // Position           // Texture Coords
@@ -144,7 +144,7 @@ void yk_renderer2d_destroy()
 
 void yk_line_innit(YK_Line *out)
 {
-    out->shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/default/line.vert", "yk-res/shaders/default/line.frag");
+    out->shader_program = yk_shader_create("yk-res/shaders/default/line.vert", "yk-res/shaders/default/line.frag");
     f4 vertices[] =
         {
             -0.5, 0.5f,

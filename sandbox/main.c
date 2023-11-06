@@ -2,8 +2,8 @@
 
 #define NUM (1000)
 
-#define SIM_SPEED (5.f)
-#define ROT_SPEED (5.0f)
+#define SIM_SPEED (1.f)
+#define ROT_SPEED (1.0f)
 
 struct entity
 {
