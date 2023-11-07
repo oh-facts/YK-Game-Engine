@@ -13,11 +13,10 @@ void yk_camera2d_innit(YK_Camera2d *camera)
 
 void yk_camera2d_set_pos2d(YK_Camera2d *camera, v3f *pos)
 {
-    //idk if dereferenceing is faster than copying
-    //ofc, setting directly is much better than using a setter
+    // idk if dereferenceing is faster than copying
+    // ofc, setting directly is much better than using a setter
     camera->pos.x = pos->x;
     camera->pos.y = pos->y;
-    
 }
 
 void yk_camera2d_update(YK_Camera2d *camera, f4 delta_time)
@@ -28,7 +27,7 @@ void yk_camera2d_update(YK_Camera2d *camera, f4 delta_time)
 m4f yk_camera2d_get_projection_matrix(YK_Camera2d *camera, f4 aspect_ratio)
 {
     // return yk_mat4f_perspective(45.f * DEG_TO_RAD, 1.f, 0.1f, 100.f);
-    f4 zoom = (1/camera->zoom*2.f);
+    f4 zoom = (1 / camera->zoom * 2.f);
     return yk_mat4f_ortho(-aspect_ratio * zoom, aspect_ratio * zoom, -zoom, zoom, 0.1f, 100.f);
 }
 
@@ -60,4 +59,27 @@ void yk_camera2d_move_down(YK_Camera2d *camera, f4 distance)
 {
     v3f _temp = yk_math_vec3f_mul_s(&YK_WORLD_DOWN, distance);
     camera->pos = yk_math_vec3f_add(&camera->pos, &_temp);
+}
+
+void yk_camera2d_debug_control(YK_Camera2d *camera, f4 distance)
+{
+    if (yk_input_is_key_held(YK_KEY_UP))
+    {
+        yk_camera2d_move_up(camera, distance);
+    }
+
+    if (yk_input_is_key_held(YK_KEY_LEFT))
+    {
+        yk_camera2d_move_left(camera, distance);
+    }
+
+    if (yk_input_is_key_held(YK_KEY_RIGHT))
+    {
+        yk_camera2d_move_right(camera, distance);
+    }
+
+    if (yk_input_is_key_held(YK_KEY_DOWN))
+    {
+        yk_camera2d_move_down(camera, distance);
+    }
 }

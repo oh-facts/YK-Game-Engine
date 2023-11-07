@@ -40,14 +40,19 @@ void yk_renderer2d_render_quad(YK_Renderer2d *renderer, YK_Transform2d *transfor
 void yk_renderer2d_render_quad_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col);
 
 /*
-    Renders a sprite on a quad.
+    Renders a texture on a quad.
 */
 void yk_renderer2d_render_quad_sprite(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col, YK_Texture *texture);
 
 /*
-    Renders a sprite at layer z on a quad.
+    Renders a texture at layer z on a quad.
 */
 void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col, YK_Texture *texture);
+
+/*
+    Renders multiple instances of a quad
+*/
+void yk_renderer2d_render_quad_instanced(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col);
 
 /*
     Renders a line at transform

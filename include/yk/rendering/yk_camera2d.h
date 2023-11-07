@@ -69,6 +69,9 @@ void yk_camera2d_move_right(YK_Camera2d *camera, f4 distance);
 */
 void yk_camera2d_move_down(YK_Camera2d *camera, f4 distance);
 
-
+/*
+  Debug controls for the camera
+*/
+void yk_camera2d_debug_control(YK_Camera2d *camera, f4 distance);
 
 #endif

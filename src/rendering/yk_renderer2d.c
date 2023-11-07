@@ -1,13 +1,13 @@
 #include <yk/rendering/yk_renderer2d.h>
 #include <glad/glad.h>
 
-struct YK_Rect
+struct YK_Quad
 {
     GLuint shader_program;
     GLuint vertex_arrays;
 };
 
-typedef struct YK_Rect YK_Rect;
+typedef struct YK_Quad YK_Quad;
 
 struct YK_Line
 {
@@ -17,25 +17,27 @@ struct YK_Line
 
 typedef struct YK_Line YK_Line;
 
-void yk_rect_innit(YK_Rect *out);
-void yk_rect_destroy(YK_Rect *out);
+void yk_quad_default_innit();
+void yk_quad_default_destroy();
 
 void yk_line_innit(YK_Line *out);
 void yk_line_destroy(YK_Line *out);
 
 YK_Texture white_square;
 
-YK_Rect yk_rect_default;
+YK_Quad yk_quad_default;
+
+YK_Quad yk_quad_instanced;
 
 YK_Line yk_line_default;
 
 i4 draw_calls;
 
-void yk_rect_innit(YK_Rect *out)
+void yk_quad_default_innit()
 {
-    out->shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
+    yk_quad_default.shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/default/rect.vert", "yk-res/shaders/default/rect.frag");
 
-       f4 vertices[] = {
+    f4 vertices[] = {
         // pos x,y,z         // uv cords
         0.5f,  0.5f,  0.0f,  1.0f,  1.0f,
         0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
@@ -50,11 +52,11 @@ void yk_rect_innit(YK_Rect *out)
     };
 
     GLuint vbo, ebo;
-    glGenVertexArrays(1, &out->vertex_arrays);
+    glGenVertexArrays(1, &yk_quad_default.vertex_arrays);
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ebo);
 
-    glBindVertexArray(out->vertex_arrays);
+    glBindVertexArray(yk_quad_default.vertex_arrays);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 
@@ -76,15 +78,15 @@ void yk_rect_innit(YK_Rect *out)
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ebo);
 
-    GLuint tex0Uni = glGetUniformLocation(out->shader_program, "tex0");
-    glUseProgram(out->shader_program);
+    GLuint tex0Uni = glGetUniformLocation(yk_quad_default.shader_program, "tex0");
+    glUseProgram(yk_quad_default.shader_program);
     glUniform1i(tex0Uni, 0);
 }
 
-void yk_rect_destroy(YK_Rect *out)
+void yk_quad_default_destroy()
 {
-    glDeleteVertexArrays(1, &(out->vertex_arrays));
-    glDeleteProgram(out->shader_program);
+    glDeleteVertexArrays(1, &(yk_quad_default.vertex_arrays));
+    glDeleteProgram(yk_quad_default.shader_program);
 }
 
 void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window *win)
@@ -95,7 +97,7 @@ void yk_renderer2d_innit(YK_Renderer2d *ren, YK_Camera2d *current_cam, YK_Window
 
     white_square = yk_texture_create("yk-res/textures/white_square.png");
 
-    yk_rect_innit(&yk_rect_default);
+    yk_quad_default_innit();
     yk_line_innit(&yk_line_default);
 
     glEnable(GL_BLEND);
@@ -124,7 +126,7 @@ void yk_renderer2d_set_bg(f4 r, f4 g, f4 b, f4 a)
 
 void yk_renderer2d_destroy()
 {
-    yk_rect_destroy(&yk_rect_default);
+    yk_quad_default_destroy();
     yk_line_destroy(&yk_line_default);
 }
 
@@ -300,14 +302,14 @@ void yk_renderer2d_render_quad_z(YK_Renderer2d *renderer, YK_Transform2d *transf
 
 void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d *transform, f4 layer, YK_Color *col, YK_Texture *texture)
 {
-    glUseProgram(yk_rect_default.shader_program);
-    glBindVertexArray(yk_rect_default.vertex_arrays);
+    glUseProgram(yk_quad_default.shader_program);
+    glBindVertexArray(yk_quad_default.vertex_arrays);
     glBindTexture(GL_TEXTURE_2D, texture->id);
 
-    u4 modelLoc = glGetUniformLocation(yk_rect_default.shader_program, "model");
-    u4 viewLoc = glGetUniformLocation(yk_rect_default.shader_program, "view");
-    u4 projectionLoc = glGetUniformLocation(yk_rect_default.shader_program, "projection");
-    u4 colorLoc = glGetUniformLocation(yk_rect_default.shader_program, "color");
+    u4 modelLoc = glGetUniformLocation(yk_quad_default.shader_program, "model");
+    u4 viewLoc = glGetUniformLocation(yk_quad_default.shader_program, "view");
+    u4 projectionLoc = glGetUniformLocation(yk_quad_default.shader_program, "projection");
+    u4 colorLoc = glGetUniformLocation(yk_quad_default.shader_program, "color");
 
     {
         m4f out;
@@ -334,4 +336,45 @@ void yk_renderer2d_render_quad_sprite_z(YK_Renderer2d *renderer, YK_Transform2d 
     draw_calls++;
 
     glBindVertexArray(0);
+}
+
+void yk_renderer2d_render_quad_instanced(YK_Renderer2d *renderer, YK_Transform2d *transform, YK_Color *col)
+{
+    /*
+    glUseProgram(yk_quad_default.shader_program);
+    glBindVertexArray(yk_quad_default.vertex_arrays);
+    glBindTexture(GL_TEXTURE_2D, texture->id);
+
+    u4 modelLoc = glGetUniformLocation(yk_quad_default.shader_program, "model");
+    u4 viewLoc = glGetUniformLocation(yk_quad_default.shader_program, "view");
+    u4 projectionLoc = glGetUniformLocation(yk_quad_default.shader_program, "projection");
+    u4 colorLoc = glGetUniformLocation(yk_quad_default.shader_program, "color");
+
+    {
+        m4f out;
+        out = yk_mat4f_identity();
+        // Use a union and allow a transform3d to store this.
+        // Other option is to have translate, rotate and scale for 2d
+        // YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
+
+        yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, (2.f * ((layer * I_MAX_LAYER) - 0.5f) * MAX_LAYER)});
+
+        yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
+
+        yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, 0.f});
+
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
+    }
+
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(renderer->view_mat.m00));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(renderer->proj_mat.m00));
+
+    glUniform4f(colorLoc, col->r, col->g, col->b, col->a);
+
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    draw_calls++;
+
+    glBindVertexArray(0);
+    */
+    
 }
