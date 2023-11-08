@@ -1,6 +1,6 @@
 #include <yk/yk_app.h>
 #include <glad/glad.h>
-#define NUM (1000000)
+#define NUM (5000000)
 
 #define SIM_SPEED (1.f)
 #define ROT_SPEED (1.0f)
@@ -31,7 +31,7 @@ int main()
 
   YK_Camera2d cam2d;
   yk_camera2d_innit(&cam2d);
-  cam2d.zoom = 0.5f;
+  cam2d.zoom = 0.4f;
 
   YK_Renderer2d ren2d;
   yk_renderer2d_innit(&ren2d, &cam2d, win);
@@ -86,7 +86,7 @@ int main()
     yk_renderer2d_begin_draw(&ren2d, win);
     // yk_renderer2d_render_quad_sprite_z(&ren2d, &py.transform, -8.f, &YK_COLOR_WHITE, &test2);
 
-    //draw_normal(&ren2d);
+    // draw_normal(&ren2d);
     draw_instanced(&ren2d, poss);
 
     if (yk_input_is_key_tapped(YK_KEY_ENTER))
@@ -144,7 +144,7 @@ void init_instanced(v2f pos[])
   GLuint ivbo;
   glGenBuffers(1, &ivbo);
   glBindBuffer(GL_ARRAY_BUFFER, ivbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(v2f) * NUM, &pos[0], GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(v2f) * NUM, &pos[0], GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   iq.shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/instanced/rect.vert", "yk-res/shaders/instanced/rect.frag");
@@ -164,7 +164,7 @@ void init_instanced(v2f pos[])
 
   glBindVertexArray(iq.vertex_arrays);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
   // pos attrib
   glEnableVertexAttribArray(0);
@@ -195,6 +195,29 @@ void draw_instanced(YK_Renderer2d *ren2d, v2f pos[])
 {
   glUseProgram(iq.shader_program);
   glBindVertexArray(iq.vertex_arrays);
+
+  //u4 modelLoc = glGetUniformLocation(iq.shader_program, "model");
+  u4 viewLoc = glGetUniformLocation(iq.shader_program, "view");
+  u4 projectionLoc = glGetUniformLocation(iq.shader_program, "projection");
+
+  {
+  //  m4f out;
+   // out = yk_mat4f_identity();
+    // Use a union and allow a transform3d to store this.
+    // Other option is to have translate, rotate and scale for 2d
+    // YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
+
+    //yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, (2.f * ((layer * I_MAX_LAYER) - 0.5f) * MAX_LAYER)});
+
+    //yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
+
+   // yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, 0.f});
+
+   // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
+  }
+
+  glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(ren2d->view_mat.m00));
+  glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(ren2d->proj_mat.m00));
 
   glDrawArraysInstanced(GL_TRIANGLES, 0, 6, NUM);
   draw_calls++;

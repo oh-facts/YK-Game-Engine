@@ -5,8 +5,11 @@ layout (location = 2) in vec2 aOffset;
 
 out vec3 fColor;
 
+uniform mat4 view;
+uniform mat4 projection;
+
 void main()
 {
     fColor = aColor;
-    gl_Position = vec4(aPos + aOffset * 0.05, 0.0, 1.0);
+    gl_Position = projection * view * vec4(aPos + aOffset, 0.0, 1.0);
 }
