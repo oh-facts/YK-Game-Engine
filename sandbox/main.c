@@ -1,6 +1,6 @@
 #include <yk/yk_app.h>
 #include <glad/glad.h>
-#define NUM (5000000)
+#define NUM (100000)
 
 #define SIM_SPEED (1.f)
 #define ROT_SPEED (1.0f)
@@ -10,6 +10,14 @@ struct entity
   YK_Transform2d transform;
 };
 
+typedef struct viq
+{
+  u4 shader_program;
+  u4 vertex_arrays;
+  u4 ivbo;
+} viq;
+
+viq iq;
 typedef struct entity entity;
 
 entity *squares;
@@ -95,8 +103,9 @@ int main()
     yk_renderer2d_begin_draw(&ren2d, win);
     // yk_renderer2d_render_quad_sprite_z(&ren2d, &py.transform, -8.f, &YK_COLOR_WHITE, &test2);
 
-    // draw_normal(&ren2d);
-    draw_instanced(&ren2d, poss);
+    draw_normal(&ren2d);
+
+    //draw_instanced(&ren2d, poss);
 
     if (yk_input_is_key_tapped(YK_KEY_ENTER))
     {
@@ -136,23 +145,14 @@ void draw_normal(YK_Renderer2d *ren2d)
   }
 }
 
-typedef struct viq
-{
-  u4 shader_program;
-  u4 vertex_arrays;
-} viq;
-
-viq iq;
-
 void init_instanced(m4f model[])
 {
   for (int i = 0; i < NUM; i++)
   {
     // yk_vec2f_print(&pos[i]);
   }
-  GLuint ivbo;
-  glGenBuffers(1, &ivbo);
-  glBindBuffer(GL_ARRAY_BUFFER, ivbo);
+  glGenBuffers(1, &iq.ivbo);
+  glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -185,7 +185,7 @@ void init_instanced(m4f model[])
 
   // instanced attrib
 
-  glBindBuffer(GL_ARRAY_BUFFER, ivbo);
+  glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
 
   glEnableVertexAttribArray(2);
   glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(0));
@@ -209,13 +209,30 @@ void init_instanced(m4f model[])
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   glDeleteBuffers(1, &vbo);
-  glDeleteBuffers(1, &ivbo);
 
   glUseProgram(iq.shader_program);
 }
 
 void draw_instanced(YK_Renderer2d *ren2d, m4f model[])
 {
+
+  for (int i = 0; i < NUM; i++)
+  {
+    f4 timeValue = (yk_get_time() + i * 0.1f) * SIM_SPEED;
+    f4 r = sin(timeValue) / 2.0f + 0.5f;
+    f4 g = sin(timeValue + 2.0f) / 2.0f + 0.5f;
+    f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
+
+    yk_math_transform_rotate(&model[i], timeValue, &YK_WORLD_FORWARD);
+
+    // yk_mat4f_print(&out);
+
+    // poss[i] = out;
+  }
+  glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
   glUseProgram(iq.shader_program);
   glBindVertexArray(iq.vertex_arrays);
 
@@ -224,19 +241,11 @@ void draw_instanced(YK_Renderer2d *ren2d, m4f model[])
   u4 projectionLoc = glGetUniformLocation(iq.shader_program, "projection");
 
   {
-    // m4f out;
-    //  out = yk_mat4f_identity();
-    //  Use a union and allow a transform3d to store this.
-    //  Other option is to have translate, rotate and scale for 2d
-    //  YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
-
-    // yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, (2.f * ((layer * I_MAX_LAYER) - 0.5f) * MAX_LAYER)});
-
-    // yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
-
-    // yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, 0.f});
-
-    // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
+    GLuint ivbo;
+    glGenBuffers(1, &ivbo);
+    glBindBuffer(GL_ARRAY_BUFFER, ivbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
   }
 
   glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(ren2d->view_mat.m00));
