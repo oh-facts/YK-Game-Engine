@@ -18,9 +18,9 @@ void draw_normal(YK_Renderer2d *ren2d);
 void update_player(entity *py, f4 delta);
 #define SPEED 4
 
-void init_instanced(v2f pos[]);
+void init_instanced(m4f model[]);
 
-void draw_instanced(YK_Renderer2d *ren2d, v2f pos[]);
+void draw_instanced(YK_Renderer2d *ren2d, m4f model[]);
 
 int main()
 {
@@ -31,7 +31,7 @@ int main()
 
   YK_Camera2d cam2d;
   yk_camera2d_innit(&cam2d);
-  cam2d.zoom = 0.4f;
+  cam2d.zoom = 1.f;
 
   YK_Renderer2d ren2d;
   yk_renderer2d_innit(&ren2d, &cam2d, win);
@@ -43,9 +43,11 @@ int main()
 
   entity py = {.transform = {{0, 0}, 0, {1.f, 1.f}}};
 
-  yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
+  // yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
 
-  v2f *poss = malloc(sizeof(v2f) * NUM);
+  yk_renderer2d_set_bg(0.f, 0.f, 0.f, 1.f);
+
+  m4f *poss = malloc(sizeof(m4f) * NUM);
 
   for (int i = 0; i < NUM; i++)
   {
@@ -54,10 +56,17 @@ int main()
     f4 r2 = ((f4)rand() / RAND_MAX) * 90.0f;
     f4 r3 = ((f4)rand() / RAND_MAX) * 0.5f + 0.2f;
     YK_Transform2d trans = {{r1_x, r1_y}, r2, {r3, r3}};
-
-    poss[i].x = r1_x;
-    poss[i].y = r1_y;
     squares[i].transform = trans;
+
+    m4f out;
+    out = yk_mat4f_identity();
+
+    yk_math_transform_translate(&out, &(v3f){r1_x, r1_y, 0.f});
+    yk_math_transform_rotate(&out, r2, &YK_WORLD_FORWARD);
+    yk_math_transform_scale(&out, &(v3f){r3, r3, 0.f});
+    // yk_mat4f_print(&out);
+
+    poss[i] = out;
   }
 
   YK_Texture test = yk_texture_create("yk-res/textures/yk.png");
@@ -135,7 +144,7 @@ typedef struct viq
 
 viq iq;
 
-void init_instanced(v2f pos[])
+void init_instanced(m4f model[])
 {
   for (int i = 0; i < NUM; i++)
   {
@@ -144,7 +153,7 @@ void init_instanced(v2f pos[])
   GLuint ivbo;
   glGenBuffers(1, &ivbo);
   glBindBuffer(GL_ARRAY_BUFFER, ivbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(v2f) * NUM, &pos[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   iq.shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/instanced/rect.vert", "yk-res/shaders/instanced/rect.frag");
@@ -175,15 +184,29 @@ void init_instanced(v2f pos[])
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
 
   // instanced attrib
-  glEnableVertexAttribArray(2);
+
   glBindBuffer(GL_ARRAY_BUFFER, ivbo);
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)(0));
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glEnableVertexAttribArray(2);
+  glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(0));
+
+  glEnableVertexAttribArray(3);
+  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(1 * 4 * sizeof(float)));
+
+  glEnableVertexAttribArray(4);
+  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(2 * 4 * sizeof(float)));
+
+  glEnableVertexAttribArray(5);
+  glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(3 * 4 * sizeof(float)));
+
+  // glBindBuffer(GL_ARRAY_BUFFER, 0);
   glVertexAttribDivisor(2, 1);
+  glVertexAttribDivisor(3, 1);
+  glVertexAttribDivisor(4, 1);
+  glVertexAttribDivisor(5, 1);
 
   glBindVertexArray(0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
   glDeleteBuffers(1, &vbo);
   glDeleteBuffers(1, &ivbo);
@@ -191,29 +214,29 @@ void init_instanced(v2f pos[])
   glUseProgram(iq.shader_program);
 }
 
-void draw_instanced(YK_Renderer2d *ren2d, v2f pos[])
+void draw_instanced(YK_Renderer2d *ren2d, m4f model[])
 {
   glUseProgram(iq.shader_program);
   glBindVertexArray(iq.vertex_arrays);
 
-  //u4 modelLoc = glGetUniformLocation(iq.shader_program, "model");
+  // u4 modelLoc = glGetUniformLocation(iq.shader_program, "model");
   u4 viewLoc = glGetUniformLocation(iq.shader_program, "view");
   u4 projectionLoc = glGetUniformLocation(iq.shader_program, "projection");
 
   {
-  //  m4f out;
-   // out = yk_mat4f_identity();
-    // Use a union and allow a transform3d to store this.
-    // Other option is to have translate, rotate and scale for 2d
-    // YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
+    // m4f out;
+    //  out = yk_mat4f_identity();
+    //  Use a union and allow a transform3d to store this.
+    //  Other option is to have translate, rotate and scale for 2d
+    //  YK_Transform _trans = {{transform->pos.x, transform->pos.y, -1.f}, {0.f, 0.f, transform->rot_z}, {transform->scale.x, transform->scale.y, 0.f}};
 
-    //yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, (2.f * ((layer * I_MAX_LAYER) - 0.5f) * MAX_LAYER)});
+    // yk_math_transform_translate(&out, &(v3f){transform->pos.x, transform->pos.y, (2.f * ((layer * I_MAX_LAYER) - 0.5f) * MAX_LAYER)});
 
-    //yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
+    // yk_math_transform_rotate(&out, transform->rot_z, &YK_WORLD_FORWARD);
 
-   // yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, 0.f});
+    // yk_math_transform_scale(&out, &(v3f){transform->scale.x, transform->scale.y, 0.f});
 
-   // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
+    // glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &out.m00);
   }
 
   glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(ren2d->view_mat.m00));
