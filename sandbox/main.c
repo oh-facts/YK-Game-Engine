@@ -14,7 +14,7 @@ typedef struct viq
 {
   u4 shader_program;
   u4 vertex_arrays;
-  u4 ivbo;
+  u4 ssbo;
 } viq;
 
 viq iq;
@@ -103,9 +103,9 @@ int main()
     yk_renderer2d_begin_draw(&ren2d, win);
     // yk_renderer2d_render_quad_sprite_z(&ren2d, &py.transform, -8.f, &YK_COLOR_WHITE, &test2);
 
-    draw_normal(&ren2d);
+    // draw_normal(&ren2d);
 
-    //draw_instanced(&ren2d, poss);
+    draw_instanced(&ren2d, poss);
 
     if (yk_input_is_key_tapped(YK_KEY_ENTER))
     {
@@ -151,9 +151,18 @@ void init_instanced(m4f model[])
   {
     // yk_vec2f_print(&pos[i]);
   }
-  glGenBuffers(1, &iq.ivbo);
+  /*
+   glGenBuffers(1, &iq.ivbo);
   glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  */
+
+  glGenBuffers(1, &iq.ssbo);
+  glGenBuffers(1, &iq.ssbo);
+  glBindBuffer(GL_SHADER_STORAGE_BUFFER, iq.ssbo);
+  glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   iq.shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/instanced/rect.vert", "yk-res/shaders/instanced/rect.frag");
@@ -184,26 +193,27 @@ void init_instanced(m4f model[])
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
 
   // instanced attrib
+  /*
+    glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
 
-  glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(0));
 
-  glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(0));
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(1 * 4 * sizeof(float)));
 
-  glEnableVertexAttribArray(3);
-  glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(1 * 4 * sizeof(float)));
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(2 * 4 * sizeof(float)));
 
-  glEnableVertexAttribArray(4);
-  glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(2 * 4 * sizeof(float)));
+    glEnableVertexAttribArray(5);
+    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(3 * 4 * sizeof(float)));
 
-  glEnableVertexAttribArray(5);
-  glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16 * sizeof(float), (void *)(3 * 4 * sizeof(float)));
-
-  // glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glVertexAttribDivisor(2, 1);
-  glVertexAttribDivisor(3, 1);
-  glVertexAttribDivisor(4, 1);
-  glVertexAttribDivisor(5, 1);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexAttribDivisor(2, 1);
+    glVertexAttribDivisor(3, 1);
+    glVertexAttribDivisor(4, 1);
+    glVertexAttribDivisor(5, 1);
+  */
 
   glBindVertexArray(0);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
