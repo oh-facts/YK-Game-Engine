@@ -26,7 +26,7 @@ def build_script():
 
     # cmake commands built here
 
-    cum = "cmake " +  build_compiler(pick_compiler) 
+    cum = "cmake " + build_type_command(pick_build_type) + " " + build_compiler(pick_compiler)
     cum += build_sandbox_entry()
     cum += " -B " + build_path_command(pick_build_type)
     cum += " -G " + build_generator(pick_generator, pick_os) + "\n"

@@ -1,6 +1,6 @@
 #include <yk/yk_app.h>
 #include <glad/glad.h>
-#define NUM (1000000)
+#define NUM (100000)
 
 #define SIM_SPEED (1.f)
 #define ROT_SPEED (1.0f)
@@ -130,6 +130,7 @@ int main()
       printf("Diagnostics \n");
       printf("----------- \n");
       printf("Draw Calls: %d\n", draw_calls);
+      printf("Vertex count: %d\n", NUM * 6);
       f4 average_frame_rate = frame_count / total_elapsed_time;
 
       printf("Current Frame Rate: %.0f FPS\n", 1.0 / delta_time);
@@ -182,14 +183,26 @@ void init_instanced(m4f model[], v3f colors[])
 
   iq.shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/instanced/rect.vert", "yk-res/shaders/instanced/rect.frag");
 
-  float vertices[] = {
-    -0.05f,  0.05f,
-     0.05f, -0.05f,
-    -0.05f, -0.05f,
-    -0.05f,  0.05f,
-     0.05f, -0.05f,
-     0.05f,  0.05f,
-};
+    float vertices[] = {
+        -0.05f,  0.05f,
+         0.05f, -0.05f,
+        -0.05f, -0.05f,
+        -0.05f,  0.05f,
+         0.05f, -0.05f,
+         0.05f,  0.05f,
+    };
+
+  /*
+    I am leaving this here incase the auto indent ruins it
+    float vertices[] = {
+        -0.05f,  0.05f,
+         0.05f, -0.05f,
+        -0.05f, -0.05f,
+        -0.05f,  0.05f,
+         0.05f, -0.05f,
+         0.05f,  0.05f,
+    };
+  */
 
   GLuint vbo;
   glGenVertexArrays(1, &iq.vertex_arrays);
@@ -243,19 +256,19 @@ void draw_instanced(YK_Renderer2d *ren2d, m4f model[], v3f colors[])
 
   for (int i = 0; i < NUM; i++)
   {
-    f4 timeValue = (yk_get_time() + (i * 1.f) / NUM) * SIM_SPEED;
-    f4 r = sin(timeValue) / 2.0f + 0.5f;
-    f4 g = sin(timeValue + 2.0f) / 2.0f + 0.5f;
-    f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
-    colors[i].x = r;
-    colors[i].y = g;
-    colors[i].z = b;
+    f4 timeValue = yk_get_time() * SIM_SPEED;
+    f4 r = timeValue;
+    f4 g = timeValue + 1.0f;
+    f4 b = timeValue - 1.0f;
+    colors[i].x = (sin(i + r)) / 2.0f + 0.5f;
+    colors[i].y = (sin(i + g)) / 2.0f + 0.5f;
+    colors[i].z = (sin(i + b)) / 2.0f + 0.5f;
 
     yk_math_transform_rotate(&model[i], timeValue, &YK_WORLD_FORWARD);
   }
 
   glBindBuffer(GL_ARRAY_BUFFER, iq.cvbo);
-  // glBufferData(GL_ARRAY_BUFFER, sizeof(v3f) * NUM, &colors[0], GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(v3f) * NUM, &colors[0], GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
   glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
