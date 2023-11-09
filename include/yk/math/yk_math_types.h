@@ -35,7 +35,7 @@ typedef union v2f
 /*
     float vector3d
 */
-typedef struct v3f
+typedef union v3f
 {
     struct
     {

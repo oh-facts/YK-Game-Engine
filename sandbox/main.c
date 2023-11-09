@@ -1,6 +1,6 @@
 #include <yk/yk_app.h>
 #include <glad/glad.h>
-#define NUM (100000)
+#define NUM (1000000)
 
 #define SIM_SPEED (1.f)
 #define ROT_SPEED (1.0f)
@@ -15,6 +15,7 @@ typedef struct viq
   u4 shader_program;
   u4 vertex_arrays;
   u4 ivbo;
+  u4 cvbo;
 } viq;
 
 viq iq;
@@ -26,9 +27,11 @@ void draw_normal(YK_Renderer2d *ren2d);
 void update_player(entity *py, f4 delta);
 #define SPEED 4
 
-void init_instanced(m4f model[]);
+void init_instanced(m4f model[], v3f colors[]);
 
-void draw_instanced(YK_Renderer2d *ren2d, m4f model[]);
+void draw_instanced(YK_Renderer2d *ren2d, m4f model[], v3f color[]);
+
+f4 vertices = NUM * 4;
 
 int main()
 {
@@ -39,7 +42,7 @@ int main()
 
   YK_Camera2d cam2d;
   yk_camera2d_innit(&cam2d);
-  cam2d.zoom = 1.f;
+  cam2d.zoom = 0.35f;
 
   YK_Renderer2d ren2d;
   yk_renderer2d_innit(&ren2d, &cam2d, win);
@@ -48,23 +51,38 @@ int main()
   f4 last_frame = 0.f;
 
   yk_renderer2d_set_bg(0.2f, 0.3f, 0.3f, 1.f);
+  // yk_renderer2d_set_bg(0.f, 0.f, 0.f, 1.f);
 
   entity py = {.transform = {{0, 0}, 0, {1.f, 1.f}}};
 
   // yk_renderer2d_set_bg(0.5f, 0.2f, 0.4f, 1.f);
 
-  yk_renderer2d_set_bg(0.f, 0.f, 0.f, 1.f);
-
   m4f *poss = malloc(sizeof(m4f) * NUM);
+  v3f *colors = malloc(sizeof(v3f) * NUM);
 
+  float centerX = 0.0f;
+  float centerY = 0.0f;
+  float maxRadius = 5.0f;
   for (int i = 0; i < NUM; i++)
   {
-    f4 r1_x = ((f4)rand() / RAND_MAX) * 20.0f - 10.f;
-    f4 r1_y = ((f4)rand() / RAND_MAX) * 10.0f - 5.f;
+    // pos
+    float theta = ((float)rand() / RAND_MAX) * (2.0f * PI);
+
+    // Generate random radius (r) between 0 and the maximum radius
+    float r = ((float)rand() / RAND_MAX) * maxRadius;
+
+    // Calculate Cartesian coordinates (x, y) within the circle
+    float r1_x = centerX + r * cos(theta);
+    float r1_y = centerY + r * sin(theta);
+
     f4 r2 = ((f4)rand() / RAND_MAX) * 90.0f;
     f4 r3 = ((f4)rand() / RAND_MAX) * 0.5f + 0.2f;
     YK_Transform2d trans = {{r1_x, r1_y}, r2, {r3, r3}};
     squares[i].transform = trans;
+
+    colors[i].r = ((float)rand() / RAND_MAX);
+    colors[i].g = ((float)rand() / RAND_MAX);
+    colors[i].b = ((float)rand() / RAND_MAX);
 
     m4f out;
     out = yk_mat4f_identity();
@@ -83,7 +101,7 @@ int main()
   i4 frame_count = 0;
   f4 total_elapsed_time = 0.f;
 
-  init_instanced(poss);
+  init_instanced(poss, colors);
 
   while (yk_window_is_running(win))
   {
@@ -103,9 +121,9 @@ int main()
     yk_renderer2d_begin_draw(&ren2d, win);
     // yk_renderer2d_render_quad_sprite_z(&ren2d, &py.transform, -8.f, &YK_COLOR_WHITE, &test2);
 
-    draw_normal(&ren2d);
+    // draw_normal(&ren2d);
 
-    //draw_instanced(&ren2d, poss);
+    draw_instanced(&ren2d, poss, colors);
 
     if (yk_input_is_key_tapped(YK_KEY_ENTER))
     {
@@ -145,27 +163,33 @@ void draw_normal(YK_Renderer2d *ren2d)
   }
 }
 
-void init_instanced(m4f model[])
+void init_instanced(m4f model[], v3f colors[])
 {
   for (int i = 0; i < NUM; i++)
   {
     // yk_vec2f_print(&pos[i]);
   }
+
   glGenBuffers(1, &iq.ivbo);
   glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+  glGenBuffers(1, &iq.cvbo);
+  glBindBuffer(GL_ARRAY_BUFFER, iq.cvbo);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(v3f) * NUM, &colors[0], GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
   iq.shader_program = yk_shader_program_create_vertex_fragment("yk-res/shaders/instanced/rect.vert", "yk-res/shaders/instanced/rect.frag");
 
-  f4 vertices[] = {
-      -0.05f, 0.05f, 1.0f, 0.0f, 0.0f,
-      0.05f, -0.05f, 0.0f, 1.0f, 0.0f,
-      -0.05f, -0.05f, 0.0f, 0.0f, 1.0f,
-
-      -0.05f, 0.05f, 1.0f, 0.0f, 0.0f,
-      0.05f, -0.05f, 0.0f, 1.0f, 0.0f,
-      0.05f, 0.05f, 0.0f, 1.0f, 1.0f};
+  float vertices[] = {
+    -0.05f,  0.05f,
+     0.05f, -0.05f,
+    -0.05f, -0.05f,
+    -0.05f,  0.05f,
+     0.05f, -0.05f,
+     0.05f,  0.05f,
+};
 
   GLuint vbo;
   glGenVertexArrays(1, &iq.vertex_arrays);
@@ -177,12 +201,13 @@ void init_instanced(m4f model[])
 
   // pos attrib
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
 
-  // texture attrib
+  // col attrib
+  glBindBuffer(GL_ARRAY_BUFFER, iq.cvbo);
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
-
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)(0));
+  glVertexAttribDivisor(1, 1);
   // instanced attrib
 
   glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
@@ -213,22 +238,26 @@ void init_instanced(m4f model[])
   glUseProgram(iq.shader_program);
 }
 
-void draw_instanced(YK_Renderer2d *ren2d, m4f model[])
+void draw_instanced(YK_Renderer2d *ren2d, m4f model[], v3f colors[])
 {
 
   for (int i = 0; i < NUM; i++)
   {
-    f4 timeValue = (yk_get_time() + i * 0.1f) * SIM_SPEED;
+    f4 timeValue = (yk_get_time() + (i * 1.f) / NUM) * SIM_SPEED;
     f4 r = sin(timeValue) / 2.0f + 0.5f;
     f4 g = sin(timeValue + 2.0f) / 2.0f + 0.5f;
     f4 b = sin(timeValue + 4.0f) / 2.0f + 0.5f;
+    colors[i].x = r;
+    colors[i].y = g;
+    colors[i].z = b;
 
     yk_math_transform_rotate(&model[i], timeValue, &YK_WORLD_FORWARD);
-
-    // yk_mat4f_print(&out);
-
-    // poss[i] = out;
   }
+
+  glBindBuffer(GL_ARRAY_BUFFER, iq.cvbo);
+  // glBufferData(GL_ARRAY_BUFFER, sizeof(v3f) * NUM, &colors[0], GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
   glBindBuffer(GL_ARRAY_BUFFER, iq.ivbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
   glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -239,14 +268,6 @@ void draw_instanced(YK_Renderer2d *ren2d, m4f model[])
   // u4 modelLoc = glGetUniformLocation(iq.shader_program, "model");
   u4 viewLoc = glGetUniformLocation(iq.shader_program, "view");
   u4 projectionLoc = glGetUniformLocation(iq.shader_program, "projection");
-
-  {
-    GLuint ivbo;
-    glGenBuffers(1, &ivbo);
-    glBindBuffer(GL_ARRAY_BUFFER, ivbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(m4f) * NUM, &model[0], GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-  }
 
   glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &(ren2d->view_mat.m00));
   glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, &(ren2d->proj_mat.m00));
