@@ -201,8 +201,8 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
         exit(EXIT_FAILURE);
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     out->win_ptr = glfwCreateWindow(width, height, title, NULL, NULL);

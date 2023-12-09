@@ -4,7 +4,7 @@
 void yk_check_compile_errors(GLuint shader, const char *type);
 void yk_check_link_errors(GLuint shader, const char *type);
 
-u4 yk_shader_program_create_vertex_fragment(const char *vertexFile, const char *fragmentFile)
+u4 yk_shader_vf_create(const char *vertexFile, const char *fragmentFile)
 {
 
     const char *vertexShaderSource = yk_file_reader(vertexFile);
@@ -41,9 +41,23 @@ u4 yk_shader_program_create_vertex_fragment(const char *vertexFile, const char *
     return shader_program;
 }
 
-u4 yk_shader_create_compute(const char *computeFile)
+u4 yk_shader_comp_create(const char *computeFile)
 {
+    const char *compShaderSource = yk_file_reader(computeFile);
+
     GLuint compute_shader = glCreateShader(GL_COMPUTE_SHADER);
+    glShaderSource(compute_shader, 1, &compShaderSource, NULL);
+    glCompileShader(compute_shader);
+    yk_check_compile_errors(compute_shader, "Compute Shader");
+
+    GLuint compute_program = glCreateProgram();
+    glAttachShader(compute_program, compute_shader);
+    glLinkProgram(compute_program);
+    yk_check_link_errors(compute_program, "Compute Shader Program");
+
+    free((char *)compShaderSource);
+
+    return compute_program;
 }
 
 void yk_check_compile_errors(GLuint shader, const char *type)

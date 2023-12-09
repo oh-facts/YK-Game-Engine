@@ -1,0 +1,233 @@
+#version 430
+
+layout (binding = 0, rgba32f) writeonly uniform image2D resultImage;
+
+#define NUM 6
+
+const uint k = 1103515245U;  // GLIB C
+
+vec3 hash(uvec3 x)
+{
+    x = ((x >> 8U) ^ x.yzx) * k;
+    x = ((x >> 8U) ^ x.yzx) * k;
+    x = ((x >> 8U) ^ x.yzx) * k;
+
+    return vec3(x) * (1.0 / float(0xffffffffU));
+}
+
+float rand(inout uint state)
+{
+    state = state * 747796405u + 2891336453u;
+    uint result = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    result = (result >> 22) ^ result;
+    return float(result) / 4294967295.;
+}
+
+float ran_val_dis(inout uint state)
+{
+    float theta = 2. * 3.1415926 * rand(state);
+    float rho = sqrt(-2. * log(rand(state)));
+
+    return rho * cos(theta);
+}
+
+vec3 ran_dir(inout uint state)
+{
+    float x = ran_val_dis(state);
+    float y = ran_val_dis(state);
+    float z = ran_val_dis(state);
+
+    return normalize(vec3(x, y, z));
+}
+
+vec3 ran_hemi_dir(vec3 normal, inout uint state)
+{
+    vec3 dir = ran_dir(state);
+    return dir * sign(dot(normal, dir));
+}
+
+struct Ray
+{
+    vec3 origin;
+    vec3 dir;
+};
+
+struct Material
+{
+    vec3 color;
+    vec3 emissionColor;
+    float emissionStrength;
+};
+
+struct Sphere
+{
+    vec3 center;
+    float rad;
+    Material mat;
+};
+
+struct Camera
+{
+    vec3 pos;
+};
+
+struct HitInfo
+{
+    bool didHit;
+    float dist;
+    vec3 point;
+    vec3 normal;
+    Material mat;
+};
+
+HitInfo ray_sphere(Ray ray, Sphere s)
+{
+    HitInfo hi;
+    hi.didHit = false;
+
+    vec3 oc = ray.origin - s.center;
+
+    float a = dot(ray.dir, ray.dir);
+    float b = 2. * dot(oc, ray.dir);
+    float c = dot(oc, oc) - s.rad * s.rad;
+
+    float disc = b * b - 4. * a * c;
+
+    if (disc >= 0.)
+    {
+        float dist = (-b - sqrt(disc)) / (2. * a);
+
+        if (dist >= 0.)
+        {
+            hi.didHit = true;
+            hi.dist = dist;
+            hi.point = ray.origin + ray.dir * dist;
+            hi.normal = normalize(hi.point - s.center);
+            hi.mat = s.mat;
+        }
+    }
+
+    return hi;
+}
+
+HitInfo collisions(Ray ray, Sphere s[NUM])
+{
+    HitInfo hi;
+    hi.didHit = false;
+    hi.dist = 1e10;
+
+    for (int i = 0; i < NUM; i++)
+    {
+        Sphere cur_s = s[i];
+        HitInfo cur_hi = ray_sphere(ray, cur_s);
+
+        if (cur_hi.didHit && cur_hi.dist < hi.dist)
+        {
+            hi = cur_hi;
+        }
+    }
+
+    return hi;
+}
+
+vec3 trace(Ray ray, Sphere s[NUM], inout uint state)
+{
+    vec3 incomingLight = vec3(0);
+    vec3 rayColor = vec3(1);
+
+    for (int i = 0; i < 10; i++)
+    {
+        HitInfo hi = collisions(ray, s);
+
+        if (hi.didHit)
+        {
+            ray.origin = hi.point;
+
+            // Calculate a new random direction with importance sampling
+            vec3 scatteredDir = normalize(hi.normal + ran_hemi_dir(hi.normal, state));
+
+            // Update ray direction with the scattered direction
+            ray.dir = scatteredDir;
+
+            Material mat = hi.mat;
+            vec3 emittedLight = mat.emissionColor * mat.emissionStrength;
+            incomingLight += emittedLight * rayColor;
+            rayColor *= mat.color;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return incomingLight;
+}
+
+layout (local_size_x = 16, local_size_y = 16) in;
+
+void main()
+{
+    ivec2 globalID = ivec2(gl_GlobalInvocationID.xy);
+
+    vec2 uv = vec2(globalID) / imageSize(resultImage);
+
+    uv -= 0.5;
+    uv.x *= imageSize(resultImage).x / imageSize(resultImage).y;
+
+    // To set origin to center and remove aspect scaling
+    // ShaderToy origin is bottom left 
+    Camera cam;
+    cam.pos = vec3(0, 0, -1);
+
+    Ray ray;
+    ray.origin = cam.pos;
+    ray.dir = normalize(vec3(uv, 0.) - ray.origin);
+
+    Sphere s[NUM];
+
+    //center big sphere
+    s[0].rad = 1.;
+    s[0].center = vec3(0, -0.3, 2.0);
+    s[0].mat.color = vec3(1, 0, 1);
+    s[0].mat.emissionColor = vec3(1, 1, 1);
+    s[0].mat.emissionStrength = 0.0;
+
+    s[1].rad = 0.2;
+    s[1].center = vec3(-0.6, 0.3, 1.0);
+    s[1].mat.color = vec3(0, 0, 1);
+    s[1].mat.emissionColor = s[1].mat.color;
+    s[1].mat.emissionStrength = 1.;
+
+    //ground
+    s[2].rad = 100.;
+    s[2].center = vec3(0.0, -100.5, 0.0);
+    s[2].mat.color = vec3(0, 1, 0.8);
+    s[2].mat.emissionColor = s[2].mat.color;
+    s[2].mat.emissionStrength = 0.1;
+
+    s[3].rad = 0.2;
+    s[3].center = vec3(0.6, 0.3, 1.0);
+    s[3].mat.color = vec3(1, 0, 0);
+    s[3].mat.emissionColor = s[3].mat.color;
+    s[3].mat.emissionStrength = 1.;
+
+    s[4].rad = 0.2;
+    s[4].center = vec3(0.0, 0.5, 1.0);
+    s[4].mat.color = vec3(1, 1, 1);
+    s[4].mat.emissionColor = s[4].mat.color;
+    s[4].mat.emissionStrength = 1.;
+
+    uint ran = uint(globalID.x * 43758.5453 + globalID.y * 76908.5453);
+
+    vec3 totalLight = vec3(0);
+
+    int raysperpixel = 100;
+    for (int i = 0; i < raysperpixel; i++)
+    {
+        totalLight += trace(ray, s, ran);
+    }
+
+    vec3 pixelCol = totalLight / float(raysperpixel);
+
+    imageStore(resultImage, globalID, vec4(pixelCol, 1.0));
+}

@@ -10,8 +10,8 @@
     
     Any shader compiling/linking errors are printed to the console
 */
-u4 yk_shader_program_create_vertex_fragment(const char *vertexFile, const char *fragmentFile);
+u4 yk_shader_vf_create(const char *vertexFile, const char *fragmentFile);
 
-u4 yk_shader_create_compute(const char *computeFile);
+u4 yk_shader_comp_create(const char *computeFile);
 
 #endif
