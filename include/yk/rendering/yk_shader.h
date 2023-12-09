@@ -12,4 +12,6 @@
 */
 u4 yk_shader_program_create_vertex_fragment(const char *vertexFile, const char *fragmentFile);
 
+u4 yk_shader_create_compute(const char *computeFile);
+
 #endif

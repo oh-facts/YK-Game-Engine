@@ -41,6 +41,11 @@ u4 yk_shader_program_create_vertex_fragment(const char *vertexFile, const char *
     return shader_program;
 }
 
+u4 yk_shader_create_compute(const char *computeFile)
+{
+    GLuint compute_shader = glCreateShader(GL_COMPUTE_SHADER);
+}
+
 void yk_check_compile_errors(GLuint shader, const char *type)
 {
     int success;
