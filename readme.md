@@ -58,8 +58,9 @@ Replace <file_name.c> with a file name inside sandbox to build examples. They ar
 ## Screenshots
 
   
-  
-![Untitled_video](https://github.com/oh-facts/YK-Game-Engine/assets/125090383/189e9488-31e7-473a-9645-c066c2be20e5)
+
+
+https://github.com/oh-facts/YK-Game-Engine/assets/125090383/1d44e29e-2732-431b-a181-25099cd4cdfb
 
 ![image](https://github.com/oh-facts/YK-Game-Engine/assets/125090383/50e431ef-e787-4a12-8d3e-962749aba191)
 
