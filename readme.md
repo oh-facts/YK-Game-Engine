@@ -10,6 +10,7 @@
 2. Rects
 3. Sprites
 4. Lines
+5. Ray tracing (only spheres so far)
 ### Physics
 1. 2d Rigidbodies
 2. AABB/AABB collision shapes
