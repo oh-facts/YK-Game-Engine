@@ -171,12 +171,16 @@ int main()
     glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &work_grp_inv);
     printf("Max invocations count per work group: %d\n", work_grp_inv);
 
+    GLint timeLocation = glGetUniformLocation(computeProgram, "time");
+    
+
     while (!glfwWindowShouldClose(window))
     {
+        glUniform1f(timeLocation, glfwGetTime());
         glUseProgram(computeProgram);
         glDispatchCompute(ceil(SCREEN_WIDTH / 8), ceil(SCREEN_HEIGHT / 4), 1);
         glMemoryBarrier(GL_ALL_BARRIER_BITS);
-
+        
         glUseProgram(screenShaderProgram);
         glBindTextureUnit(0, screenTex);
         glUniform1i(glGetUniformLocation(screenShaderProgram, "screen"), 0);
