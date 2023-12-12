@@ -1,11 +1,6 @@
+## opengl renderer
 
-  
-
-  
-
-## YK Game Engine
-
-  A game engine written in C and w/ opengl for its rendering backend. Cross platform and optimized for performance and scalability.
+  A real time renderer written in C and w/ opengl for its rendering backend. Cross platform and optimized for performance and scalability.
   
 
 ## Features
@@ -67,13 +62,8 @@ Replace <file_name.c> with a file name inside sandbox to build examples. They ar
 
 https://github.com/oh-facts/YK-Game-Engine/assets/125090383/d3bc8263-2f77-41c3-b22c-bc4f0c82d618
 
-  
+![image](https://github.com/oh-facts/YK-Game-Engine/assets/125090383/50e431ef-e787-4a12-8d3e-962749aba191)
 
-![image](https://github.com/oh-facts/YK-Game-Engine/assets/125090383/e9e4411e-b3c7-4506-92df-da516292914e)
-
-  
-
-[2023-09-23 22-29-14.webm](https://github.com/oh-facts/YK-Game-Engine/assets/125090383/917af386-ddbb-4e59-8758-1581ac449bcd)
 
   
   
