@@ -29,7 +29,11 @@ typedef union v2f
     {
         f4 u,v;
     };
-
+    struct
+    {
+         f4 w,h;
+    };
+    f4 e[2];
 } v2f;
 
 /*
@@ -40,6 +44,11 @@ typedef struct v3f
     struct
     {
         f4 x, y, z;
+    };
+    struct
+    {
+        v2f xy;
+        f4 _z
     };
     struct
     {

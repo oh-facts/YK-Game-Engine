@@ -236,6 +236,8 @@ YK_Window *yk_window_create(const char *title, i4 width, i4 height)
     /*
         Initialize glad
     */
+
+   gladLoadGL
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         fprintf(stderr, "Failed to initialize GLAD\n");

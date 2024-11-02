@@ -190,7 +190,7 @@ void main()
     Sphere s[NUM];
 
     //center big sphere
-    s[0].rad = 0.3;
+    s[0].rad = 0.5;
     s[0].center = vec3(0, -0.3, 1.0);
     s[0].mat.color = vec3(1, 0, 1);
     s[0].mat.emissionColor = vec3(1, 1, 1);
@@ -219,7 +219,7 @@ void main()
     s[4].center = vec3(0.0, 0.5, 1.0);
     s[4].mat.color = vec3(1, 1, 1);
     s[4].mat.emissionColor = s[4].mat.color;
-    s[4].mat.emissionStrength = -1;
+    s[4].mat.emissionStrength = 1;
 
     uint ran = uint(globalID.x * 43758.5453 + globalID.y * 76908.5453);
 
